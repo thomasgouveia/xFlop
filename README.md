@@ -7,6 +7,6 @@ Pour l'instant destiné aux étudiants informatiques de l'IUT de Blagnac.
 Propulsé grâce au SDK Flutter. 
 
 
-##Fonctionnalités
+## Fonctionnalités
 
 //TODO
