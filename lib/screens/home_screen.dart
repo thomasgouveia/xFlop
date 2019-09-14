@@ -157,32 +157,27 @@ class _MainPageState extends State<MainPage> {
           ),
         ],
       ),
-      body: isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : Container(
-              height: MediaQuery.of(context).size.height,
-              //margin: EdgeInsets.only(left: 15, right: 15),
-              child: ListView(
-                children: <Widget>[
-                  Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    child: PageView.builder(
-                      controller: _viewerController,
-                      onPageChanged: _handleDayChanged,
-                      itemCount: coursMap.length,
-                      itemBuilder: (context, int index) {
-                        return EDTViewer(
-                          coursesMap: _mapCourses(),
-                        );
-                      },
-                    ),
-                  ),
-                ],
+      body: Container(
+        height: MediaQuery.of(context).size.height + 200,
+        child: isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: PageView.builder(
+                  controller: _viewerController,
+                  onPageChanged: _handleDayChanged,
+                  itemCount: coursMap.length,
+                  itemBuilder: (context, int index) {
+                    return EDTViewer(
+                      coursesMap: _mapCourses(),
+                    );
+                  },
+                ),
               ),
-            ),
+      ),
     );
   }
 }
