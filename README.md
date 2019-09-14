@@ -11,4 +11,11 @@ Propulsé grâce au SDK Flutter.
 
 ## Fonctionnalités
 
-//TODO
+- [x] Affichage des cours en temps réel
+- [x] Affichage de la semaine entière
+- [x] Gestion des week-ends
+- [x] Gestion des préférences utilisateurs (groupe, promo) 
+- [ ] Filtre des professeurs
+- [ ] Affichage des examens particuliers
+- [ ] Mode sombre
+- [ ] Choix d'un thème de couleur, (?image de fond)
