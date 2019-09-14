@@ -12,8 +12,4 @@ class Preferences {
       Preferences(groupe: json['groupe'], promo: json['promo']);
 
   Map get toJSON => {'groupe': this.groupe, 'promo': this.promo};
-
-  static Future<Preferences> getPreferencesFromSP() async {
-    return await Preferences.fromJSON(storage.read('settings'));
-  }
 }

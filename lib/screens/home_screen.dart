@@ -4,8 +4,10 @@ import 'package:flop_edt_app/components/day_text_widget.dart';
 import 'package:flop_edt_app/components/edt_viewer.dart';
 import 'package:flop_edt_app/models/Cours.dart';
 import 'package:flop_edt_app/models/user_preferences.dart';
+import 'package:flop_edt_app/screens/parameters.dart';
 import 'package:flop_edt_app/screens/start_screen.dart';
 import 'package:flop_edt_app/utils.dart';
+import 'package:flop_edt_app/utils/constants.dart';
 import 'package:flop_edt_app/utils/shared_storage.dart';
 import 'package:flop_edt_app/utils/week_utils.dart';
 import 'package:flutter/material.dart';
@@ -161,9 +163,31 @@ class _MainPageState extends State<MainPage> {
           centerTitle: false,
           actions: <Widget>[
             DayTextWidget(todayDate: todayDate),
-            IconButton(
+            PopupMenuButton<String>(
               icon: Icon(Icons.more_vert),
-              onPressed: () => null,
+              initialValue: '',
+              offset: Offset(0, 100),
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: "settings",
+                  child: Text('Paramètres'),
+                ),
+                PopupMenuItem(
+                  value: "about",
+                  child: Text('À propos'),
+                ),
+              ],
+              onSelected: (value) {
+                switch (value) {
+                  case 'settings':
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) =>
+                            Parameters(preferences: preferences)));
+                    break;
+                  case 'about':
+                    break;
+                }
+              },
             ),
           ],
         ),
@@ -189,6 +213,46 @@ class _MainPageState extends State<MainPage> {
       );
     }
   }
+
+  Widget parameters() => Scaffold(
+        appBar: AppBar(
+          title: Text('Paramètres de l\'application'),
+        ),
+        body: Column(
+          children: <Widget>[
+            DropdownButton<String>(
+              value: preferences.promo,
+              items: PROMOS.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              onChanged: (String s) {
+                setState(() {
+                  this.preferences.promo = s;
+                  storage.save('promo', s);
+                });
+              },
+            ),
+            DropdownButton<String>(
+              value: preferences.groupe,
+              items: GROUPES.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              onChanged: (String s) {
+                setState(() {
+                  this.preferences.groupe = s;
+                  storage.save('groupe', s);
+                });
+              },
+            ),
+          ],
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
