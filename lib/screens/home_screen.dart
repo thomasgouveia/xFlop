@@ -42,7 +42,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    todayDate = DateTime(2019, 9, 17);
+    todayDate = DateTime.now();
     isWeekEnd = todayDate.weekday == 6 || todayDate.weekday == 7;
     defaultWeek =
         isWeekEnd ? Week.weekNumber(todayDate) + 1 : Week.weekNumber(todayDate);
