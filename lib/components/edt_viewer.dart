@@ -11,11 +11,11 @@ class EDTViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: buildHoursGrid(context),
+      children: buildCourses(context),
     );
   }
 
-  List<Widget> buildHoursGrid(BuildContext context) {
+  List<Widget> buildCourses(BuildContext context) {
     List<Widget> grid = [];
     Map<dynamic, dynamic> map = coursesMap;
     map.forEach((index, cours) {
@@ -31,8 +31,14 @@ class EDTViewer extends StatelessWidget {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      Text(heures[index][0], style: TextStyle(fontWeight: FontWeight.bold),),
-                      Text(heures[index][1], style: TextStyle(fontWeight: FontWeight.bold),),
+                      Text(
+                        heures[index][0],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        heures[index][1],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ],
                   ),
                   Padding(

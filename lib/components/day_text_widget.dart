@@ -18,8 +18,9 @@ class DayTextWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "${dayIndex[todayDate.weekday - 1]} ${MyDateFormat(todayDate, DateFormatType.DAY_SLASHES_MONTH).date}",
-            style: TextStyle(fontSize: 22),
+            "${dayIndex[todayDate.weekday - 1]} ${MyDateFormat(todayDate, DateFormatType.DAY_SLASHES_MONTH).date}"
+                .toUpperCase(),
+            style: TextStyle(fontSize: 20),
           ),
         ],
       ),
