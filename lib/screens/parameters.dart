@@ -34,7 +34,7 @@ class _ParametersState extends State<Parameters> {
             color: Colors.white,
           ),
           onPressed: () => Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => MainPage())),
+              MaterialPageRoute(builder: (context) => AppStateProvider())),
         ),
         backgroundColor: Colors.grey[900],
         title: Text('Paramètres de l\'application'),

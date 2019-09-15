@@ -1,4 +1,3 @@
-import 'package:flop_edt_app/models/user_preferences.dart';
 import 'package:flop_edt_app/screens/home_screen.dart';
 import 'package:flop_edt_app/utils/constants.dart';
 import 'package:flop_edt_app/utils/shared_storage.dart';
@@ -12,79 +11,102 @@ class StartPage extends StatefulWidget {
 class _StartPageState extends State<StartPage> {
   String selectedPromo = 'INFO1';
   String selectedGroupe = '1A';
+
+  final fontSize = 16.0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        body: Stack(
+      children: <Widget>[
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Column(
-              children: <Widget>[
-                Image.asset(
-                  'assets/logo.png',
-                  width: 150,
-                  height: 150,
-                ),
-                Text(
-                  'Bienvenue sur xFlop!',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(bottom: 50),
+              child: headingLogo,
             ),
             Text(
-              'Pour obtenir ton emploi du temps, merci de séléctionner ta promo et ton groupe ci-dessous',
+              'Pour obtenir ton emploi du temps, merci de séléctionner ta promo et ton groupe ci-dessous. \n\nTu pourras modifier tes préférences directement depuis les paramètres à l\'avenir.',
               textAlign: TextAlign.center,
+              style: TextStyle(fontSize: fontSize),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                DropdownButton<String>(
-                  value: selectedPromo,
-                  items: PROMOS.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (String s) {
-                    setState(() {
-                      this.selectedPromo = s;
-                    });
-                  },
-                ),
-                DropdownButton<String>(
-                  value: selectedGroupe,
-                  items: GROUPES.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (String s) {
-                    setState(() {
-                      this.selectedGroupe = s;
-                    });
-                  },
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(top: 30, bottom: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  DropdownButton<String>(
+                    value: selectedPromo,
+                    items: PROMOS.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (String s) {
+                      setState(() {
+                        this.selectedPromo = s;
+                      });
+                    },
+                  ),
+                  DropdownButton<String>(
+                    value: selectedGroupe,
+                    items: GROUPES.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (String s) {
+                      setState(() {
+                        this.selectedGroupe = s;
+                      });
+                    },
+                  ),
+                ],
+              ),
             ),
-            RaisedButton(
-              onPressed: () {
-                storage.save('promo', selectedPromo);
-                storage.save('groupe', selectedGroupe);
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => MainPage()));
-              },
-              color: Colors.greenAccent,
-              child: Text('Valider'),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-            ),
+            _validationButton,
           ],
         ),
-      ),
-    );
+        Positioned(
+          bottom: 20,
+          right: 20,
+          child: Text('xFlop! v.0.1 bêta'),
+        ),
+      ],
+    ));
   }
+
+  Widget get headingLogo => Column(
+        children: <Widget>[
+          Image.asset(
+            'assets/logo.png',
+            width: 150,
+            height: 150,
+          ),
+          Text(
+            'Bienvenue sur xFlop!',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+          ),
+        ],
+      );
+
+  ///Crée le bouton de validation de type [RaisedButton]
+  Widget get _validationButton => Container(
+    width: 200,
+    child: RaisedButton(
+          onPressed: () {
+            storage.save('promo', selectedPromo);
+            storage.save('groupe', selectedGroupe);
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => AppStateProvider()));
+          },
+          padding: EdgeInsets.all(15),
+          color: Colors.green,
+          child: Text('Valider', style: TextStyle(color: Colors.white, fontSize: fontSize),),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        ),
+  );
 }

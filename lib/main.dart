@@ -15,7 +15,7 @@ class XFlopApp extends StatelessWidget {
         fontFamily: 'Poppins',
         primarySwatch: Colors.blue,
       ),
-      home: MainPage(title: 'xFlop!'),
+      home: AppStateProvider(),
     );
   }
 }

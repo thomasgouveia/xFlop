@@ -1,5 +1,4 @@
 import 'package:flop_edt_app/components/cours_widget.dart';
-import 'package:flop_edt_app/models/Cours.dart';
 import 'package:flop_edt_app/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +18,9 @@ class EDTViewer extends StatelessWidget {
   List<Widget> buildCourses(BuildContext context) {
     List<Widget> grid = [];
     Map<dynamic, dynamic> map = coursesMap;
+    var delay = 1.0;
     map.forEach((index, cours) {
+      delay += 0.6;
       grid.add(
         Row(
           children: <Widget>[
@@ -47,8 +48,11 @@ class EDTViewer extends StatelessWidget {
                   ),
                   Expanded(
                     child: (cours != null)
-                        ? CoursWidget(cours: cours)
-                        : Container(),
+                        ? CoursWidget(
+                            cours: cours,
+                            delay: delay,
+                          )
+                        : Container(), //Vide s'il n'y a pas de cours
                   ),
                 ],
               ),
