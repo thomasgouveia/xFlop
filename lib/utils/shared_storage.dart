@@ -16,6 +16,16 @@ class LocalStorage {
     final prefs = await SharedPreferences.getInstance();
     prefs.remove(key);
   }
+
+  Future<bool> readBool(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(key);
+  }
+
+  void saveBool(String key, bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool(key, value);
+  }
 }
 
 LocalStorage storage = LocalStorage();

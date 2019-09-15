@@ -5,6 +5,10 @@ import 'package:flop_edt_app/utils/shared_storage.dart';
 import 'package:flutter/material.dart';
 
 class StartPage extends StatefulWidget {
+  final bool isDarkMode;
+
+  const StartPage({Key key, this.isDarkMode}) : super(key: key);
+
   @override
   _StartPageState createState() => _StartPageState();
 }
@@ -74,7 +78,7 @@ class _StartPageState extends State<StartPage> {
         Positioned(
           bottom: 20,
           right: 20,
-          child: Text('xFlop! v.0.1 bêta'),
+          child: Text('xFlop! $VERSION'),
         ),
       ],
     ));
@@ -101,6 +105,7 @@ class _StartPageState extends State<StartPage> {
           onPressed: () {
             storage.save('promo', selectedPromo);
             storage.save('groupe', selectedGroupe);
+            storage.saveBool('dark', false);
             AppNavigator.toEDT(context);
           },
           padding: EdgeInsets.all(15),

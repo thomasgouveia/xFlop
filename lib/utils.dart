@@ -77,8 +77,6 @@ int positionInJourney(dynamic startTime) {
   }
 }
 
-String buildDate(DateTime time) {}
-
 Color hexToColor(String code) {
   return new Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
 }

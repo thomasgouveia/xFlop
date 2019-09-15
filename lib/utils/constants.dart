@@ -10,3 +10,7 @@ const GROUPES = [
 ];
 
 const PROMOS = ['INFO1', 'INFO2'];
+
+const AUTHOR = 'Thomas Gouveia';
+const VERSION = 'v0.1 bêta';
+const HELPER_EMAIL = 'xflop.dev@gmail.com';

@@ -1,3 +1,4 @@
+import 'package:flop_edt_app/components/about_dialog.dart';
 import 'package:flop_edt_app/components/day_text_widget.dart';
 import 'package:flop_edt_app/models/user_preferences.dart';
 import 'package:flop_edt_app/navigator/app_navigator.dart';
@@ -65,6 +66,12 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 AppNavigator.toParameters(context, widget.preferences);
                 break;
               case 'about':
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => CustomDialog(
+                    buttonText: "Fermer",
+                  ),
+                );
                 break;
             }
           },

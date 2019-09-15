@@ -1,6 +1,6 @@
+import 'package:flop_edt_app/components/adaptative_switch.dart';
 import 'package:flop_edt_app/models/user_preferences.dart';
 import 'package:flop_edt_app/navigator/app_navigator.dart';
-import 'package:flop_edt_app/screens/home_screen.dart';
 import 'package:flop_edt_app/utils/constants.dart';
 import 'package:flop_edt_app/utils/shared_storage.dart';
 import 'package:flutter/material.dart';
@@ -78,6 +78,16 @@ class _ParametersState extends State<Parameters> {
                 ),
               ],
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text('Mode sombre (en cours)'),
+                AdaptableSwitch(
+                  switchValue: widget.preferences.isDarkMode,
+                  valueChanged: (val) {},
+                ),
+              ],
+            )
           ],
         ),
       ),

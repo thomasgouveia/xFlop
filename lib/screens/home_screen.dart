@@ -53,9 +53,10 @@ class _AppStateProviderState extends State<AppStateProvider> {
   loadPreferences() async {
     String promo = await storage.read('promo');
     String groupe = await storage.read('groupe');
+    //bool dark = await storage.readBool('dark');
     setState(() {
       preferences = groupe != null && promo != null
-          ? Preferences(groupe: groupe, promo: promo)
+          ? Preferences(groupe: groupe, promo: promo, isDarkMode: false)
           : null;
     });
   }
@@ -136,6 +137,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
   }
 
   Widget buildContent() {
+    storage.saveBool('dark', false);
     if (preferences == null) {
       return StartPage();
     } else {

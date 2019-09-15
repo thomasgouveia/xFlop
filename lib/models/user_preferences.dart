@@ -5,8 +5,9 @@ class Preferences {
   int id;
   String groupe;
   String promo;
+  bool isDarkMode;
 
-  Preferences({this.groupe, this.promo});
+  Preferences({this.groupe, this.promo, this.isDarkMode});
 
   factory Preferences.fromJSON(Map<String, dynamic> json) =>
       Preferences(groupe: json['groupe'], promo: json['promo']);
