@@ -1,5 +1,6 @@
 import 'package:flop_edt_app/components/day_text_widget.dart';
 import 'package:flop_edt_app/models/user_preferences.dart';
+import 'package:flop_edt_app/navigator/app_navigator.dart';
 import 'package:flop_edt_app/screens/parameters.dart';
 import 'package:flutter/material.dart';
 
@@ -61,9 +62,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
           onSelected: (value) {
             switch (value) {
               case 'settings':
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) =>
-                        Parameters(preferences: widget.preferences)));
+                AppNavigator.toParameters(context, widget.preferences);
                 break;
               case 'about':
                 break;

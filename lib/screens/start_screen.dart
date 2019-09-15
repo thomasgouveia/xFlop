@@ -1,3 +1,4 @@
+import 'package:flop_edt_app/navigator/app_navigator.dart';
 import 'package:flop_edt_app/screens/home_screen.dart';
 import 'package:flop_edt_app/utils/constants.dart';
 import 'package:flop_edt_app/utils/shared_storage.dart';
@@ -95,18 +96,21 @@ class _StartPageState extends State<StartPage> {
 
   ///Crée le bouton de validation de type [RaisedButton]
   Widget get _validationButton => Container(
-    width: 200,
-    child: RaisedButton(
+        width: 200,
+        child: RaisedButton(
           onPressed: () {
             storage.save('promo', selectedPromo);
             storage.save('groupe', selectedGroupe);
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => AppStateProvider()));
+            AppNavigator.toEDT(context);
           },
           padding: EdgeInsets.all(15),
           color: Colors.green,
-          child: Text('Valider', style: TextStyle(color: Colors.white, fontSize: fontSize),),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          child: Text(
+            'Valider',
+            style: TextStyle(color: Colors.white, fontSize: fontSize),
+          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         ),
-  );
+      );
 }

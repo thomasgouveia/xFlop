@@ -1,4 +1,5 @@
 import 'package:flop_edt_app/models/user_preferences.dart';
+import 'package:flop_edt_app/navigator/app_navigator.dart';
 import 'package:flop_edt_app/screens/home_screen.dart';
 import 'package:flop_edt_app/utils/constants.dart';
 import 'package:flop_edt_app/utils/shared_storage.dart';
@@ -33,8 +34,7 @@ class _ParametersState extends State<Parameters> {
             Icons.arrow_back_ios,
             color: Colors.white,
           ),
-          onPressed: () => Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => AppStateProvider())),
+          onPressed: () => AppNavigator.toEDT(context),
         ),
         backgroundColor: Colors.grey[900],
         title: Text('Paramètres de l\'application'),
