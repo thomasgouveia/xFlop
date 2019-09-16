@@ -13,6 +13,7 @@ class Cours {
   var indexInSemaine;
   var startTime;
   var color;
+  var textColor;
   int index;
 
   Cours(
@@ -26,6 +27,7 @@ class Cours {
       this.roomType,
       this.color,
       this.index,
+      this.textColor,
       this.indexInSemaine,
       this.startTime});
 
@@ -38,10 +40,10 @@ class Cours {
         coursType: csv[6],
         salle: csv[7],
         roomType: csv[8],
+        textColor: csv[10],
         indexInSemaine: getIndexSemaine(csv[11]),
         startTime: csv[12],
         index: positionInJourney(csv[12]),
         color: csv[9],
       );
-
 }

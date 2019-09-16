@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:flop_edt_app/components/custom_appbar.dart';
-import 'package:flop_edt_app/components/day_text_widget.dart';
 import 'package:flop_edt_app/components/edt_viewer.dart';
+import 'package:flop_edt_app/components/week_chooser.dart';
 import 'package:flop_edt_app/models/Cours.dart';
 import 'package:flop_edt_app/models/user_preferences.dart';
-import 'package:flop_edt_app/screens/parameters.dart';
 import 'package:flop_edt_app/screens/start_screen.dart';
 import 'package:flop_edt_app/utils.dart';
 import 'package:flop_edt_app/utils/shared_storage.dart';
@@ -21,33 +20,40 @@ class _AppStateProviderState extends State<AppStateProvider> {
   bool isLoading = true;
 
   DateTime todayDate;
+  DateTime currentDate;
   int defaultWeek;
+  int currentWeek;
   Preferences preferences;
 
   PageController _viewerController;
+  List<int> nextWeeks;
 
-  ///[Map] servant à stocker les cours en fonction du jour de la semaine
-  Map<int, List<Cours>> coursMap = {
-    1: new List<Cours>(),
-    2: new List<Cours>(),
-    3: new List<Cours>(),
-    4: new List<Cours>(),
-    5: new List<Cours>(),
-  };
+  Map<int, Map<int, List<Cours>>> allWeeksCourses = {};
 
-  bool
-      isWeekEnd; //Booléen permettant de savoir si oui ou non la date calculée est un week end
+  //Booléen permettant de savoir si oui ou non la date calculée est un week end
+  bool isWeekEnd;
 
   @override
   void initState() {
     super.initState();
-    todayDate = DateTime.now();
-    isWeekEnd = todayDate.weekday == 6 || todayDate.weekday == 7;
+    todayDate = DateTime.now().add(Duration(days: 1));
+    currentDate = todayDate;
+    isWeekEnd = weekendTest(todayDate);
     defaultWeek =
         isWeekEnd ? Week.weekNumber(todayDate) + 1 : Week.weekNumber(todayDate);
+    currentWeek =
+        defaultWeek; //Current garde toujours la semaine active en mémoire
+    nextWeeks = Week.calculateThreeNext(todayDate, defaultWeek);
+    _viewerController = PageController(initialPage: currentDate.weekday - 1);
     loadPreferences();
-    initData();
+    loadAllWeeks();
   }
+
+  ///Change l'état de chargement
+  setLoading(bool loading) => setState(() => this.isLoading = loading);
+
+  ///Renvoi vrai si la date est un week end, faux sinon
+  weekendTest(DateTime date) => date.weekday == 6 || date.weekday == 7;
 
   ///Charge les [Preferences] ou null si rien n'est trouvé.
   loadPreferences() async {
@@ -61,46 +67,82 @@ class _AppStateProviderState extends State<AppStateProvider> {
     });
   }
 
+  //Crée la map correspond au jour de la semaine
+  Map<int, List<Cours>> setMap() => {
+        1: new List<Cours>(),
+        2: new List<Cours>(),
+        3: new List<Cours>(),
+        4: new List<Cours>(),
+        5: new List<Cours>(),
+      };
+
+  loadAllWeeks() {
+    for (int i = 0; i < nextWeeks.length; i++) {
+      allWeeksCourses[nextWeeks[i]] = setMap();
+      initData(nextWeeks[i], i);
+    }
+  }
+
   ///initialise la liste des cours
-  void initData() {
-    fetchEDTData(this.defaultWeek, this.todayDate.year).then((list) {
+  void initData(int week, int index) {
+    fetchEDTData(week, week == 1 ? todayDate.year + 1 : todayDate.year)
+        .then((list) {
       for (int i = 1; i < list.length; i++) {
         var sublist = list[i];
         Cours cours = Cours.fromCSV(sublist);
         switch (cours.indexInSemaine) {
           case 1:
-            coursMap[1].add(cours);
+            allWeeksCourses[week][1].add(cours);
             break;
           case 2:
-            coursMap[2].add(cours);
+            allWeeksCourses[week][2].add(cours);
             break;
           case 3:
-            coursMap[3].add(cours);
+            allWeeksCourses[week][3].add(cours);
             break;
           case 4:
-            coursMap[4].add(cours);
+            allWeeksCourses[week][4].add(cours);
             break;
           case 5:
-            coursMap[5].add(cours);
+            allWeeksCourses[week][5].add(cours);
             break;
         }
       }
-      setState(() {
-        this.isLoading = false;
-      });
+      if (index == nextWeeks.length - 1) {
+        setLoading(false);
+      }
     });
   }
 
   ///Recalcule la date du jour en fonction du changement de vue
   _handleDayChanged(int index) => Timer(
       Duration(milliseconds: 200),
-      () => setState(() => todayDate.weekday <= index
-          ? todayDate = todayDate.add(Duration(days: 1))
-          : todayDate = todayDate.subtract(Duration(days: 1))));
+      () => setState(() {
+            todayDate.weekday <= index
+                ? todayDate = todayDate.add(Duration(days: 1))
+                : todayDate = todayDate.subtract(Duration(days: 1));
+          }));
+
+  ///Fonction qui met à jour l'application lors d'un changement de semaine
+  //! REVOIR LE CALCUL DES JOURS
+  _handleWeekChanged(dynamic week) {
+    _viewerController.animateToPage(
+        week == currentWeek ? currentDate.weekday - 1 : 0,
+        curve: Curves.easeInOut,
+        duration: Duration(milliseconds: 1));
+    var wkNb = Week.weekNumber(todayDate);
+    var diff = ((week < wkNb ? wkNb - week : week - wkNb) * 7);
+    setState(() {
+      this.todayDate = week < wkNb
+          ? todayDate.subtract(Duration(days: diff - (currentDate.weekday)))
+          : todayDate.add(Duration(days: diff - (currentDate.weekday)));
+      this.defaultWeek = week;
+    });
+  }
 
   ///Retourne la [Map] des cours indexés par leur apparation dans la journée
-  Map _mapCourses() {
-    List<Cours> filteredCours = applyFilters();
+  Map _mapCourses(int index) {
+    List<Cours> filteredCours = applyFilters(index);
     //Défini les cours disponibles dans la journée
     Map map = {
       0: null, //8h
@@ -123,8 +165,8 @@ class _AppStateProviderState extends State<AppStateProvider> {
   }
 
   ///Applique les filtres utilisateurs sur la liste de cours (évite de fetch à chaque changement)
-  List<Cours> applyFilters() {
-    List<Cours> filtered = coursMap[todayDate.weekday]
+  List<Cours> applyFilters(int index) {
+    List<Cours> filtered = allWeeksCourses[index][todayDate.weekday]
         .where((cours) =>
             cours.nomPromo == preferences.promo &&
             (cours.nomGroupe.toString() == preferences.groupe ||
@@ -136,40 +178,59 @@ class _AppStateProviderState extends State<AppStateProvider> {
     return filtered;
   }
 
+  ///Construit l'interface en fonction de l'état de l'application
   Widget buildContent() {
-    storage.saveBool('dark', false);
     if (preferences == null) {
       return StartPage();
+    } else if (isLoading) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
     } else {
       return Scaffold(
         appBar: CustomAppBar(
             todayDate: todayDate, context: context, preferences: preferences),
-        body: isLoading
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : Container(
-                margin: EdgeInsets.only(left: 10, right: 10),
-                height: MediaQuery.of(context).size.height,
+        body: Container(
+          margin: EdgeInsets.only(left: 10, right: 10),
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: 50,
                 width: MediaQuery.of(context).size.width,
+                child: Center(
+                  child: WeekChooser(
+                    weeks: nextWeeks,
+                    valueChanged: _handleWeekChanged,
+                  ),
+                ),
+              ),
+              Expanded(
                 child: PageView.builder(
                   controller: _viewerController,
                   onPageChanged: _handleDayChanged,
-                  itemCount: coursMap.length,
+                  itemCount: allWeeksCourses[defaultWeek].length,
                   itemBuilder: (context, int index) {
                     return EDTViewer(
-                      coursesMap: _mapCourses(),
+                      coursesMap: _mapCourses(defaultWeek),
                     );
                   },
                 ),
               ),
+            ],
+          ),
+        ),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    _viewerController = PageController(initialPage: todayDate.weekday - 1);
+    isWeekEnd = weekendTest(todayDate);
+    currentDate = DateTime.now();
     if (this.isWeekEnd) {
       int day = todayDate.weekday == 6
           ? todayDate.day + 2

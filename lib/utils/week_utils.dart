@@ -6,4 +6,14 @@ class Week {
     int dayOfYear = int.parse(DateFormat("D").format(date));
     return ((dayOfYear - date.weekday + 10) / 7).floor();
   }
+
+  static List<int> calculateThreeNext(DateTime date, int defaultWeek) {
+    List<int> list = [defaultWeek];
+    for (int i = 1; i <= 3; i++) {
+      var week =
+          date.month == 12 && date.day > 31 - 7 ? 0 : Week.weekNumber(date);
+      list.add(week + i);
+    }
+    return list;
+  }
 }

@@ -27,20 +27,44 @@ class CoursWidget extends StatelessWidget {
         ),
         margin: EdgeInsets.only(top: 5, bottom: 5),
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Text(
-                cours.module,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              Text(cours.nomProf),
-              Text(
-                cours.salle,
-                style: TextStyle(
-                    fontWeight: cours.coursType == 'DS'
-                        ? FontWeight.bold
-                        : FontWeight.normal),
+              Container(
+                  width: 50,
+                  padding: EdgeInsets.only(left: 20),
+                  child: Center(
+                      child: Text(
+                    cours.coursType,
+                    style: TextStyle(
+                        fontSize: 18, color: hexToColor(cours.textColor)),
+                  ))),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      cours.module,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: hexToColor(cours.textColor)),
+                    ),
+                    Text(
+                      cours.nomProf,
+                      style: TextStyle(color: hexToColor(cours.textColor)),
+                    ),
+                    Text(
+                      cours.salle,
+                      style: TextStyle(
+                          color: hexToColor(cours.textColor),
+                          fontWeight: cours.coursType == 'DS'
+                              ? FontWeight.bold
+                              : FontWeight.normal),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

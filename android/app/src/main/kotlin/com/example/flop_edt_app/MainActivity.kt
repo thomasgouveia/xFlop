@@ -1,4 +1,4 @@
-package com.example.flop_edt_app
+package com.n4rkos.flop_edt_app
 
 import android.os.Bundle
 
