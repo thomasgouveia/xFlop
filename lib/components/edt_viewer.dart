@@ -1,5 +1,5 @@
-import 'package:flop_edt_app/components/cours_widget.dart';
-import 'package:flop_edt_app/utils.dart';
+import 'package:xFlop/components/cours_widget.dart';
+import 'package:xFlop/utils.dart';
 import 'package:flutter/material.dart';
 
 class EDTViewer extends StatelessWidget {

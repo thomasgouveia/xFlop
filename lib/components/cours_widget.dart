@@ -1,6 +1,6 @@
-import 'package:flop_edt_app/components/fade_in.dart';
-import 'package:flop_edt_app/models/Cours.dart';
-import 'package:flop_edt_app/utils.dart';
+import 'package:xFlop/components/fade_in.dart';
+import 'package:xFlop/models/Cours.dart';
+import 'package:xFlop/utils.dart';
 import 'package:flutter/material.dart';
 
 class CoursWidget extends StatelessWidget {

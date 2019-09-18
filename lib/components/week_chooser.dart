@@ -25,7 +25,7 @@ class _WeekChooserState extends State<WeekChooser> {
       (int weekNb) => btns.add(
         AnimatedContainer(
           duration: Duration(milliseconds: 500),
-          curve: Curves.easeInOut,
+          curve: Curves.easeInSine,
           decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: value == weekNb ? Colors.grey[900] : Colors.transparent),

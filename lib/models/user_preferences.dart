@@ -1,4 +1,4 @@
-import 'package:flop_edt_app/utils/shared_storage.dart';
+import 'package:xFlop/utils/shared_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preferences {

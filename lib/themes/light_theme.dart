@@ -1,4 +1,4 @@
-import 'package:flop_edt_app/utils.dart';
+import 'package:xFlop/utils.dart';
 import 'package:flutter/material.dart';
 
 class LightTheme {

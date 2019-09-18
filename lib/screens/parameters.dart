@@ -1,8 +1,8 @@
-import 'package:flop_edt_app/components/adaptative_switch.dart';
-import 'package:flop_edt_app/models/user_preferences.dart';
-import 'package:flop_edt_app/navigator/app_navigator.dart';
-import 'package:flop_edt_app/utils/constants.dart';
-import 'package:flop_edt_app/utils/shared_storage.dart';
+import 'package:xFlop/components/adaptative_switch.dart';
+import 'package:xFlop/models/user_preferences.dart';
+import 'package:xFlop/navigator/app_navigator.dart';
+import 'package:xFlop/utils/constants.dart';
+import 'package:xFlop/utils/shared_storage.dart';
 import 'package:flutter/material.dart';
 
 class Parameters extends StatefulWidget {

@@ -1,7 +1,7 @@
-import 'package:flop_edt_app/navigator/app_navigator.dart';
-import 'package:flop_edt_app/screens/home_screen.dart';
-import 'package:flop_edt_app/utils/constants.dart';
-import 'package:flop_edt_app/utils/shared_storage.dart';
+import 'package:xFlop/navigator/app_navigator.dart';
+import 'package:xFlop/screens/home_screen.dart';
+import 'package:xFlop/utils/constants.dart';
+import 'package:xFlop/utils/shared_storage.dart';
 import 'package:flutter/material.dart';
 
 class StartPage extends StatefulWidget {

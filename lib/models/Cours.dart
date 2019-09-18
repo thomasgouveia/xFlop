@@ -1,4 +1,4 @@
-import 'package:flop_edt_app/utils.dart';
+import 'package:xFlop/utils.dart';
 
 class Cours {
   //32827,,PS,2B,INFO2,PSE,TP,B219,M,#fe16f4,#FFFFFF,m,1035 32826,,PS,2A,INFO2,PSE,TP,B102,M,#fe16f4,#FFFFFF,w,660 32825,,IO,3B,INFO2,PSE,TP,B103,M,#fe16f4,#FFFFFF,th,570

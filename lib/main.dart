@@ -1,4 +1,4 @@
-import 'package:flop_edt_app/screens/home_screen.dart';
+import 'package:xFlop/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

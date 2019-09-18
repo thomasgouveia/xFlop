@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:flop_edt_app/components/custom_appbar.dart';
-import 'package:flop_edt_app/components/edt_viewer.dart';
-import 'package:flop_edt_app/components/week_chooser.dart';
-import 'package:flop_edt_app/models/Cours.dart';
-import 'package:flop_edt_app/models/user_preferences.dart';
-import 'package:flop_edt_app/screens/start_screen.dart';
-import 'package:flop_edt_app/utils.dart';
-import 'package:flop_edt_app/utils/shared_storage.dart';
-import 'package:flop_edt_app/utils/week_utils.dart';
+import 'package:xFlop/components/custom_appbar.dart';
+import 'package:xFlop/components/edt_viewer.dart';
+import 'package:xFlop/components/week_chooser.dart';
+import 'package:xFlop/models/Cours.dart';
+import 'package:xFlop/models/user_preferences.dart';
+import 'package:xFlop/screens/start_screen.dart';
+import 'package:xFlop/utils.dart';
+import 'package:xFlop/utils/shared_storage.dart';
+import 'package:xFlop/utils/week_utils.dart';
 import 'package:flutter/material.dart';
 
 class AppStateProvider extends StatefulWidget {
@@ -36,7 +36,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
   @override
   void initState() {
     super.initState();
-    todayDate = DateTime.now().add(Duration(days: 1));
+    todayDate = DateTime.now();
     currentDate = todayDate;
     isWeekEnd = weekendTest(todayDate);
     defaultWeek =
@@ -45,8 +45,10 @@ class _AppStateProviderState extends State<AppStateProvider> {
         defaultWeek; //Current garde toujours la semaine active en mémoire
     nextWeeks = Week.calculateThreeNext(todayDate, defaultWeek);
     _viewerController = PageController(initialPage: currentDate.weekday - 1);
-    loadPreferences();
-    loadAllWeeks();
+    if (this.mounted) {
+      loadPreferences();
+      loadAllWeeks();
+    }
   }
 
   ///Change l'état de chargement
@@ -114,7 +116,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
     });
   }
 
-  ///Recalcule la date du jour en fonction du changement de vue
+  ///Recalcule la date du jour en fonction d—u changement de vue
   _handleDayChanged(int index) => Timer(
       Duration(milliseconds: 200),
       () => setState(() {
@@ -132,10 +134,11 @@ class _AppStateProviderState extends State<AppStateProvider> {
         duration: Duration(milliseconds: 1));
     var wkNb = Week.weekNumber(todayDate);
     var diff = ((week < wkNb ? wkNb - week : week - wkNb) * 7);
+    this.todayDate = week < wkNb
+        ? todayDate.subtract(Duration(days: diff))
+        : todayDate.add(Duration(days: diff));
+    print(todayDate);
     setState(() {
-      this.todayDate = week < wkNb
-          ? todayDate.subtract(Duration(days: diff - (currentDate.weekday)))
-          : todayDate.add(Duration(days: diff - (currentDate.weekday)));
       this.defaultWeek = week;
     });
   }

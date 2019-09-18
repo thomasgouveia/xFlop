@@ -8,7 +8,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="flop_edt_app"
+        android:label="xFlop!"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

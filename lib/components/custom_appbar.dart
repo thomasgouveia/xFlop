@@ -1,8 +1,8 @@
-import 'package:flop_edt_app/components/about_dialog.dart';
-import 'package:flop_edt_app/components/day_text_widget.dart';
-import 'package:flop_edt_app/models/user_preferences.dart';
-import 'package:flop_edt_app/navigator/app_navigator.dart';
-import 'package:flop_edt_app/screens/parameters.dart';
+import 'package:xFlop/components/about_dialog.dart';
+import 'package:xFlop/components/day_text_widget.dart';
+import 'package:xFlop/models/user_preferences.dart';
+import 'package:xFlop/navigator/app_navigator.dart';
+import 'package:xFlop/screens/parameters.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
