@@ -26,6 +26,7 @@ class _WeekChooserState extends State<WeekChooser> {
         AnimatedContainer(
           duration: Duration(milliseconds: 500),
           curve: Curves.easeInSine,
+          width: (MediaQuery.of(context).size.width / widget.weeks.length) - 30,
           decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: value == weekNb ? Colors.grey[900] : Colors.transparent),
@@ -37,8 +38,10 @@ class _WeekChooserState extends State<WeekChooser> {
                   color: value == weekNb ? Colors.white : Colors.black),
             ),
             onPressed: () => setState(() {
-              value = weekNb;
-              widget.valueChanged(weekNb);
+              if (value != weekNb) {
+                value = weekNb;
+                widget.valueChanged(weekNb);
+              }
             }),
           ),
         ),
@@ -47,7 +50,7 @@ class _WeekChooserState extends State<WeekChooser> {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: btns,
       ),
     );

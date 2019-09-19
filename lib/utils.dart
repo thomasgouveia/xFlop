@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:csv/csv.dart';
+import 'package:flop_edt_app/models/Cours.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,7 +28,8 @@ const heures = [
 
 Future<List<List<dynamic>>> fetchEDTData(int week, int year) async {
   List<List<dynamic>> listeCours = [];
-  var url = 'https://flopedt.iut-blagnac.fr/edt/INFO/fetch_cours_pl/$year/$week/0';
+  var url =
+      'https://flopedt.iut-blagnac.fr/edt/INFO/fetch_cours_pl/$year/$week/0';
   return http.get(url).then((response) {
     if (response.statusCode == 200) {
       listeCours = const CsvToListConverter().convert(response.body);
@@ -79,4 +82,11 @@ int positionInJourney(dynamic startTime) {
 
 Color hexToColor(String code) {
   return new Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
+}
+
+TimeOfDay getHoursOfCourses(var startTime) {
+  var hour = startTime / 60;
+  var min = startTime % 60;
+  var time = TimeOfDay(hour: hour.toInt(), minute: min.toInt());
+  return time;
 }

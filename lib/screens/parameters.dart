@@ -17,12 +17,18 @@ class Parameters extends StatefulWidget {
 class _ParametersState extends State<Parameters> {
   String promo;
   String groupe;
+  bool isDark;
+  bool isMono;
+  bool isAnimated;
 
   @override
   void initState() {
     super.initState();
     promo = widget.preferences.promo;
     groupe = widget.preferences.groupe;
+    isDark = widget.preferences.isDarkMode;
+    isMono = widget.preferences.isMono;
+    isAnimated = widget.preferences.isAnimated;
   }
 
   @override
@@ -73,7 +79,7 @@ class _ParametersState extends State<Parameters> {
             Row(
               children: <Widget>[
                 Text(
-                  'Affichage (En cours d\'implémentation)',
+                  'Affichage',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
               ],
@@ -83,18 +89,28 @@ class _ParametersState extends State<Parameters> {
               children: <Widget>[
                 Text('Mode sombre'),
                 AdaptableSwitch(
-                  switchValue: widget.preferences.isDarkMode,
-                  valueChanged: (val) {},
+                  switchValue: isDark,
+                  valueChanged: (val) {
+                    setState(() {
+                      this.isDark = val;
+                      storage.saveBool('dark', val);
+                    });
+                  },
                 ),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('Cours monochrome'),
+                Text('Cours monochrome (prochainement)'),
                 AdaptableSwitch(
-                  switchValue: widget.preferences.isMono,
-                  valueChanged: (val) {},
+                  switchValue: isMono,
+                  valueChanged: (val) {
+                    setState(() {
+                      this.isMono = val;
+                      storage.saveBool('mono', val);
+                    });
+                  },
                 ),
               ],
             ),
@@ -103,8 +119,13 @@ class _ParametersState extends State<Parameters> {
               children: <Widget>[
                 Text('Animation d\'apparition'),
                 AdaptableSwitch(
-                  switchValue: widget.preferences.isAnimated,
-                  valueChanged: (val) {},
+                  switchValue: isAnimated,
+                  valueChanged: (val) {
+                    setState(() {
+                      this.isAnimated = val;
+                      storage.saveBool('animate', val);
+                    });
+                  },
                 ),
               ],
             )
@@ -132,7 +153,7 @@ class _ParametersState extends State<Parameters> {
               }).toList(),
               onChanged: (String s) {
                 setState(() {
-                  if(mode == 'promo'){
+                  if (mode == 'promo') {
                     groupe = GROUPES[s][0];
                   }
                   mode == 'promo' ? this.promo = s : this.groupe = s;

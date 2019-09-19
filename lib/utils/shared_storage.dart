@@ -17,14 +17,24 @@ class LocalStorage {
     prefs.remove(key);
   }
 
-  Future<bool> readBool(String key) async {
+  void saveBool(String key, bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool(key, value);
+  }
+
+  dynamic readBool(String key) async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool(key);
   }
 
-  void saveBool(String key, bool value) async {
+  void removeAll() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setBool(key, value);
+    prefs.clear();
+  }
+
+  void display() async {
+    final prefs = await SharedPreferences.getInstance();
+    print(prefs.getKeys());
   }
 }
 

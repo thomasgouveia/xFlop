@@ -1,8 +1,8 @@
 import 'dart:async';
-
 import 'package:flop_edt_app/components/custom_appbar.dart';
 import 'package:flop_edt_app/components/edt_viewer.dart';
-import 'package:flop_edt_app/models/Cours.dart';
+import 'package:flop_edt_app/components/week_chooser.dart';
+import 'package:flop_edt_app/models/cours.dart';
 import 'package:flop_edt_app/models/user_preferences.dart';
 import 'package:flop_edt_app/screens/start_screen.dart';
 import 'package:flop_edt_app/utils.dart';
@@ -43,10 +43,8 @@ class _AppStateProviderState extends State<AppStateProvider> {
     currentWeek =
         defaultWeek; //Current garde toujours la semaine active en mémoire
     nextWeeks = Week.calculateThreeNext(todayDate, defaultWeek);
-    _viewerController = PageController(initialPage: currentDate.weekday - 1);
     if (this.mounted) {
-      loadPreferences();
-      loadAllWeeks();
+      loadPreferences().then((_) => loadAllWeeks());
     }
   }
 
@@ -57,13 +55,20 @@ class _AppStateProviderState extends State<AppStateProvider> {
   weekendTest(DateTime date) => date.weekday == 6 || date.weekday == 7;
 
   ///Charge les [Preferences] ou null si rien n'est trouvé.
-  loadPreferences() async {
+  Future loadPreferences() async {
     String promo = await storage.read('promo');
     String groupe = await storage.read('groupe');
-    //bool dark = await storage.readBool('dark');
+    bool dark = await storage.readBool('dark');
+    bool animate = await storage.readBool('animate');
+    bool mono = await storage.readBool('mono');
     setState(() {
       preferences = groupe != null && promo != null
-          ? Preferences(groupe: groupe, promo: promo, isDarkMode: false, isAnimated: true, isMono: false)
+          ? Preferences(
+              groupe: groupe,
+              promo: promo,
+              isDarkMode: dark ?? false,
+              isAnimated: animate ?? true,
+              isMono: mono ?? false)
           : null;
     });
   }
@@ -77,6 +82,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
         5: new List<Cours>(),
       };
 
+  ///Charge toutes les semaines disponibles dans l'application
   loadAllWeeks() async {
     Map<int, Map<int, List<Cours>>> toSet = {};
     for (int i = 0; i < nextWeeks.length; i++) {
@@ -92,7 +98,9 @@ class _AppStateProviderState extends State<AppStateProvider> {
   Future<Map> initData(int week) async {
     Map weekMap = setMap();
     List<List<dynamic>> list = await fetchEDTData(
-        week, week == 1 ? todayDate.year + 1 : todayDate.year);
+      week,
+      week == 1 ? todayDate.year + 1 : todayDate.year,
+    );
     for (int i = 1; i < list.length; i++) {
       var sublist = list[i];
       Cours cours = Cours.fromCSV(sublist);
@@ -127,19 +135,18 @@ class _AppStateProviderState extends State<AppStateProvider> {
           }));
 
   ///Fonction qui met à jour l'application lors d'un changement de semaine
-  //! REVOIR LE CALCUL DES JOURS
   _handleWeekChanged(dynamic week) {
-    _viewerController.animateToPage(
-        week == currentWeek ? currentDate.weekday - 1 : 0,
-        curve: Curves.easeInOut,
-        duration: Duration(milliseconds: 1));
-    var wkNb = Week.weekNumber(todayDate);
-    var diff = ((week < wkNb ? wkNb - week : week - wkNb) * 7);
-    this.todayDate = week < wkNb
-        ? todayDate.subtract(Duration(days: diff))
-        : todayDate.add(Duration(days: diff));
-    print(todayDate);
+    var weekNumber = defaultWeek;
+    bool isNewWeekBeforeActual = week < weekNumber;
+    bool isSameWeek = week == weekNumber;
+    var diff = ((isSameWeek
+            ? 0
+            : isNewWeekBeforeActual ? weekNumber - week : week - weekNumber) * 7);
+    currentDate = isNewWeekBeforeActual
+        ? currentDate.subtract(Duration(days: diff))
+        : currentDate.add(Duration(days: diff));
     setState(() {
+      this.todayDate = currentDate;
       this.defaultWeek = week;
     });
   }
@@ -149,13 +156,13 @@ class _AppStateProviderState extends State<AppStateProvider> {
     List<Cours> filteredCours = applyFilters(index);
     //Défini les cours disponibles dans la journée
     Map map = {
-      0: null, //8h
-      1: null, //9h30
-      2: null, //11h05
-      3: null, //Pause dejeuner (null constant)
-      4: null, //14h15
-      5: null, //15h45
-      6: null, //17h10
+      0: null,
+      1: null,
+      2: null,
+      3: null,
+      4: null,
+      5: null,
+      6: null,
     };
     for (int i = 0; i < filteredCours.length; i++) {
       Cours cours = filteredCours[i];
@@ -194,6 +201,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
       );
     } else {
       return Scaffold(
+        backgroundColor: Colors.white,
         appBar: CustomAppBar(
             todayDate: todayDate, context: context, preferences: preferences),
         body: Container(
@@ -202,7 +210,6 @@ class _AppStateProviderState extends State<AppStateProvider> {
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: <Widget>[
-              /*
               Container(
                 height: 50,
                 width: MediaQuery.of(context).size.width,
@@ -213,7 +220,6 @@ class _AppStateProviderState extends State<AppStateProvider> {
                   ),
                 ),
               ),
-              */
               Expanded(
                 child: PageView.builder(
                   controller: _viewerController,
@@ -222,6 +228,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
                   itemBuilder: (context, int index) {
                     return EDTViewer(
                       coursesMap: _mapCourses(defaultWeek),
+                      animate: preferences.isAnimated,
                     );
                   },
                 ),
@@ -235,9 +242,9 @@ class _AppStateProviderState extends State<AppStateProvider> {
 
   @override
   Widget build(BuildContext context) {
-    //print(allWeeksCourses);
+    _viewerController = PageController(initialPage: todayDate.weekday - 1);
+    currentDate = todayDate;
     isWeekEnd = weekendTest(todayDate);
-    currentDate = DateTime.now();
     if (this.isWeekEnd) {
       int day = todayDate.weekday == 6
           ? todayDate.day + 2

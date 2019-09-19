@@ -16,13 +16,14 @@ class StartPage extends StatefulWidget {
 class _StartPageState extends State<StartPage> {
   String selectedPromo = 'INFO1';
   String selectedGroupe;
-  bool isVisible = false;
 
   final fontSize = 16.0;
 
   @override
   Widget build(BuildContext context) {
-    selectedGroupe = GROUPES[selectedPromo][0];
+    if (selectedGroupe == null) {
+      selectedGroupe = GROUPES[selectedPromo][0];
+    }
     return Scaffold(
         body: Stack(
       children: <Widget>[
@@ -54,26 +55,23 @@ class _StartPageState extends State<StartPage> {
                     onChanged: (String s) {
                       setState(() {
                         this.selectedPromo = s;
-                        this.isVisible = true;
                       });
                     },
                   ),
-                  isVisible
-                      ? DropdownButton<String>(
-                          value: selectedGroupe,
-                          items: GROUPES[selectedPromo].map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (String s) {
-                            setState(() {
-                              this.selectedGroupe = s;
-                            });
-                          },
-                        )
-                      : Container(),
+                  DropdownButton<String>(
+                    value: selectedGroupe,
+                    items: GROUPES[selectedPromo].map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (String s) {
+                      setState(() {
+                        this.selectedGroupe = s;
+                      });
+                    },
+                  ),
                 ],
               ),
             ),
@@ -111,6 +109,8 @@ class _StartPageState extends State<StartPage> {
             storage.save('promo', selectedPromo);
             storage.save('groupe', selectedGroupe);
             storage.saveBool('dark', false);
+            storage.saveBool('animate', true);
+            storage.saveBool('mono', false);
             AppNavigator.toEDT(context);
           },
           padding: EdgeInsets.all(15),

@@ -1,16 +1,17 @@
 import 'package:flop_edt_app/components/fade_in.dart';
-import 'package:flop_edt_app/models/Cours.dart';
+import 'package:flop_edt_app/models/cours.dart';
 import 'package:flop_edt_app/utils.dart';
 import 'package:flutter/material.dart';
 
 class CoursWidget extends StatelessWidget {
   final Cours cours;
   final double delay;
-  const CoursWidget({Key key, this.cours, this.delay}) : super(key: key);
+  final bool animate;
+  const CoursWidget({Key key, this.cours, this.delay, this.animate}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return FadeIn(delay, _ui);
+    return animate ? FadeIn(delay, _ui) : _ui;
   }
 
   Widget get _ui => Container(
