@@ -1,5 +1,5 @@
-import 'package:xFlop/models/date_formatter.dart';
-import 'package:xFlop/utils.dart';
+import 'package:flop_edt_app/models/date_formatter.dart';
+import 'package:flop_edt_app/utils.dart';
 import 'package:flutter/material.dart';
 
 class DayTextWidget extends StatelessWidget {

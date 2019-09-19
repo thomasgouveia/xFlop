@@ -1,8 +1,8 @@
-import 'package:xFlop/components/adaptative_switch.dart';
-import 'package:xFlop/models/user_preferences.dart';
-import 'package:xFlop/navigator/app_navigator.dart';
-import 'package:xFlop/utils/constants.dart';
-import 'package:xFlop/utils/shared_storage.dart';
+import 'package:flop_edt_app/components/adaptative_switch.dart';
+import 'package:flop_edt_app/models/user_preferences.dart';
+import 'package:flop_edt_app/navigator/app_navigator.dart';
+import 'package:flop_edt_app/utils/constants.dart';
+import 'package:flop_edt_app/utils/shared_storage.dart';
 import 'package:flutter/material.dart';
 
 class Parameters extends StatefulWidget {
@@ -56,13 +56,13 @@ class _ParametersState extends State<Parameters> {
               ],
             ),
             buildDropdown(
-              array: PROMOS,
+              array: DEPARTEMENTS,
               valeur: promo,
               mode: 'promo',
               text: 'Promotion : ',
             ),
             buildDropdown(
-              array: GROUPES,
+              array: GROUPES[promo],
               valeur: groupe,
               mode: 'groupe',
               text: 'Groupe : ',
@@ -73,7 +73,7 @@ class _ParametersState extends State<Parameters> {
             Row(
               children: <Widget>[
                 Text(
-                  'Affichage',
+                  'Affichage (En cours d\'implémentation)',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
               ],
@@ -81,9 +81,29 @@ class _ParametersState extends State<Parameters> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('Mode sombre (en cours)'),
+                Text('Mode sombre'),
                 AdaptableSwitch(
                   switchValue: widget.preferences.isDarkMode,
+                  valueChanged: (val) {},
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text('Cours monochrome'),
+                AdaptableSwitch(
+                  switchValue: widget.preferences.isMono,
+                  valueChanged: (val) {},
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text('Animation d\'apparition'),
+                AdaptableSwitch(
+                  switchValue: widget.preferences.isAnimated,
                   valueChanged: (val) {},
                 ),
               ],
@@ -112,6 +132,9 @@ class _ParametersState extends State<Parameters> {
               }).toList(),
               onChanged: (String s) {
                 setState(() {
+                  if(mode == 'promo'){
+                    groupe = GROUPES[s][0];
+                  }
                   mode == 'promo' ? this.promo = s : this.groupe = s;
                   storage.save(mode, s);
                 });

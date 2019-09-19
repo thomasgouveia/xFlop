@@ -1,14 +1,13 @@
 import 'dart:async';
 
-import 'package:xFlop/components/custom_appbar.dart';
-import 'package:xFlop/components/edt_viewer.dart';
-import 'package:xFlop/components/week_chooser.dart';
-import 'package:xFlop/models/Cours.dart';
-import 'package:xFlop/models/user_preferences.dart';
-import 'package:xFlop/screens/start_screen.dart';
-import 'package:xFlop/utils.dart';
-import 'package:xFlop/utils/shared_storage.dart';
-import 'package:xFlop/utils/week_utils.dart';
+import 'package:flop_edt_app/components/custom_appbar.dart';
+import 'package:flop_edt_app/components/edt_viewer.dart';
+import 'package:flop_edt_app/models/Cours.dart';
+import 'package:flop_edt_app/models/user_preferences.dart';
+import 'package:flop_edt_app/screens/start_screen.dart';
+import 'package:flop_edt_app/utils.dart';
+import 'package:flop_edt_app/utils/shared_storage.dart';
+import 'package:flop_edt_app/utils/week_utils.dart';
 import 'package:flutter/material.dart';
 
 class AppStateProvider extends StatefulWidget {
@@ -28,7 +27,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
   PageController _viewerController;
   List<int> nextWeeks;
 
-  Map<int, Map<int, List<Cours>>> allWeeksCourses = {};
+  Map<int, Map<int, List<Cours>>> allWeeksCourses;
 
   //Booléen permettant de savoir si oui ou non la date calculée est un week end
   bool isWeekEnd;
@@ -64,7 +63,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
     //bool dark = await storage.readBool('dark');
     setState(() {
       preferences = groupe != null && promo != null
-          ? Preferences(groupe: groupe, promo: promo, isDarkMode: false)
+          ? Preferences(groupe: groupe, promo: promo, isDarkMode: false, isAnimated: true, isMono: false)
           : null;
     });
   }
@@ -78,42 +77,44 @@ class _AppStateProviderState extends State<AppStateProvider> {
         5: new List<Cours>(),
       };
 
-  loadAllWeeks() {
+  loadAllWeeks() async {
+    Map<int, Map<int, List<Cours>>> toSet = {};
     for (int i = 0; i < nextWeeks.length; i++) {
-      allWeeksCourses[nextWeeks[i]] = setMap();
-      initData(nextWeeks[i], i);
+      toSet[nextWeeks[i]] = await initData(nextWeeks[i]);
     }
+    setState(() {
+      allWeeksCourses = toSet;
+      this.isLoading = false;
+    });
   }
 
   ///initialise la liste des cours
-  void initData(int week, int index) {
-    fetchEDTData(week, week == 1 ? todayDate.year + 1 : todayDate.year)
-        .then((list) {
-      for (int i = 1; i < list.length; i++) {
-        var sublist = list[i];
-        Cours cours = Cours.fromCSV(sublist);
-        switch (cours.indexInSemaine) {
-          case 1:
-            allWeeksCourses[week][1].add(cours);
-            break;
-          case 2:
-            allWeeksCourses[week][2].add(cours);
-            break;
-          case 3:
-            allWeeksCourses[week][3].add(cours);
-            break;
-          case 4:
-            allWeeksCourses[week][4].add(cours);
-            break;
-          case 5:
-            allWeeksCourses[week][5].add(cours);
-            break;
-        }
+  Future<Map> initData(int week) async {
+    Map weekMap = setMap();
+    List<List<dynamic>> list = await fetchEDTData(
+        week, week == 1 ? todayDate.year + 1 : todayDate.year);
+    for (int i = 1; i < list.length; i++) {
+      var sublist = list[i];
+      Cours cours = Cours.fromCSV(sublist);
+      switch (cours.indexInSemaine) {
+        case 1:
+          weekMap[1].add(cours);
+          break;
+        case 2:
+          weekMap[2].add(cours);
+          break;
+        case 3:
+          weekMap[3].add(cours);
+          break;
+        case 4:
+          weekMap[4].add(cours);
+          break;
+        case 5:
+          weekMap[5].add(cours);
+          break;
       }
-      if (index == nextWeeks.length - 1) {
-        setLoading(false);
-      }
-    });
+    }
+    return weekMap;
   }
 
   ///Recalcule la date du jour en fonction d—u changement de vue
@@ -201,6 +202,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: <Widget>[
+              /*
               Container(
                 height: 50,
                 width: MediaQuery.of(context).size.width,
@@ -211,6 +213,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
                   ),
                 ),
               ),
+              */
               Expanded(
                 child: PageView.builder(
                   controller: _viewerController,
@@ -232,6 +235,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
 
   @override
   Widget build(BuildContext context) {
+    //print(allWeeksCourses);
     isWeekEnd = weekendTest(todayDate);
     currentDate = DateTime.now();
     if (this.isWeekEnd) {

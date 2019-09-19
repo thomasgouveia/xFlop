@@ -1,7 +1,7 @@
-import 'package:xFlop/navigator/app_navigator.dart';
-import 'package:xFlop/screens/home_screen.dart';
-import 'package:xFlop/utils/constants.dart';
-import 'package:xFlop/utils/shared_storage.dart';
+import 'package:flop_edt_app/navigator/app_navigator.dart';
+import 'package:flop_edt_app/screens/home_screen.dart';
+import 'package:flop_edt_app/utils/constants.dart';
+import 'package:flop_edt_app/utils/shared_storage.dart';
 import 'package:flutter/material.dart';
 
 class StartPage extends StatefulWidget {
@@ -15,12 +15,14 @@ class StartPage extends StatefulWidget {
 
 class _StartPageState extends State<StartPage> {
   String selectedPromo = 'INFO1';
-  String selectedGroupe = '1A';
+  String selectedGroupe;
+  bool isVisible = false;
 
   final fontSize = 16.0;
 
   @override
   Widget build(BuildContext context) {
+    selectedGroupe = GROUPES[selectedPromo][0];
     return Scaffold(
         body: Stack(
       children: <Widget>[
@@ -43,7 +45,7 @@ class _StartPageState extends State<StartPage> {
                 children: <Widget>[
                   DropdownButton<String>(
                     value: selectedPromo,
-                    items: PROMOS.map((String value) {
+                    items: DEPARTEMENTS.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
@@ -52,23 +54,26 @@ class _StartPageState extends State<StartPage> {
                     onChanged: (String s) {
                       setState(() {
                         this.selectedPromo = s;
+                        this.isVisible = true;
                       });
                     },
                   ),
-                  DropdownButton<String>(
-                    value: selectedGroupe,
-                    items: GROUPES.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String s) {
-                      setState(() {
-                        this.selectedGroupe = s;
-                      });
-                    },
-                  ),
+                  isVisible
+                      ? DropdownButton<String>(
+                          value: selectedGroupe,
+                          items: GROUPES[selectedPromo].map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String s) {
+                            setState(() {
+                              this.selectedGroupe = s;
+                            });
+                          },
+                        )
+                      : Container(),
                 ],
               ),
             ),

@@ -1,4 +1,4 @@
-import 'package:xFlop/utils/constants.dart';
+import 'package:flop_edt_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class CustomDialog extends StatelessWidget {

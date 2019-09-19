@@ -26,7 +26,7 @@ const heures = [
 
 Future<List<List<dynamic>>> fetchEDTData(int week, int year) async {
   List<List<dynamic>> listeCours = [];
-  var url = 'https://edt-relai.yo.fr/fetch.php?year=$year&week=$week';
+  var url = 'https://flopedt.iut-blagnac.fr/edt/INFO/fetch_cours_pl/$year/$week/0';
   return http.get(url).then((response) {
     if (response.statusCode == 200) {
       listeCours = const CsvToListConverter().convert(response.body);

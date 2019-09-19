@@ -1,7 +1,7 @@
-import 'package:xFlop/models/user_preferences.dart';
-import 'package:xFlop/screens/parameters.dart';
+import 'package:flop_edt_app/models/user_preferences.dart';
+import 'package:flop_edt_app/screens/parameters.dart';
 import 'package:flutter/material.dart';
-import 'package:xFlop/screens/home_screen.dart';
+import 'package:flop_edt_app/screens/home_screen.dart';
 
 ///Classe modélisant les différentes routes de l'application
 class AppNavigator {
