@@ -154,9 +154,12 @@ class _ParametersState extends State<Parameters> {
               onChanged: (String s) {
                 setState(() {
                   if (mode == 'promo') {
-                    groupe = GROUPES[s][0];
+                    this.promo = s;
+                    this.groupe = GROUPES[s][0];
+                    storage.save('groupe', GROUPES[s][0]);
+                  } else {
+                    this.groupe = s;
                   }
-                  mode == 'promo' ? this.promo = s : this.groupe = s;
                   storage.save(mode, s);
                 });
               },

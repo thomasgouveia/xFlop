@@ -1,5 +1,4 @@
 import 'package:flop_edt_app/navigator/app_navigator.dart';
-import 'package:flop_edt_app/screens/home_screen.dart';
 import 'package:flop_edt_app/utils/constants.dart';
 import 'package:flop_edt_app/utils/shared_storage.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +54,7 @@ class _StartPageState extends State<StartPage> {
                     onChanged: (String s) {
                       setState(() {
                         this.selectedPromo = s;
+                        this.selectedGroupe = GROUPES[s][0];
                       });
                     },
                   ),

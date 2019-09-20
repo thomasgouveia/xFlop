@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flop_edt_app/components/custom_appbar.dart';
 import 'package:flop_edt_app/components/edt_viewer.dart';
 import 'package:flop_edt_app/components/week_chooser.dart';
+import 'package:flop_edt_app/filterer/filters.dart';
 import 'package:flop_edt_app/models/cours.dart';
 import 'package:flop_edt_app/models/user_preferences.dart';
 import 'package:flop_edt_app/screens/start_screen.dart';
@@ -73,15 +74,6 @@ class _AppStateProviderState extends State<AppStateProvider> {
     });
   }
 
-  //Crée la map correspond au jour de la semaine
-  Map<int, List<Cours>> setMap() => {
-        1: new List<Cours>(),
-        2: new List<Cours>(),
-        3: new List<Cours>(),
-        4: new List<Cours>(),
-        5: new List<Cours>(),
-      };
-
   ///Charge toutes les semaines disponibles dans l'application
   loadAllWeeks() async {
     Map<int, Map<int, List<Cours>>> toSet = {};
@@ -98,9 +90,9 @@ class _AppStateProviderState extends State<AppStateProvider> {
   Future<Map> initData(int week) async {
     Map weekMap = setMap();
     List<List<dynamic>> list = await fetchEDTData(
-      week,
-      week == 1 ? todayDate.year + 1 : todayDate.year,
-    );
+        week,
+        week == 1 ? todayDate.year + 1 : todayDate.year,
+        preferences.promo.substring(0, preferences.promo.length - 1));
     for (int i = 1; i < list.length; i++) {
       var sublist = list[i];
       Cours cours = Cours.fromCSV(sublist);
@@ -141,7 +133,8 @@ class _AppStateProviderState extends State<AppStateProvider> {
     bool isSameWeek = week == weekNumber;
     var diff = ((isSameWeek
             ? 0
-            : isNewWeekBeforeActual ? weekNumber - week : week - weekNumber) * 7);
+            : isNewWeekBeforeActual ? weekNumber - week : week - weekNumber) *
+        7);
     currentDate = isNewWeekBeforeActual
         ? currentDate.subtract(Duration(days: diff))
         : currentDate.add(Duration(days: diff));
@@ -177,15 +170,21 @@ class _AppStateProviderState extends State<AppStateProvider> {
 
   ///Applique les filtres utilisateurs sur la liste de cours (évite de fetch à chaque changement)
   List<Cours> applyFilters(int index) {
-    List<Cours> filtered = allWeeksCourses[index][todayDate.weekday]
-        .where((cours) =>
-            cours.nomPromo == preferences.promo &&
-            (cours.nomGroupe.toString() == preferences.groupe ||
-                cours.nomGroupe.toString() ==
-                    preferences.groupe[0].toString() ||
-                cours.nomGroupe.toString() == "CE"))
-        .toList();
-    filtered.sort((c1, c2) => c1.startTime.compareTo(c2.startTime));
+    List<Cours> filtered = [];
+    switch(preferences.promo.substring(0, preferences.promo.length - 1)){
+      case 'INFO':
+        filtered = filteredINFO(index, allWeeksCourses, todayDate, preferences);
+        break;
+      case 'GIM':
+        filtered = filteredGIM(index, allWeeksCourses, todayDate, preferences);
+        break;
+      case 'CS':
+        filtered = filteredCS(index, allWeeksCourses, todayDate, preferences);
+        break;
+      case 'RT':
+        filtered = filteredRT(index, allWeeksCourses, todayDate, preferences);
+        break;
+    }
     return filtered;
   }
 

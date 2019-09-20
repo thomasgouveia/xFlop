@@ -10,8 +10,11 @@ class Week {
   static List<int> calculateThreeNext(DateTime date, int defaultWeek) {
     List<int> list = [defaultWeek];
     for (int i = 1; i <= 3; i++) {
-      var week =
-          date.month == 12 && date.day > 31 - 7 ? 0 : Week.weekNumber(date);
+      var week = date.month == 12 && date.day > 31 - 7
+          ? 0
+          : date.weekday == 6 || date.weekday == 7
+              ? Week.weekNumber(date) + 1
+              : Week.weekNumber(date);
       list.add(week + i);
     }
     return list;

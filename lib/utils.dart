@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:csv/csv.dart';
-import 'package:flop_edt_app/models/Cours.dart';
+import 'package:flop_edt_app/models/cours.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
@@ -26,10 +26,20 @@ const heures = [
   ["17h15", "18h40"]
 ];
 
-Future<List<List<dynamic>>> fetchEDTData(int week, int year) async {
+//Crée la map correspond au jour de la semaine
+Map<int, List<Cours>> setMap() => {
+      1: new List<Cours>(),
+      2: new List<Cours>(),
+      3: new List<Cours>(),
+      4: new List<Cours>(),
+      5: new List<Cours>(),
+    };
+
+Future<List<List<dynamic>>> fetchEDTData(
+    int week, int year, String promo) async {
   List<List<dynamic>> listeCours = [];
   var url =
-      'https://flopedt.iut-blagnac.fr/edt/INFO/fetch_cours_pl/$year/$week/0';
+      'https://flopedt.iut-blagnac.fr/edt/$promo/fetch_cours_pl/$year/$week/0';
   return http.get(url).then((response) {
     if (response.statusCode == 200) {
       listeCours = const CsvToListConverter().convert(response.body);
