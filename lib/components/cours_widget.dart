@@ -17,7 +17,7 @@ class CoursWidget extends StatelessWidget {
   Widget get _ui => Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          color: cours.coursType == 'DS' ? Colors.red : hexToColor(cours.color),
+          color: cours.coursType == 'DS' || cours.coursType == 'Examen' ? Colors.red : hexToColor(cours.color),
           boxShadow: [
             BoxShadow(
               color: Colors.black26,
@@ -32,7 +32,7 @@ class CoursWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Container(
-                  width: 50,
+                  width: 100,
                   padding: EdgeInsets.only(left: 20),
                   child: Center(
                       child: Text(

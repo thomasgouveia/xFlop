@@ -4,6 +4,7 @@ import 'package:flop_edt_app/components/edt_viewer.dart';
 import 'package:flop_edt_app/components/week_chooser.dart';
 import 'package:flop_edt_app/filterer/filters.dart';
 import 'package:flop_edt_app/models/cours.dart';
+import 'package:flop_edt_app/models/groups.dart';
 import 'package:flop_edt_app/models/user_preferences.dart';
 import 'package:flop_edt_app/screens/start_screen.dart';
 import 'package:flop_edt_app/utils.dart';
@@ -59,13 +60,14 @@ class _AppStateProviderState extends State<AppStateProvider> {
   Future loadPreferences() async {
     String promo = await storage.read('promo');
     String groupe = await storage.read('groupe');
+    String parent = await storage.read('parent');
     bool dark = await storage.readBool('dark');
     bool animate = await storage.readBool('animate');
     bool mono = await storage.readBool('mono');
     setState(() {
       preferences = groupe != null && promo != null
           ? Preferences(
-              groupe: groupe,
+              group: Group(groupe: groupe, parent: parent),
               promo: promo,
               isDarkMode: dark ?? false,
               isAnimated: animate ?? true,
@@ -92,7 +94,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
     List<List<dynamic>> list = await fetchEDTData(
         week,
         week == 1 ? todayDate.year + 1 : todayDate.year,
-        preferences.promo.substring(0, preferences.promo.length - 1));
+        preferences.promo.substring(0, preferences.promo == 'RT2A' ? preferences.promo.length - 2 : preferences.promo.length - 1));
     for (int i = 1; i < list.length; i++) {
       var sublist = list[i];
       Cours cours = Cours.fromCSV(sublist);
@@ -171,7 +173,11 @@ class _AppStateProviderState extends State<AppStateProvider> {
   ///Applique les filtres utilisateurs sur la liste de cours (évite de fetch à chaque changement)
   List<Cours> applyFilters(int index) {
     List<Cours> filtered = [];
-    switch(preferences.promo.substring(0, preferences.promo.length - 1)){
+    switch (preferences.promo.substring(
+        0,
+        preferences.promo == 'RT2A'
+            ? preferences.promo.length - 2
+            : preferences.promo.length - 1)) {
       case 'INFO':
         filtered = filteredINFO(index, allWeeksCourses, todayDate, preferences);
         break;
@@ -192,49 +198,47 @@ class _AppStateProviderState extends State<AppStateProvider> {
   Widget buildContent() {
     if (preferences == null) {
       return StartPage();
-    } else if (isLoading) {
-      return Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
     } else {
       return Scaffold(
         backgroundColor: Colors.white,
         appBar: CustomAppBar(
             todayDate: todayDate, context: context, preferences: preferences),
-        body: Container(
-          margin: EdgeInsets.only(left: 10, right: 10),
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: <Widget>[
-              Container(
-                height: 50,
+        body: isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Container(
+                margin: EdgeInsets.only(left: 10, right: 10),
+                height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
-                child: Center(
-                  child: WeekChooser(
-                    weeks: nextWeeks,
-                    valueChanged: _handleWeekChanged,
-                  ),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width,
+                      child: Center(
+                        child: WeekChooser(
+                          weeks: nextWeeks,
+                          valueChanged: _handleWeekChanged,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: PageView.builder(
+                        controller: _viewerController,
+                        onPageChanged: _handleDayChanged,
+                        itemCount: allWeeksCourses[defaultWeek].length,
+                        itemBuilder: (context, int index) {
+                          return EDTViewer(
+                            coursesMap: _mapCourses(defaultWeek),
+                            animate: preferences.isAnimated,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Expanded(
-                child: PageView.builder(
-                  controller: _viewerController,
-                  onPageChanged: _handleDayChanged,
-                  itemCount: allWeeksCourses[defaultWeek].length,
-                  itemBuilder: (context, int index) {
-                    return EDTViewer(
-                      coursesMap: _mapCourses(defaultWeek),
-                      animate: preferences.isAnimated,
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
       );
     }
   }

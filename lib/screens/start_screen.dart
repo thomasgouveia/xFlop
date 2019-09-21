@@ -1,3 +1,4 @@
+import 'package:flop_edt_app/models/groups.dart';
 import 'package:flop_edt_app/navigator/app_navigator.dart';
 import 'package:flop_edt_app/utils/constants.dart';
 import 'package:flop_edt_app/utils/shared_storage.dart';
@@ -14,15 +15,12 @@ class StartPage extends StatefulWidget {
 
 class _StartPageState extends State<StartPage> {
   String selectedPromo = 'INFO1';
-  String selectedGroupe;
+  Group selectedGroupe = GROUPES['INFO1'][0];
 
   final fontSize = 16.0;
 
   @override
   Widget build(BuildContext context) {
-    if (selectedGroupe == null) {
-      selectedGroupe = GROUPES[selectedPromo][0];
-    }
     return Scaffold(
         body: Stack(
       children: <Widget>[
@@ -58,17 +56,17 @@ class _StartPageState extends State<StartPage> {
                       });
                     },
                   ),
-                  DropdownButton<String>(
+                  DropdownButton<Group>(
                     value: selectedGroupe,
-                    items: GROUPES[selectedPromo].map((String value) {
-                      return DropdownMenuItem<String>(
+                    items: GROUPES[selectedPromo].map((Group value) {
+                      return DropdownMenuItem<Group>(
                         value: value,
-                        child: Text(value),
+                        child: Text(value.groupe),
                       );
                     }).toList(),
-                    onChanged: (String s) {
+                    onChanged: (Group g) {
                       setState(() {
-                        this.selectedGroupe = s;
+                        this.selectedGroupe = g;
                       });
                     },
                   ),
@@ -107,7 +105,8 @@ class _StartPageState extends State<StartPage> {
         child: RaisedButton(
           onPressed: () {
             storage.save('promo', selectedPromo);
-            storage.save('groupe', selectedGroupe);
+            storage.save('groupe', selectedGroupe.groupe);
+            storage.save('parent', selectedGroupe.parent);
             storage.saveBool('dark', false);
             storage.saveBool('animate', true);
             storage.saveBool('mono', false);

@@ -1,4 +1,5 @@
 import 'package:flop_edt_app/components/adaptative_switch.dart';
+import 'package:flop_edt_app/models/groups.dart';
 import 'package:flop_edt_app/models/user_preferences.dart';
 import 'package:flop_edt_app/navigator/app_navigator.dart';
 import 'package:flop_edt_app/utils/constants.dart';
@@ -15,8 +16,8 @@ class Parameters extends StatefulWidget {
 }
 
 class _ParametersState extends State<Parameters> {
-  String promo;
-  String groupe;
+  String selectedPromo;
+  Group selectedGroupe;
   bool isDark;
   bool isMono;
   bool isAnimated;
@@ -24,8 +25,10 @@ class _ParametersState extends State<Parameters> {
   @override
   void initState() {
     super.initState();
-    promo = widget.preferences.promo;
-    groupe = widget.preferences.groupe;
+    selectedPromo = widget.preferences.promo;
+    selectedGroupe = GROUPES[selectedPromo]
+        .where((groupe) => groupe.groupe == widget.preferences.group.groupe)
+        .toList()[0];
     isDark = widget.preferences.isDarkMode;
     isMono = widget.preferences.isMono;
     isAnimated = widget.preferences.isAnimated;
@@ -62,16 +65,11 @@ class _ParametersState extends State<Parameters> {
               ],
             ),
             buildDropdown(
-              array: DEPARTEMENTS,
-              valeur: promo,
-              mode: 'promo',
-              text: 'Promotion : ',
-            ),
-            buildDropdown(
-              array: GROUPES[promo],
-              valeur: groupe,
-              mode: 'groupe',
-              text: 'Groupe : ',
+                array: DEPARTEMENTS, valeur: selectedPromo, text: 'Promo :'),
+            buildDropdownGroup(
+              array: GROUPES[selectedPromo],
+              valeur: selectedGroupe,
+              text: 'Groupe: ',
             ),
             Divider(
               color: Colors.grey,
@@ -135,9 +133,7 @@ class _ParametersState extends State<Parameters> {
     );
   }
 
-  Widget buildDropdown(
-          {List<String> array, String valeur, String mode, String text}) =>
-      Row(
+  Widget buildDropdown({List<String> array, String valeur, String text}) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(text),
@@ -153,18 +149,41 @@ class _ParametersState extends State<Parameters> {
               }).toList(),
               onChanged: (String s) {
                 setState(() {
-                  if (mode == 'promo') {
-                    this.promo = s;
-                    this.groupe = GROUPES[s][0];
-                    storage.save('groupe', GROUPES[s][0]);
-                  } else {
-                    this.groupe = s;
-                  }
-                  storage.save(mode, s);
+                  this.selectedPromo = s;
+                  this.selectedGroupe = null;
+                  storage.save('promo', s);
                 });
               },
             ),
           ),
         ],
       );
+
+  Widget buildDropdownGroup({List<Group> array, Group valeur, String text}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text(text),
+        Container(
+          width: 70,
+          child: DropdownButton<Group>(
+            value: valeur,
+            items: array.map((Group value) {
+              return DropdownMenuItem<Group>(
+                value: value,
+                child: Text(value.groupe),
+              );
+            }).toList(),
+            onChanged: (Group g) {
+              setState(() {
+                this.selectedGroupe = g;
+                storage.save('groupe', g.groupe);
+                storage.save('parent', g.parent);
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
 }
