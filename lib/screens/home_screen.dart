@@ -9,6 +9,7 @@ import 'package:flop_edt_app/models/groups.dart';
 import 'package:flop_edt_app/models/user_preferences.dart';
 import 'package:flop_edt_app/screens/start_screen.dart';
 import 'package:flop_edt_app/utils.dart';
+import 'package:flop_edt_app/utils/constants.dart';
 import 'package:flop_edt_app/utils/shared_storage.dart';
 import 'package:flop_edt_app/utils/week_utils.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class AppStateProvider extends StatefulWidget {
 
 class _AppStateProviderState extends State<AppStateProvider> {
   bool isLoading = true;
-  int _currentLoading;
+  int _currentLoading; //For screen loading
 
   DateTime todayDate;
   DateTime currentDate;
@@ -99,7 +100,11 @@ class _AppStateProviderState extends State<AppStateProvider> {
     List<List<dynamic>> list = await fetchEDTData(
         week,
         week == 1 ? todayDate.year + 1 : todayDate.year,
-        preferences.promo.substring(0, preferences.promo == 'RT2A' ? preferences.promo.length - 2 : preferences.promo.length - 1));
+        preferences.promo.substring(
+            0,
+            preferences.promo == 'RT2A'
+                ? preferences.promo.length - 2
+                : preferences.promo.length - 1));
     for (int i = 1; i < list.length; i++) {
       var sublist = list[i];
       Cours cours = Cours.fromCSV(sublist);
@@ -155,7 +160,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
   Map _mapCourses(int index) {
     List<Cours> filteredCours = applyFilters(index);
     //Défini les cours disponibles dans la journée
-    Map map = {
+    Map<int, Cours> map = {
       0: null,
       1: null,
       2: null,
@@ -169,7 +174,12 @@ class _AppStateProviderState extends State<AppStateProvider> {
       if (cours.index == 3) {
         map[3] = null; // Pause repas
       } else {
-        map[cours.index] = filteredCours[i];
+        cours.dateDebut = DateTime(todayDate.year, todayDate.month,
+            todayDate.day, cours.heure.hour, cours.heure.minute);
+        cours.dateFin = cours.dateDebut.add(Duration(
+            minutes: constraints[preferences.promo
+                .substring(0, preferences.promo.length - 1)][cours.coursType]));
+        map[cours.index] = cours;
       }
     }
     return map;
@@ -187,13 +197,13 @@ class _AppStateProviderState extends State<AppStateProvider> {
         filtered = filteredINFO(index, allWeeksCourses, todayDate, preferences);
         break;
       case 'GIM':
-        filtered = filteredGIM(index, allWeeksCourses, todayDate, preferences);
+        filtered = [];
         break;
       case 'CS':
         filtered = filteredCS(index, allWeeksCourses, todayDate, preferences);
         break;
       case 'RT':
-        filtered = filteredRT(index, allWeeksCourses, todayDate, preferences);
+        filtered = [];
         break;
     }
     return filtered;

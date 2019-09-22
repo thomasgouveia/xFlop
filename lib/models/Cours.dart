@@ -15,6 +15,8 @@ class Cours {
   var startTime;
   var color;
   var textColor;
+  DateTime dateDebut;
+  DateTime dateFin;
   int index;
   TimeOfDay heure;
 
@@ -32,7 +34,9 @@ class Cours {
       this.textColor,
       this.indexInSemaine,
       this.startTime,
-      this.heure});
+      this.heure,
+      this.dateDebut,
+      this.dateFin});
 
   factory Cours.fromCSV(List<dynamic> csv) => Cours(
         idCours: csv[0],
@@ -50,4 +54,6 @@ class Cours {
         index: positionInJourney(csv[12]),
         color: csv[9],
       );
+
+  bool get isExam => this.coursType == 'DS' || this.coursType == 'Examen' || this.coursType == 'Exam';
 }

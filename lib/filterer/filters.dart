@@ -15,6 +15,7 @@ List<Cours> filteredINFO(int index, Map<int, Map<int, List<Cours>>> courses,
   return filtered;
 }
 
+/*
 ///Applique les filtres utilisateurs sur la liste de cours (évite de fetch à chaque changement)
 List<Cours> filteredGIM(int index, Map<int, Map<int, List<Cours>>> courses,
     DateTime date, Preferences preferences) {
@@ -24,11 +25,12 @@ List<Cours> filteredGIM(int index, Map<int, Map<int, List<Cours>>> courses,
   filtered.sort((c1, c2) => c1.startTime.compareTo(c2.startTime));
   return filtered;
 }
+*/
 
+/*
 ///Applique les filtres utilisateurs sur la liste de cours (évite de fetch à chaque changement)
 List<Cours> filteredRT(int index, Map<int, Map<int, List<Cours>>> courses,
     DateTime date, Preferences preferences) {
-      print('filtre rt');
   List<Cours> filtered = courses[index][date.weekday]
       .where((cours) =>
           cours.nomPromo == preferences.promo &&
@@ -37,8 +39,10 @@ List<Cours> filteredRT(int index, Map<int, Map<int, List<Cours>>> courses,
               cours.coursType == 'CM' || cours.coursType == 'Examen'))
       .toList();
   filtered.sort((c1, c2) => c1.startTime.compareTo(c2.startTime));
+  filtered.forEach((cours) => print(cours.heure.toString()));
   return filtered;
 }
+*/
 
 ///Applique les filtres utilisateurs sur la liste de cours (évite de fetch à chaque changement)
 List<Cours> filteredCS(int index, Map<int, Map<int, List<Cours>>> courses,
@@ -47,7 +51,7 @@ List<Cours> filteredCS(int index, Map<int, Map<int, List<Cours>>> courses,
       .where((cours) =>
           cours.nomPromo == preferences.promo &&
           (cours.nomGroupe == preferences.group.groupe ||
-              cours.coursType == "CM"))
+              cours.coursType == "CM" || cours.coursType == 'Exam'))
       .toList();
   filtered.sort((c1, c2) => c1.startTime.compareTo(c2.startTime));
   return filtered;
