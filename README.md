@@ -6,7 +6,7 @@ Pour l'instant destiné aux étudiants informatiques de l'IUT de Blagnac.
 
 Propulsé grâce au SDK Flutter. 
 
-![Screen shot of app](https://image.noelshack.com/fichiers/2019/38/7/1569151876-capture-d-ecran-2019-09-22-a-13-30-53.png "xFlop!")
+![Screen shot of app](https://image.noelshack.com/fichiers/2019/38/7/1569176127-capture-d-ecran-2019-09-22-a-20-15-06.png "xFlop!")
 
 
 ## Fonctionnalités
