@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flop_edt_app/components/custom_appbar.dart';
 import 'package:flop_edt_app/components/edt_viewer.dart';
+import 'package:flop_edt_app/components/loading_widget.dart';
 import 'package:flop_edt_app/components/week_chooser.dart';
 import 'package:flop_edt_app/filterer/filters.dart';
 import 'package:flop_edt_app/models/cours.dart';
@@ -19,6 +20,7 @@ class AppStateProvider extends StatefulWidget {
 
 class _AppStateProviderState extends State<AppStateProvider> {
   bool isLoading = true;
+  int _currentLoading;
 
   DateTime todayDate;
   DateTime currentDate;
@@ -80,6 +82,9 @@ class _AppStateProviderState extends State<AppStateProvider> {
   loadAllWeeks() async {
     Map<int, Map<int, List<Cours>>> toSet = {};
     for (int i = 0; i < nextWeeks.length; i++) {
+      setState(() {
+        _currentLoading = nextWeeks[i];
+      });
       toSet[nextWeeks[i]] = await initData(nextWeeks[i]);
     }
     setState(() {
@@ -204,9 +209,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
         appBar: CustomAppBar(
             todayDate: todayDate, context: context, preferences: preferences),
         body: isLoading
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
+            ? LoadingWidget(semaine: _currentLoading)
             : Container(
                 margin: EdgeInsets.only(left: 10, right: 10),
                 height: MediaQuery.of(context).size.height,
