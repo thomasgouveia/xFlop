@@ -15,7 +15,8 @@ Propulsé grâce au SDK Flutter.
 - [x] Affichage de la semaine entière
 - [x] Calcul des 3 prochaines semaines à partir de l'actuelle
 - [x] Gestion des week-ends
-- [x] Gestion des préférences utilisateurs (groupe, promo) 
+- [x] Gestion des préférences utilisateurs (groupe, promo)
+- [x] Gestion des heures dynamiques
 - [x] Département CS
 - [ ] Département GIM
 - [ ] Département RT
