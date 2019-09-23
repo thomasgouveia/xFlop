@@ -44,7 +44,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
   @override
   void initState() {
     super.initState();
-    todayDate = DateTime.now().hour >= 18 && DateTime.now().minute >= 45
+    todayDate = DateTime.now().hour >= 19
         ? DateTime.now().add(Duration(days: 1))
         : DateTime.now();
     currentDate = todayDate;
