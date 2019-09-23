@@ -17,6 +17,7 @@ Propulsé grâce au SDK Flutter.
 - [x] Gestion des week-ends
 - [x] Gestion des préférences utilisateurs (groupe, promo)
 - [x] Gestion des heures dynamiques
+- [x] Les cours terminés de la journée s'affiche en moins clair afin de faciliter la lecture. 
 - [x] Si la journée est fini, affiche l'emploi du temps du jour suivant.
 - [x] Département CS
 - [ ] Département GIM
