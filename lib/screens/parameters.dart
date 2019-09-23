@@ -1,4 +1,5 @@
 import 'package:flop_edt_app/components/adaptative_switch.dart';
+import 'package:flop_edt_app/components/error_widget.dart';
 import 'package:flop_edt_app/models/groups.dart';
 import 'package:flop_edt_app/models/user_preferences.dart';
 import 'package:flop_edt_app/navigator/app_navigator.dart';
@@ -22,6 +23,7 @@ class _ParametersState extends State<Parameters> {
   bool isMono;
   bool isAnimated;
 
+  String error = "";
   @override
   void initState() {
     super.initState();
@@ -43,7 +45,15 @@ class _ParametersState extends State<Parameters> {
             Icons.arrow_back_ios,
             color: Colors.white,
           ),
-          onPressed: () => AppNavigator.toEDT(context),
+          onPressed: () {
+            if (selectedGroupe != null) {
+              AppNavigator.toEDT(context);
+            } else {
+              setState(() {
+                error = "Veuillez sélectionner un groupe.";
+              });
+            }
+          },
         ),
         backgroundColor: Colors.grey[900],
         title: Text('Paramètres de l\'application'),
@@ -53,6 +63,7 @@ class _ParametersState extends State<Parameters> {
         margin: EdgeInsets.only(left: 15, right: 15),
         child: ListView(
           children: <Widget>[
+            error != "" ? MyErrorWidget(text: error,) : Container(),
             Padding(
               padding: EdgeInsets.only(top: 15),
             ),
@@ -152,6 +163,8 @@ class _ParametersState extends State<Parameters> {
                   this.selectedPromo = s;
                   this.selectedGroupe = null;
                   storage.save('promo', s);
+                  storage.save('groupe', GROUPES[s][0].groupe);
+                storage.save('parent', GROUPES[s][0].parent);
                 });
               },
             ),

@@ -7,9 +7,9 @@ List<Cours> filteredINFO(int index, Map<int, Map<int, List<Cours>>> courses,
   List<Cours> filtered = courses[index][date.weekday]
       .where((cours) =>
           cours.nomPromo == preferences.promo &&
-          (cours.nomGroupe.toString() == preferences.group.groupe ||
+          (cours.nomGroupe == preferences.group.groupe ||
               cours.nomGroupe.toString() == preferences.group.parent ||
-              cours.coursType.toString() == "CM"))
+              cours.coursType.toString() == "CM" || cours.coursType == 'DS'))
       .toList();
   filtered.sort((c1, c2) => c1.startTime.compareTo(c2.startTime));
   return filtered;

@@ -68,14 +68,19 @@ class _AppStateProviderState extends State<AppStateProvider> {
     bool animate = await storage.readBool('animate');
     bool mono = await storage.readBool('mono');
     setState(() {
-      preferences = groupe != null && promo != null
-          ? Preferences(
-              group: Group(groupe: groupe, parent: parent),
-              promo: promo,
-              isDarkMode: dark ?? false,
-              isAnimated: animate ?? true,
-              isMono: mono ?? false)
-          : null;
+      if (parent == null || promo == null) {
+        storage.removeAll();
+        this.preferences = null;
+      } else {
+        preferences = groupe != null && promo != null
+            ? Preferences(
+                group: Group(groupe: groupe, parent: parent),
+                promo: promo,
+                isDarkMode: dark ?? false,
+                isAnimated: animate ?? true,
+                isMono: mono ?? false)
+            : null;
+      }
     });
   }
 
