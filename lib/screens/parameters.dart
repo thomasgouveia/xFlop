@@ -100,14 +100,20 @@ class _ParametersState extends State<Parameters> {
               children: <Widget>[
                 Text(
                   'Affichage',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: theme.textColor),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: theme.textColor),
                 ),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('Mode sombre', style: TextStyle(color: theme.textColor),),
+                Text(
+                  'Mode sombre',
+                  style: TextStyle(color: theme.textColor),
+                ),
                 AdaptableSwitch(
                   switchValue: isDark,
                   valueChanged: (val) {
@@ -123,7 +129,8 @@ class _ParametersState extends State<Parameters> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('Cours monochrome (prochainement)', style: TextStyle(color: theme.textColor)),
+                Text('Cours monochrome (prochainement)',
+                    style: TextStyle(color: theme.textColor)),
                 AdaptableSwitch(
                   switchValue: isMono,
                   valueChanged: (val) {
@@ -138,7 +145,8 @@ class _ParametersState extends State<Parameters> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('Animation d\'apparition', style: TextStyle(color: theme.textColor)),
+                Text('Animation d\'apparition',
+                    style: TextStyle(color: theme.textColor)),
                 AdaptableSwitch(
                   switchValue: isAnimated,
                   valueChanged: (val) {
@@ -165,24 +173,29 @@ class _ParametersState extends State<Parameters> {
           ),
           Container(
             width: 70,
-            child: DropdownButton<String>(
-              value: valeur,
-              style: TextStyle(color: theme.textColor),
-              items: array.map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (String s) {
-                setState(() {
-                  this.selectedPromo = s;
-                  this.selectedGroupe = null;
-                  storage.save('promo', s);
-                  storage.save('groupe', GROUPES[s][0].groupe);
-                  storage.save('parent', GROUPES[s][0].parent);
-                });
-              },
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                canvasColor: theme.primary,
+              ),
+              child: DropdownButton<String>(
+                value: valeur,
+                style: TextStyle(color: theme.textColor),
+                items: array.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String s) {
+                  setState(() {
+                    this.selectedPromo = s;
+                    this.selectedGroupe = null;
+                    storage.save('promo', s);
+                    storage.save('groupe', GROUPES[s][0].groupe);
+                    storage.save('parent', GROUPES[s][0].parent);
+                  });
+                },
+              ),
             ),
           ),
         ],
@@ -198,22 +211,27 @@ class _ParametersState extends State<Parameters> {
         ),
         Container(
           width: 70,
-          child: DropdownButton<Group>(
-            value: valeur,
-            style: TextStyle(color: theme.textColor),
-            items: array.map((Group value) {
-              return DropdownMenuItem<Group>(
-                value: value,
-                child: Text(value.groupe),
-              );
-            }).toList(),
-            onChanged: (Group g) {
-              setState(() {
-                this.selectedGroupe = g;
-                storage.save('groupe', g.groupe);
-                storage.save('parent', g.parent);
-              });
-            },
+          child: Theme(
+            data: Theme.of(context).copyWith(
+              canvasColor: theme.primary,
+            ),
+            child: DropdownButton<Group>(
+              value: valeur,
+              style: TextStyle(color: theme.textColor),
+              items: array.map((Group value) {
+                return DropdownMenuItem<Group>(
+                  value: value,
+                  child: Text(value.groupe),
+                );
+              }).toList(),
+              onChanged: (Group g) {
+                setState(() {
+                  this.selectedGroupe = g;
+                  storage.save('groupe', g.groupe);
+                  storage.save('parent', g.parent);
+                });
+              },
+            ),
           ),
         ),
       ],

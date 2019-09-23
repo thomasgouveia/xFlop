@@ -55,5 +55,5 @@ class Cours {
         color: csv[9],
       );
 
-  bool get isExam => this.coursType == 'DS' || this.coursType == 'Examen' || this.coursType == 'Exam';
+  bool get isExam => this.coursType == 'DS' || this.coursType == 'Examen' || this.coursType == 'Exam' || this.coursType == 'CTRL' || this.coursType == 'CTRLP';
 }

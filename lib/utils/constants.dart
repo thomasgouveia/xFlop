@@ -78,7 +78,19 @@ const DEPARTEMENTS = [
 
 Map<String, Map<String, int>> constraints = {
   'INFO': {'DS': 90, 'TD': 90, 'TP': 90, 'CM': 90},
-  'CS' : {'Exam': 90, 'TD': 90, 'CC': 90, 'CM': 90}
+  'CS': {'Exam': 90, 'TD': 90, 'CC': 90, 'CM': 90},
+  'GIM': {
+    'CM': 90,
+    'TD': 90,
+    'TP90': 90,
+    'TP180': 180,
+    'CTRL': 90,
+    'CMP': 90,
+    'TDP': 90,
+    'TP90P': 90,
+    'TP180P': 180,
+    'CTRLP': 90
+  },
 };
 
 const AUTHOR = 'Thomas Gouveia';

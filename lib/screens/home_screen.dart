@@ -31,6 +31,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
   int currentWeek;
   Preferences preferences;
   MyTheme theme;
+  String departement;
 
   PageController _viewerController;
   List<int> nextWeeks;
@@ -43,7 +44,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
   @override
   void initState() {
     super.initState();
-    todayDate = DateTime.now().hour >= 19
+    todayDate = DateTime.now().hour >= 18 && DateTime.now().minute >= 45
         ? DateTime.now().add(Duration(days: 1))
         : DateTime.now();
     currentDate = todayDate;
@@ -56,6 +57,11 @@ class _AppStateProviderState extends State<AppStateProvider> {
     if (this.mounted) {
       loadPreferences().then((_) {
         theme = MyTheme(preferences.isDarkMode);
+        departement = preferences.promo.substring(
+            0,
+            preferences.promo == 'RT2A'
+                ? preferences.promo.length - 2
+                : preferences.promo.length - 1);
         loadAllWeeks();
       });
     }
@@ -111,13 +117,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
   Future<Map> initData(int week) async {
     Map weekMap = setMap();
     List<List<dynamic>> list = await fetchEDTData(
-        week,
-        week == 1 ? todayDate.year + 1 : todayDate.year,
-        preferences.promo.substring(
-            0,
-            preferences.promo == 'RT2A'
-                ? preferences.promo.length - 2
-                : preferences.promo.length - 1));
+        week, week == 1 ? todayDate.year + 1 : todayDate.year, departement);
     for (int i = 1; i < list.length; i++) {
       var sublist = list[i];
       Cours cours = Cours.fromCSV(sublist);
@@ -181,9 +181,8 @@ class _AppStateProviderState extends State<AppStateProvider> {
       } else {
         cours.dateDebut = DateTime(todayDate.year, todayDate.month,
             todayDate.day, cours.heure.hour, cours.heure.minute);
-        cours.dateFin = cours.dateDebut.add(Duration(
-            minutes: constraints[preferences.promo
-                .substring(0, preferences.promo.length - 1)][cours.coursType]));
+        cours.dateFin = cours.dateDebut
+            .add(Duration(minutes: constraints[departement][cours.coursType]));
         map[cours.index] = cours;
       }
     }
@@ -193,11 +192,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
   ///Applique les filtres utilisateurs sur la liste de cours (évite de fetch à chaque changement)
   List<Cours> applyFilters(int index) {
     List<Cours> filtered = [];
-    switch (preferences.promo.substring(
-        0,
-        preferences.promo == 'RT2A'
-            ? preferences.promo.length - 2
-            : preferences.promo.length - 1)) {
+    switch (departement) {
       case 'INFO':
         filtered = filteredINFO(index, allWeeksCourses, todayDate, preferences);
         break;
@@ -224,7 +219,10 @@ class _AppStateProviderState extends State<AppStateProvider> {
         appBar: CustomAppBar(
             todayDate: todayDate, context: context, preferences: preferences),
         body: isLoading
-            ? LoadingWidget(semaine: _currentLoading)
+            ? LoadingWidget(
+                semaine: _currentLoading,
+                theme: theme,
+              )
             : Container(
                 margin: EdgeInsets.only(left: 10, right: 10),
                 height: MediaQuery.of(context).size.height,
