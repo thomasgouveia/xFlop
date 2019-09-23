@@ -17,11 +17,11 @@ Propulsé grâce au SDK Flutter.
 - [x] Gestion des week-ends
 - [x] Gestion des préférences utilisateurs (groupe, promo)
 - [x] Gestion des heures dynamiques
+- [x] Si la journée est fini, affiche l'emploi du temps du jour suivant.
 - [x] Département CS
 - [ ] Département GIM
 - [ ] Département RT
 - [x] Département INFO
 - [ ] Filtre des professeurs
 - [x] Affichage des examens particuliers
-- [ ] Mode sombre
-- [ ] Choix d'un thème de couleur, (?image de fond)
+- [x] Mode sombre
