@@ -3,6 +3,7 @@ import 'package:flop_edt_app/components/error_widget.dart';
 import 'package:flop_edt_app/models/groups.dart';
 import 'package:flop_edt_app/models/user_preferences.dart';
 import 'package:flop_edt_app/navigator/app_navigator.dart';
+import 'package:flop_edt_app/themes/theme.dart';
 import 'package:flop_edt_app/utils/constants.dart';
 import 'package:flop_edt_app/utils/shared_storage.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class _ParametersState extends State<Parameters> {
   bool isDark;
   bool isMono;
   bool isAnimated;
+  MyTheme theme;
 
   String error = "";
   @override
@@ -34,11 +36,13 @@ class _ParametersState extends State<Parameters> {
     isDark = widget.preferences.isDarkMode;
     isMono = widget.preferences.isMono;
     isAnimated = widget.preferences.isAnimated;
+    theme = MyTheme(isDark);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: theme.primary,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(
@@ -63,7 +67,11 @@ class _ParametersState extends State<Parameters> {
         margin: EdgeInsets.only(left: 15, right: 15),
         child: ListView(
           children: <Widget>[
-            error != "" ? MyErrorWidget(text: error,) : Container(),
+            error != ""
+                ? MyErrorWidget(
+                    text: error,
+                  )
+                : Container(),
             Padding(
               padding: EdgeInsets.only(top: 15),
             ),
@@ -71,7 +79,10 @@ class _ParametersState extends State<Parameters> {
               children: <Widget>[
                 Text(
                   'Général',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: theme.textColor),
                 ),
               ],
             ),
@@ -89,19 +100,20 @@ class _ParametersState extends State<Parameters> {
               children: <Widget>[
                 Text(
                   'Affichage',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: theme.textColor),
                 ),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('Mode sombre'),
+                Text('Mode sombre', style: TextStyle(color: theme.textColor),),
                 AdaptableSwitch(
                   switchValue: isDark,
                   valueChanged: (val) {
                     setState(() {
-                      this.isDark = val;
+                      this.isDark = !isDark;
+                      theme = MyTheme(isDark);
                       storage.saveBool('dark', val);
                     });
                   },
@@ -111,7 +123,7 @@ class _ParametersState extends State<Parameters> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('Cours monochrome (prochainement)'),
+                Text('Cours monochrome (prochainement)', style: TextStyle(color: theme.textColor)),
                 AdaptableSwitch(
                   switchValue: isMono,
                   valueChanged: (val) {
@@ -126,7 +138,7 @@ class _ParametersState extends State<Parameters> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('Animation d\'apparition'),
+                Text('Animation d\'apparition', style: TextStyle(color: theme.textColor)),
                 AdaptableSwitch(
                   switchValue: isAnimated,
                   valueChanged: (val) {
@@ -147,11 +159,15 @@ class _ParametersState extends State<Parameters> {
   Widget buildDropdown({List<String> array, String valeur, String text}) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text(text),
+          Text(
+            text,
+            style: TextStyle(color: theme.textColor),
+          ),
           Container(
             width: 70,
             child: DropdownButton<String>(
               value: valeur,
+              style: TextStyle(color: theme.textColor),
               items: array.map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
@@ -164,7 +180,7 @@ class _ParametersState extends State<Parameters> {
                   this.selectedGroupe = null;
                   storage.save('promo', s);
                   storage.save('groupe', GROUPES[s][0].groupe);
-                storage.save('parent', GROUPES[s][0].parent);
+                  storage.save('parent', GROUPES[s][0].parent);
                 });
               },
             ),
@@ -176,11 +192,15 @@ class _ParametersState extends State<Parameters> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text(text),
+        Text(
+          text,
+          style: TextStyle(color: theme.textColor),
+        ),
         Container(
           width: 70,
           child: DropdownButton<Group>(
             value: valeur,
+            style: TextStyle(color: theme.textColor),
             items: array.map((Group value) {
               return DropdownMenuItem<Group>(
                 value: value,

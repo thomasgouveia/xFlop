@@ -8,8 +8,10 @@ import 'package:flop_edt_app/models/cours.dart';
 import 'package:flop_edt_app/models/groups.dart';
 import 'package:flop_edt_app/models/user_preferences.dart';
 import 'package:flop_edt_app/screens/start_screen.dart';
+import 'package:flop_edt_app/themes/theme.dart';
 import 'package:flop_edt_app/utils.dart';
 import 'package:flop_edt_app/utils/constants.dart';
+import 'package:flop_edt_app/utils/map_utils.dart';
 import 'package:flop_edt_app/utils/shared_storage.dart';
 import 'package:flop_edt_app/utils/week_utils.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
   int defaultWeek;
   int currentWeek;
   Preferences preferences;
+  MyTheme theme;
 
   PageController _viewerController;
   List<int> nextWeeks;
@@ -40,7 +43,9 @@ class _AppStateProviderState extends State<AppStateProvider> {
   @override
   void initState() {
     super.initState();
-    todayDate = DateTime.now();
+    todayDate = DateTime.now().hour >= 19
+        ? DateTime.now().add(Duration(days: 1))
+        : DateTime.now();
     currentDate = todayDate;
     isWeekEnd = weekendTest(todayDate);
     defaultWeek =
@@ -49,7 +54,10 @@ class _AppStateProviderState extends State<AppStateProvider> {
         defaultWeek; //Current garde toujours la semaine active en mémoire
     nextWeeks = Week.calculateThreeNext(todayDate, defaultWeek);
     if (this.mounted) {
-      loadPreferences().then((_) => loadAllWeeks());
+      loadPreferences().then((_) {
+        theme = MyTheme(preferences.isDarkMode);
+        loadAllWeeks();
+      });
     }
   }
 
@@ -165,15 +173,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
   Map _mapCourses(int index) {
     List<Cours> filteredCours = applyFilters(index);
     //Défini les cours disponibles dans la journée
-    Map<int, Cours> map = {
-      0: null,
-      1: null,
-      2: null,
-      3: null,
-      4: null,
-      5: null,
-      6: null,
-    };
+    Map<int, Cours> map = setJourneyMap(todayDate.weekday == 4);
     for (int i = 0; i < filteredCours.length; i++) {
       Cours cours = filteredCours[i];
       if (cours.index == 3) {
@@ -220,7 +220,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
       return StartPage();
     } else {
       return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: theme.primary,
         appBar: CustomAppBar(
             todayDate: todayDate, context: context, preferences: preferences),
         body: isLoading
@@ -236,6 +236,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
                       width: MediaQuery.of(context).size.width,
                       child: Center(
                         child: WeekChooser(
+                          theme: theme,
                           weeks: nextWeeks,
                           valueChanged: _handleWeekChanged,
                         ),
@@ -250,6 +251,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
                           return EDTViewer(
                             coursesMap: _mapCourses(defaultWeek),
                             animate: preferences.isAnimated,
+                            theme: theme,
                           );
                         },
                       ),

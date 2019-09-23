@@ -26,15 +26,6 @@ const heures = [
   ["17h15", "18h40"]
 ];
 
-//Crée la map correspond au jour de la semaine
-Map<int, List<Cours>> setMap() => {
-      1: new List<Cours>(),
-      2: new List<Cours>(),
-      3: new List<Cours>(),
-      4: new List<Cours>(),
-      5: new List<Cours>(),
-    };
-
 Future<List<List<dynamic>>> fetchEDTData(
     int week, int year, String promo) async {
   List<List<dynamic>> listeCours = [];

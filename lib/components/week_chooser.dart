@@ -1,9 +1,12 @@
+import 'package:flop_edt_app/themes/theme.dart';
 import 'package:flutter/material.dart';
 
 class WeekChooser extends StatefulWidget {
   final List<int> weeks;
   final ValueChanged valueChanged;
-  const WeekChooser({Key key, this.weeks, this.valueChanged}) : super(key: key);
+  final MyTheme theme;
+  const WeekChooser({Key key, this.weeks, this.valueChanged, this.theme})
+      : super(key: key);
 
   @override
   _WeekChooserState createState() => _WeekChooserState();
@@ -25,17 +28,20 @@ class _WeekChooserState extends State<WeekChooser> {
       (int weekNb) => btns.add(
         AnimatedContainer(
           duration: Duration(milliseconds: 500),
-          curve: Curves.easeInSine,
+          curve: Curves.easeInOut,
           width: (MediaQuery.of(context).size.width / widget.weeks.length) - 30,
           decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: value == weekNb ? Colors.grey[900] : Colors.transparent),
+              color: value == weekNb
+                  ? widget.theme.secondary
+                  : Colors.transparent),
           child: FlatButton(
             child: Text(
-              weekNb.toString(),
+              '$weekNb',
               style: TextStyle(
-                  fontSize: 16,
-                  color: value == weekNb ? Colors.white : Colors.black),
+                  fontSize: 14,
+                  color:
+                      value == weekNb ? Colors.white : widget.theme.textColor),
             ),
             onPressed: () => setState(() {
               if (value != weekNb) {

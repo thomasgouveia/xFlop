@@ -23,7 +23,6 @@ class XFlopApp extends StatelessWidget {
       title: 'xFlop!',
       theme: ThemeData(
         fontFamily: 'Poppins',
-        primarySwatch: Colors.blue,
       ),
       home: AppStateProvider(),
     );

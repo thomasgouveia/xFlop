@@ -1,5 +1,6 @@
 import 'package:flop_edt_app/components/fade_in.dart';
 import 'package:flop_edt_app/models/cours.dart';
+import 'package:flop_edt_app/themes/theme.dart';
 import 'package:flop_edt_app/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +8,8 @@ class CoursWidget extends StatelessWidget {
   final Cours cours;
   final double delay;
   final bool animate;
-  const CoursWidget({Key key, this.cours, this.delay, this.animate})
+  final MyTheme theme;
+  const CoursWidget({Key key, this.cours, this.delay, this.animate, this.theme})
       : super(key: key);
 
   @override
@@ -15,33 +17,37 @@ class CoursWidget extends StatelessWidget {
     return animate ? FadeIn(delay, _ui) : _ui;
   }
 
-  Widget get _ui => Row(
-        children: <Widget>[
-          coursHeure,
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: cours.isExam ? Colors.red : hexToColor(cours.color),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    offset: Offset(2.0, 5.0),
-                    blurRadius: 10.0,
-                  )
-                ],
-              ),
-              margin: EdgeInsets.only(top: 5, bottom: 5),
-              height: 100,
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[coursType, coursInfo],
+  Widget get _ui => AnimatedOpacity(
+        duration: Duration(milliseconds: 200),
+        opacity: cours.dateFin.isBefore(DateTime.now()) ? 0.6 : 1, //! TEST
+        child: Row(
+          children: <Widget>[
+            coursHeure,
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: cours.isExam ? Colors.red : hexToColor(cours.color),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      offset: Offset(2.0, 5.0),
+                      blurRadius: 10.0,
+                    )
+                  ],
+                ),
+                margin: EdgeInsets.only(top: 5, bottom: 5),
+                height: 100,
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[coursType, coursInfo],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
 
   Widget get coursHeure => Padding(
@@ -53,13 +59,13 @@ class CoursWidget extends StatelessWidget {
               (cours.dateDebut.minute == 0)
                   ? '${cours.dateDebut.hour}h${cours.dateDebut.minute}0'
                   : '${cours.dateDebut.hour}h${cours.dateDebut.minute}',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, color: theme.textColor),
             ),
             Text(
               (cours.dateFin.minute == 0)
                   ? '${cours.dateFin.hour}h${cours.dateFin.minute}0'
                   : '${cours.dateFin.hour}h${cours.dateFin.minute}',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, color: theme.textColor),
             ),
           ],
         ),

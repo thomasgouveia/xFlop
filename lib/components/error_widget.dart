@@ -11,7 +11,7 @@ class MyErrorWidget extends StatelessWidget {
       padding: const EdgeInsets.only(top: 8.0),
       child: Container(
         width: MediaQuery.of(context).size.width - 100,
-        height: 70,
+        height: 50,
         decoration: BoxDecoration(
           color: Colors.red,
           borderRadius: BorderRadius.circular(20),
