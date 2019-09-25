@@ -20,7 +20,6 @@ Map<String, List<Group>> GROUPES = {
     Group(groupe: '3B', parent: '3'),
     Group(groupe: '4', parent: '4'),
   ],
-  /*
   'GIM1': [
     Group(groupe: '1AA', parent: '1AA'),
     Group(groupe: '1AM', parent: '1AM'),
@@ -35,7 +34,6 @@ Map<String, List<Group>> GROUPES = {
     Group(groupe: 'TPB2', parent: 'TD2'),
     Group(groupe: 'TPC', parent: 'TD2'),
   ],
-  */
   'CS1': [
     Group(groupe: '1G1', parent: '1G1'),
     Group(groupe: '1G2', parent: '1G2'),
@@ -67,8 +65,8 @@ Map<String, List<Group>> GROUPES = {
 const DEPARTEMENTS = [
   'INFO1',
   'INFO2',
-  //'GIM1',
-  //'GIM2',
+  'GIM1',
+  'GIM2',
   //'RT1',
   //'RT2',
   //'RT2A',

@@ -16,7 +16,6 @@ List<Cours> filteredINFO(int index, Map<int, Map<int, List<Cours>>> courses,
   return filtered;
 }
 
-/*
 ///Applique les filtres utilisateurs sur la liste de cours (évite de fetch à chaque changement)
 List<Cours> filteredGIM(int index, Map<int, Map<int, List<Cours>>> courses,
     DateTime date, Preferences preferences) {
@@ -26,10 +25,9 @@ List<Cours> filteredGIM(int index, Map<int, Map<int, List<Cours>>> courses,
               cours.coursType.toString() == "CM" ||
               cours.coursType == 'CTRL' || cours.coursType == 'CTRLP'))
       .toList();
-  filtered.sort((c1, c2) => c1.startTime.compareTo(c2.startTime));
+  filtered.sort((c1, c2) => c1.dateDebut.compareTo(c2.dateDebut));
   return filtered;
 }
-*/
 
 /*
 ///Applique les filtres utilisateurs sur la liste de cours (évite de fetch à chaque changement)

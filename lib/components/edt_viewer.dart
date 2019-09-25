@@ -2,7 +2,6 @@ import 'package:flop_edt_app/components/cours_widget.dart';
 import 'package:flop_edt_app/components/default_cours.dart';
 import 'package:flop_edt_app/models/cours.dart';
 import 'package:flop_edt_app/themes/theme.dart';
-import 'package:flop_edt_app/utils.dart';
 import 'package:flutter/material.dart';
 
 class EDTViewer extends StatelessWidget {
@@ -10,9 +9,15 @@ class EDTViewer extends StatelessWidget {
   final bool animate;
   final DateTime date;
   final MyTheme theme;
+  final DateTime today;
 
   const EDTViewer(
-      {Key key, this.coursesMap, this.animate, this.date, this.theme})
+      {Key key,
+      this.coursesMap,
+      this.animate,
+      this.date,
+      this.theme,
+      this.today})
       : super(key: key);
 
   @override
@@ -28,7 +33,7 @@ class EDTViewer extends StatelessWidget {
     Map<int, Cours> map = coursesMap;
     var delay = 1.0;
     map.forEach((index, cours) {
-      delay += 0.6;
+      delay += 0.3;
       grid.add(Container(
         height: 100,
         width: MediaQuery.of(context).size.width - 30,
@@ -38,6 +43,7 @@ class EDTViewer extends StatelessWidget {
             Expanded(
               child: (cours != null)
                   ? CoursWidget(
+                      today: today,
                       cours: cours,
                       delay: delay,
                       animate: animate,

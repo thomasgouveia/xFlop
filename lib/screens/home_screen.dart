@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flop_edt_app/components/custom_appbar.dart';
 import 'package:flop_edt_app/components/edt_viewer.dart';
 import 'package:flop_edt_app/components/loading_widget.dart';
+import 'package:flop_edt_app/components/no_connection_screen.dart';
 import 'package:flop_edt_app/components/week_chooser.dart';
 import 'package:flop_edt_app/filterer/filters.dart';
 import 'package:flop_edt_app/models/cours.dart';
@@ -10,6 +11,7 @@ import 'package:flop_edt_app/models/user_preferences.dart';
 import 'package:flop_edt_app/screens/start_screen.dart';
 import 'package:flop_edt_app/themes/theme.dart';
 import 'package:flop_edt_app/utils.dart';
+import 'package:flop_edt_app/utils/connection_checker.dart';
 import 'package:flop_edt_app/utils/constants.dart';
 import 'package:flop_edt_app/utils/map_utils.dart';
 import 'package:flop_edt_app/utils/shared_storage.dart';
@@ -23,6 +25,7 @@ class AppStateProvider extends StatefulWidget {
 
 class _AppStateProviderState extends State<AppStateProvider> {
   bool isLoading = true;
+  bool isConnected;
   int _currentLoading; //For screen loading
 
   DateTime todayDate;
@@ -62,7 +65,9 @@ class _AppStateProviderState extends State<AppStateProvider> {
             preferences.promo == 'RT2A'
                 ? preferences.promo.length - 2
                 : preferences.promo.length - 1);
-        loadAllWeeks();
+        if (isConnected) {
+          loadAllWeeks();
+        }
       });
     }
   }
@@ -81,11 +86,15 @@ class _AppStateProviderState extends State<AppStateProvider> {
     bool dark = await storage.readBool('dark');
     bool animate = await storage.readBool('animate');
     bool mono = await storage.readBool('mono');
+
+    //Check connection status :
+    bool isConnected = await ConnectionChecker.isConnected();
     setState(() {
       if (parent == null || promo == null) {
         storage.removeAll();
         this.preferences = null;
       } else {
+        this.isConnected = isConnected;
         preferences = groupe != null && promo != null
             ? Preferences(
                 group: Group(groupe: groupe, parent: parent),
@@ -121,6 +130,10 @@ class _AppStateProviderState extends State<AppStateProvider> {
     for (int i = 1; i < list.length; i++) {
       var sublist = list[i];
       Cours cours = Cours.fromCSV(sublist);
+      cours.dateDebut = DateTime(todayDate.year, todayDate.month, todayDate.day,
+          cours.heure.hour, cours.heure.minute);
+      cours.dateFin = cours.dateDebut
+          .add(Duration(minutes: constraints[departement][cours.coursType]));
       switch (cours.indexInSemaine) {
         case 1:
           weekMap[1].add(cours);
@@ -179,15 +192,13 @@ class _AppStateProviderState extends State<AppStateProvider> {
       if (cours.index == 3) {
         map[3] = null; // Pause repas
       } else {
-        cours.dateDebut = DateTime(todayDate.year, todayDate.month,
-            todayDate.day, cours.heure.hour, cours.heure.minute);
-        cours.dateFin = cours.dateDebut
-            .add(Duration(minutes: constraints[departement][cours.coursType]));
         map[cours.index] = cours;
       }
     }
     return map;
   }
+
+  List<Cours> _reorderCours(int index) => applyFilters(index);
 
   ///Applique les filtres utilisateurs sur la liste de cours (évite de fetch à chaque changement)
   List<Cours> applyFilters(int index) {
@@ -197,7 +208,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
         filtered = filteredINFO(index, allWeeksCourses, todayDate, preferences);
         break;
       case 'GIM':
-        filtered = [];
+        filtered = filteredGIM(index, allWeeksCourses, todayDate, preferences);
         break;
       case 'CS':
         filtered = filteredCS(index, allWeeksCourses, todayDate, preferences);
@@ -213,6 +224,10 @@ class _AppStateProviderState extends State<AppStateProvider> {
   Widget buildContent() {
     if (preferences == null) {
       return StartPage();
+    } else if (!isConnected) {
+      return NoConnection(
+        theme: theme,
+      );
     } else {
       return Scaffold(
         backgroundColor: theme.primary,
@@ -250,6 +265,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
                             coursesMap: _mapCourses(defaultWeek),
                             animate: preferences.isAnimated,
                             theme: theme,
+                            today: todayDate,
                           );
                         },
                       ),
@@ -267,10 +283,11 @@ class _AppStateProviderState extends State<AppStateProvider> {
     currentDate = todayDate;
     isWeekEnd = weekendTest(todayDate);
     if (this.isWeekEnd) {
-      int day = todayDate.weekday == 6
-          ? todayDate.day + 2
-          : todayDate.weekday == 7 ? todayDate.day + 1 : todayDate.day;
-      this.todayDate = DateTime(todayDate.year, todayDate.month, day);
+      this.todayDate = todayDate.weekday == 6
+          ? todayDate.add(Duration(days: 2))
+          : todayDate.weekday == 7
+              ? todayDate.add(Duration(days: 1))
+              : this.todayDate;
     }
     return buildContent();
   }

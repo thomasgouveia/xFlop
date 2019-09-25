@@ -9,7 +9,8 @@ class CoursWidget extends StatelessWidget {
   final double delay;
   final bool animate;
   final MyTheme theme;
-  const CoursWidget({Key key, this.cours, this.delay, this.animate, this.theme})
+  final DateTime today;
+  const CoursWidget({Key key, this.cours, this.delay, this.animate, this.theme, this.today})
       : super(key: key);
 
   @override
@@ -17,38 +18,41 @@ class CoursWidget extends StatelessWidget {
     return animate ? FadeIn(delay, _ui) : _ui;
   }
 
-  Widget get _ui => AnimatedOpacity(
-        duration: Duration(milliseconds: 200),
-        opacity: cours.dateFin.isBefore(DateTime.now()) ? 0.6 : 1, //! TEST
-        child: Row(
-          children: <Widget>[
-            coursHeure,
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: cours.isExam ? Colors.red : hexToColor(cours.color),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      offset: Offset(2.0, 5.0),
-                      blurRadius: 10.0,
-                    )
-                  ],
-                ),
-                margin: EdgeInsets.only(top: 5, bottom: 5),
-                height: 100,
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[coursType, coursInfo],
-                  ),
+  Widget get _ui {
+    bool isFinished = false;
+    return AnimatedOpacity(
+      duration: Duration(milliseconds: 200),
+      opacity: isFinished ? 0.3 : 1, //! TEST
+      child: Row(
+        children: <Widget>[
+          coursHeure,
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: cours.isExam ? Colors.red : hexToColor(cours.color),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    offset: Offset(2.0, 5.0),
+                    blurRadius: 10.0,
+                  )
+                ],
+              ),
+              margin: EdgeInsets.only(top: 5, bottom: 5),
+              height: 100,
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[coursType, coursInfo],
                 ),
               ),
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget get coursHeure => Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
@@ -59,13 +63,15 @@ class CoursWidget extends StatelessWidget {
               (cours.dateDebut.minute == 0)
                   ? '${cours.dateDebut.hour}h${cours.dateDebut.minute}0'
                   : '${cours.dateDebut.hour}h${cours.dateDebut.minute}',
-              style: TextStyle(fontWeight: FontWeight.bold, color: theme.textColor),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: theme.textColor),
             ),
             Text(
               (cours.dateFin.minute == 0)
                   ? '${cours.dateFin.hour}h${cours.dateFin.minute}0'
                   : '${cours.dateFin.hour}h${cours.dateFin.minute}',
-              style: TextStyle(fontWeight: FontWeight.bold, color: theme.textColor),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: theme.textColor),
             ),
           ],
         ),
