@@ -26,7 +26,7 @@ const heures = [
   ["17h15", "18h40"]
 ];
 
-Future<List<List<dynamic>>> fetchEDTData(
+Future<List<List<dynamic>>> loadDataFromServer(
     int week, int year, String promo) async {
   List<List<dynamic>> listeCours = [];
   var url =

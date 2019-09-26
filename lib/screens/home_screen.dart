@@ -39,7 +39,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
   PageController _viewerController;
   List<int> nextWeeks;
 
-  Map<int, Map<int, List<Cours>>> allWeeksCourses;
+  Map<int, Map<int, List<Cours>>> courses;
 
   //Booléen permettant de savoir si oui ou non la date calculée est un week end
   bool isWeekEnd;
@@ -117,7 +117,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
       toSet[nextWeeks[i]] = await initData(nextWeeks[i]);
     }
     setState(() {
-      allWeeksCourses = toSet;
+      courses = toSet;
       this.isLoading = false;
     });
   }
@@ -125,7 +125,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
   ///initialise la liste des cours
   Future<Map> initData(int week) async {
     Map weekMap = setMap();
-    List<List<dynamic>> list = await fetchEDTData(
+    List<List<dynamic>> list = await loadDataFromServer(
         week, week == 1 ? todayDate.year + 1 : todayDate.year, departement);
     for (int i = 1; i < list.length; i++) {
       var sublist = list[i];
@@ -134,23 +134,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
           cours.heure.hour, cours.heure.minute);
       cours.dateFin = cours.dateDebut
           .add(Duration(minutes: constraints[departement][cours.coursType]));
-      switch (cours.indexInSemaine) {
-        case 1:
-          weekMap[1].add(cours);
-          break;
-        case 2:
-          weekMap[2].add(cours);
-          break;
-        case 3:
-          weekMap[3].add(cours);
-          break;
-        case 4:
-          weekMap[4].add(cours);
-          break;
-        case 5:
-          weekMap[5].add(cours);
-          break;
-      }
+      weekMap[cours.indexInSemaine].add(cours);
     }
     return weekMap;
   }
@@ -205,13 +189,13 @@ class _AppStateProviderState extends State<AppStateProvider> {
     List<Cours> filtered = [];
     switch (departement) {
       case 'INFO':
-        filtered = filteredINFO(index, allWeeksCourses, todayDate, preferences);
+        filtered = filteredINFO(index, courses, todayDate, preferences);
         break;
       case 'GIM':
-        filtered = filteredGIM(index, allWeeksCourses, todayDate, preferences);
+        filtered = filteredGIM(index, courses, todayDate, preferences);
         break;
       case 'CS':
-        filtered = filteredCS(index, allWeeksCourses, todayDate, preferences);
+        filtered = filteredCS(index, courses, todayDate, preferences);
         break;
       case 'RT':
         filtered = [];
@@ -259,7 +243,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
                       child: PageView.builder(
                         controller: _viewerController,
                         onPageChanged: _handleDayChanged,
-                        itemCount: allWeeksCourses[defaultWeek].length,
+                        itemCount: courses[defaultWeek].length,
                         itemBuilder: (context, int index) {
                           return EDTViewer(
                             coursesMap: _mapCourses(defaultWeek),
