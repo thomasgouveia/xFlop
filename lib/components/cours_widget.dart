@@ -6,11 +6,20 @@ import 'package:flutter/material.dart';
 
 class CoursWidget extends StatelessWidget {
   final Cours cours;
+  final bool isLunchTime;
   final double delay;
   final bool animate;
   final MyTheme theme;
   final DateTime today;
-  const CoursWidget({Key key, this.cours, this.delay, this.animate, this.theme, this.today})
+  final double height;
+  const CoursWidget(
+      {Key key,
+      this.cours,
+      this.delay,
+      this.animate,
+      this.theme,
+      this.today,
+      this.height, this.isLunchTime})
       : super(key: key);
 
   @override
@@ -29,7 +38,7 @@ class CoursWidget extends StatelessWidget {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(10),
                 color: cours.isExam ? Colors.red : hexToColor(cours.color),
                 boxShadow: [
                   BoxShadow(
@@ -40,7 +49,7 @@ class CoursWidget extends StatelessWidget {
                 ],
               ),
               margin: EdgeInsets.only(top: 5, bottom: 5),
-              height: 100,
+              height: height,
               child: Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
