@@ -166,6 +166,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
     });
   }
 
+  /*
   ///Retourne la [Map] des cours indexés par leur apparation dans la journée
   Map _mapCourses(int index) {
     List<Cours> filteredCours = applyFilters(index);
@@ -181,9 +182,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
     }
     return map;
   }
-
-  List<Cours> _reorderCours(int index) => applyFilters(index);
-
+  */
   ///Applique les filtres utilisateurs sur la liste de cours (évite de fetch à chaque changement)
   List<Cours> applyFilters(int index) {
     List<Cours> filtered = [];
@@ -246,7 +245,8 @@ class _AppStateProviderState extends State<AppStateProvider> {
                         itemCount: courses[defaultWeek].length,
                         itemBuilder: (context, int index) {
                           return EDTViewer(
-                            coursesMap: _mapCourses(defaultWeek),
+                            listCourses: applyFilters(defaultWeek),
+                            promo: departement,
                             animate: preferences.isAnimated,
                             theme: theme,
                             today: todayDate,
