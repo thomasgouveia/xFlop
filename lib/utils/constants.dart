@@ -42,7 +42,6 @@ Map<String, List<Group>> GROUPES = {
     Group(groupe: '2G1', parent: '2G1'),
     Group(groupe: '2G2', parent: '2G2'),
   ],
-  /*
   'RT1': [
     Group(groupe: '1GA', parent: '1G1'),
     Group(groupe: '1GB', parent: '1G1'),
@@ -56,10 +55,9 @@ Map<String, List<Group>> GROUPES = {
     Group(groupe: '2GB', parent: '2G1'),
   ],
   'RT2A': [
-    Group(groupe: '2GAa', parent: '2G1a'),    
-    Group(groupe: '2GBa', parent: '2G1a'), 
-    ]
-    */
+    Group(groupe: '2GAa', parent: '2G1a'),
+    Group(groupe: '2GBa', parent: '2G1a'),
+  ]
 };
 
 const DEPARTEMENTS = [
@@ -67,9 +65,9 @@ const DEPARTEMENTS = [
   'INFO2',
   'GIM1',
   'GIM2',
-  //'RT1',
-  //'RT2',
-  //'RT2A',
+  'RT1',
+  'RT2',
+  'RT2A',
   'CS1',
   'CS2'
 ];
@@ -89,6 +87,14 @@ Map<String, Map<String, int>> constraints = {
     'TP180P': 180,
     'CTRLP': 90
   },
+  'RT': {
+    'CM': 90,
+    'TD': 90,
+    'TP120': 120,
+    'TP240': 240,
+    'TP180': 180,
+    'Examen': 90,
+  }
 };
 
 const AUTHOR = 'Thomas Gouveia';

@@ -38,7 +38,7 @@ class CoursWidget extends StatelessWidget {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(15),
                 color: cours.isExam ? Colors.red : hexToColor(cours.color),
                 boxShadow: [
                   BoxShadow(
@@ -48,7 +48,7 @@ class CoursWidget extends StatelessWidget {
                   )
                 ],
               ),
-              margin: EdgeInsets.only(top: 5, bottom: 5),
+              margin: EdgeInsets.only(top: 2, bottom: 2),
               height: height,
               child: Center(
                 child: Row(

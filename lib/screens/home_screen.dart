@@ -166,42 +166,9 @@ class _AppStateProviderState extends State<AppStateProvider> {
     });
   }
 
-  /*
-  ///Retourne la [Map] des cours indexés par leur apparation dans la journée
-  Map _mapCourses(int index) {
-    List<Cours> filteredCours = applyFilters(index);
-    //Défini les cours disponibles dans la journée
-    Map<int, Cours> map = setJourneyMap(todayDate.weekday == 4);
-    for (int i = 0; i < filteredCours.length; i++) {
-      Cours cours = filteredCours[i];
-      if (cours.index == 3) {
-        map[3] = null; // Pause repas
-      } else {
-        map[cours.index] = cours;
-      }
-    }
-    return map;
-  }
-  */
   ///Applique les filtres utilisateurs sur la liste de cours (évite de fetch à chaque changement)
-  List<Cours> applyFilters(int index) {
-    List<Cours> filtered = [];
-    switch (departement) {
-      case 'INFO':
-        filtered = filteredINFO(index, courses, todayDate, preferences);
-        break;
-      case 'GIM':
-        filtered = filteredGIM(index, courses, todayDate, preferences);
-        break;
-      case 'CS':
-        filtered = filteredCS(index, courses, todayDate, preferences);
-        break;
-      case 'RT':
-        filtered = [];
-        break;
-    }
-    return filtered;
-  }
+  List<Cours> applyFilters(int index) =>
+      filter(index, courses, todayDate, preferences);
 
   ///Construit l'interface en fonction de l'état de l'application
   Widget buildContent() {
