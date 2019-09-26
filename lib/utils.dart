@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:csv/csv.dart';
-import 'package:flop_edt_app/models/cours.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 
-List<String> dayIndex = [
+const DAY_INDEX = [
   "Lun.",
   "Mar.",
   "Mer.",
@@ -14,16 +11,6 @@ List<String> dayIndex = [
   "Ven.",
   "Sam.",
   "Dim."
-];
-
-const heures = [
-  ["08h00", "09h25"],
-  ["09h30", "10h55"],
-  ["11h05", "12h30"],
-  ["", ""],
-  ["14h15", "15h40"],
-  ["15h45", "17h10"],
-  ["17h15", "18h40"]
 ];
 
 Future<List<List<dynamic>>> loadDataFromServer(
@@ -52,32 +39,6 @@ int getIndexSemaine(dynamic day) {
       return 4;
     case 'f':
       return 5;
-  }
-}
-
-int positionInJourney(dynamic startTime) {
-  switch (startTime) {
-    case 480:
-      return 0;
-      break;
-    case 570:
-      return 1;
-      break;
-    case 660:
-      return 2;
-      break;
-    case 855:
-      return 4;
-      break;
-    case 945:
-      return 5;
-      break;
-    case 1035:
-      return 6;
-      break;
-    default:
-      return 3;
-      break;
   }
 }
 

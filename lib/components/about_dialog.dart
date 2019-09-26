@@ -18,87 +18,91 @@ class CustomDialog extends StatelessWidget {
       ),
       elevation: 0.0,
       backgroundColor: Colors.transparent,
-      child: dialogContent(context),
+      child: _dialogContent(context),
     );
   }
 
-  dialogContent(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(
-            top: Consts.avatarRadius + Consts.padding,
-            bottom: Consts.padding,
-            left: Consts.padding,
-            right: Consts.padding,
+  Widget _dialogContent(BuildContext context) => Stack(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(
+              top: Consts.avatarRadius + Consts.padding,
+              bottom: Consts.padding,
+              left: Consts.padding,
+              right: Consts.padding,
+            ),
+            margin: EdgeInsets.only(top: Consts.avatarRadius),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(Consts.padding),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10.0,
+                  offset: const Offset(0.0, 10.0),
+                ),
+              ],
+            ),
+            child: _content(context),
           ),
-          margin: EdgeInsets.only(top: Consts.avatarRadius),
-          decoration: new BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(Consts.padding),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 10.0,
-                offset: const Offset(0.0, 10.0),
-              ),
-            ],
+          _logo,
+        ],
+      );
+
+  Widget _content(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min, // To make the card compact
+        children: <Widget>[
+          Text(
+            'xFlop! - $VERSION',
+            style: TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.w700,
+            ),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min, // To make the card compact
-            children: <Widget>[
-              Text(
-                'xFlop! - $VERSION',
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              SizedBox(height: 16.0),
-              Text(
-                'Application en cours de développement, susceptible de comporter des bugs. \n\nPour toute question ou problème :',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14.0,
-                ),
-              ),
-              Text(
-                HELPER_EMAIL,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 24.0),
-              Text(
-                'Remerciements : Feavy, FlopEDT',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14.0,
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: FlatButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // To close the dialog
-                  },
-                  child: Text(buttonText),
-                ),
-              ),
-            ],
+          SizedBox(height: 16.0),
+          Text(
+            'Application en cours de développement, susceptible de comporter des bugs. \n\nPour toute question ou problème :',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 14.0,
+            ),
           ),
+          Text(
+            HELPER_EMAIL,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 24.0),
+          Text(
+            'Remerciements : Feavy, FlopEDT',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 14.0,
+            ),
+          ),
+          _closeButton(context),
+        ],
+      );
+
+  Widget _closeButton(BuildContext context) => Align(
+        alignment: Alignment.bottomRight,
+        child: FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop(); // To close the dialog
+          },
+          child: Text(buttonText),
         ),
-        Positioned(
-          left: Consts.padding,
-          right: Consts.padding,
-          child: CircleAvatar(
-            backgroundColor: Colors.grey[900],
-            radius: Consts.avatarRadius,
-            child: Center(child: Image.asset('assets/logo.png', width: 70)),
-          ),
+      );
+
+  Widget get _logo => Positioned(
+        left: Consts.padding,
+        right: Consts.padding,
+        child: CircleAvatar(
+          backgroundColor: Colors.grey[900],
+          radius: Consts.avatarRadius,
+          child: Center(child: Image.asset(LOGO_ASSET_PATH, width: 70)),
         ),
-      ],
-    );
-  }
+      );
 }
 
 class Consts {

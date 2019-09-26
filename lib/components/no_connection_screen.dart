@@ -1,3 +1,4 @@
+import 'package:flop_edt_app/main.dart';
 import 'package:flop_edt_app/themes/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +31,19 @@ class NoConnection extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                   color: theme.textColor),
-            )
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: RaisedButton(
+                child: Icon(Icons.repeat, color: theme.textColor),
+                onPressed: () => RestartWidget.restartApp(context),
+                color: Colors.green,
+                padding: EdgeInsets.all(10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                ),
+              ),
+            ),
           ],
         ),
       ),

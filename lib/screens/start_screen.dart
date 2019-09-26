@@ -88,7 +88,7 @@ class _StartPageState extends State<StartPage> {
   Widget get headingLogo => Column(
         children: <Widget>[
           Image.asset(
-            'assets/logo.png',
+            LOGO_ASSET_PATH,
             width: 150,
             height: 150,
           ),

@@ -1,6 +1,8 @@
 import 'package:flop_edt_app/themes/theme.dart';
 import 'package:flutter/material.dart';
 
+///[Widget] personalisé qui s'affiche lorsque l'état de l'application est
+///en chargement.
 class LoadingWidget extends StatelessWidget {
   final int semaine;
   final MyTheme theme;

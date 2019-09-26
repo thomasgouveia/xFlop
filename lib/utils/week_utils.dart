@@ -7,6 +7,8 @@ class Week {
     return ((dayOfYear - date.weekday + 10) / 7).floor();
   }
 
+  ///Calcule la [List] des 3 prochaines semaine à partir de [defaultWeek] et [date]
+  ///Prends en compte les changements d'année, et les weekend.
   static List<int> calculateThreeNext(DateTime date, int defaultWeek) {
     List<int> list = [defaultWeek];
     for (int i = 1; i <= 3; i++) {

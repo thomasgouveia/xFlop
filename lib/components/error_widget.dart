@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+///[Widget] personalisé s'affichant lorsque qu'un utilisateur tente d'accéder à l'emploi du temps
+///en n'ayant séléctionner aucun groupe.
+///[text] est le texte afficher dans ce [Widget]
 class MyErrorWidget extends StatelessWidget {
   final String text;
 
@@ -24,20 +27,30 @@ class MyErrorWidget extends StatelessWidget {
           ],
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Icon(
-              Icons.warning,
-              color: Colors.white,
-              size: 40,
-            ),
-            Text(
-              text,
-              style: TextStyle(color: Colors.white),
-            ),
+            _errorIcon,
+            _errorText,
           ],
         ),
       ),
     );
   }
+
+  Widget get _errorIcon => Padding(
+        padding: const EdgeInsets.only(left: 10.0),
+        child: Icon(
+          Icons.warning,
+          color: Colors.white,
+          size: 40,
+        ),
+      );
+
+  Widget get _errorText => Padding(
+        padding: const EdgeInsets.only(left: 10.0),
+        child: Text(
+          text,
+          style: TextStyle(color: Colors.white),
+        ),
+      );
 }

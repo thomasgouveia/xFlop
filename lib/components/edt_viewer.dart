@@ -1,5 +1,4 @@
 import 'package:flop_edt_app/components/cours_widget.dart';
-import 'package:flop_edt_app/components/default_cours.dart';
 import 'package:flop_edt_app/models/cours.dart';
 import 'package:flop_edt_app/themes/theme.dart';
 import 'package:flop_edt_app/utils/constants.dart';

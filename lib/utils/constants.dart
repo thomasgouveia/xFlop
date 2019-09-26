@@ -100,3 +100,4 @@ Map<String, Map<String, int>> constraints = {
 const AUTHOR = 'Thomas Gouveia';
 const VERSION = 'v0.2 bêta';
 const HELPER_EMAIL = 'xflop.dev@gmail.com';
+const LOGO_ASSET_PATH = 'assets/logo.png';

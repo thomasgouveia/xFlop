@@ -19,7 +19,7 @@ class MyDateFormat {
     12: 'décembre',
   };
 
-  MyDateFormat(@required this._time, @required this._type);
+  MyDateFormat(this._time, this._type);
 
   String get date => _format();
 

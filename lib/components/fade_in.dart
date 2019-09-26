@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_animations/simple_animations.dart';
 
+///[Widget] permettant de créer l'animation lors de l'affichage des cours
 class FadeIn extends StatelessWidget {
   final double delay;
   final Widget child;

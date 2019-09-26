@@ -2,6 +2,7 @@ import 'package:flop_edt_app/components/fade_in.dart';
 import 'package:flop_edt_app/themes/theme.dart';
 import 'package:flutter/material.dart';
 
+///DEPRECAPTED
 class DefaultCoursContainer extends StatelessWidget {
   final double delay;
   final bool animate;

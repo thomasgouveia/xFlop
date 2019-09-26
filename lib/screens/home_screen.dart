@@ -141,7 +141,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
 
   ///Recalcule la date du jour en fonction d—u changement de vue
   _handleDayChanged(int index) => Timer(
-      Duration(milliseconds: 200),
+      Duration(milliseconds: 250),
       () => setState(() {
             todayDate.weekday <= index
                 ? todayDate = todayDate.add(Duration(days: 1))
@@ -182,7 +182,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
       return Scaffold(
         backgroundColor: theme.primary,
         appBar: CustomAppBar(
-            todayDate: todayDate, context: context, preferences: preferences),
+            todayDate: todayDate, context: context, preferences: preferences, theme: theme),
         body: isLoading
             ? LoadingWidget(
                 semaine: _currentLoading,

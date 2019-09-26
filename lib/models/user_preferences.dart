@@ -1,7 +1,6 @@
 import 'package:flop_edt_app/models/groups.dart';
-import 'package:flop_edt_app/utils/shared_storage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+///Classe qui modélise les préférences utilisateurs
 class Preferences {
   Group group;
   String promo;

@@ -5,10 +5,8 @@ class ConnectionChecker {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile ||
         connectivityResult == ConnectivityResult.wifi) {
-      print("Connected");
       return true;
     } else if (connectivityResult == ConnectivityResult.none) {
-      print("Not connected");
       return false;
     }
   }

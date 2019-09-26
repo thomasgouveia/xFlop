@@ -126,6 +126,7 @@ class _ParametersState extends State<Parameters> {
                 ),
               ],
             ),
+            /*
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -142,6 +143,7 @@ class _ParametersState extends State<Parameters> {
                 ),
               ],
             ),
+            */
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
