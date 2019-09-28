@@ -57,6 +57,9 @@ Map<String, List<Group>> GROUPES = {
   'RT2A': [
     Group(groupe: '2GAa', parent: '2G1a'),
     Group(groupe: '2GBa', parent: '2G1a'),
+  ],
+  'APSIO': [
+    Group(groupe: 'LP', parent: ''),
   ]
 };
 
@@ -69,10 +72,12 @@ const DEPARTEMENTS = [
   'RT2',
   'RT2A',
   'CS1',
-  'CS2'
+  'CS2',
+  'APSIO',
 ];
 
 Map<String, Map<String, int>> constraints = {
+  'APSI': {'DS': 90, 'TD': 90, 'TP': 90, 'CM': 90},
   'INFO': {'DS': 90, 'TD': 90, 'TP': 90, 'CM': 90},
   'CS': {'Exam': 90, 'TD': 90, 'CC': 90, 'CM': 90},
   'GIM': {

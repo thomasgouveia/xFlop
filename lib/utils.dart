@@ -16,8 +16,9 @@ const DAY_INDEX = [
 Future<List<List<dynamic>>> loadDataFromServer(
     int week, int year, String promo) async {
   List<List<dynamic>> listeCours = [];
+  var dep = promo == 'APSI' ? 'INFO' : promo;
   var url =
-      'https://flopedt.iut-blagnac.fr/edt/$promo/fetch_cours_pl/$year/$week/0';
+      'https://flopedt.iut-blagnac.fr/edt/$dep/fetch_cours_pl/$year/$week/0';
   return http.get(url).then((response) {
     if (response.statusCode == 200) {
       listeCours = const CsvToListConverter().convert(response.body);

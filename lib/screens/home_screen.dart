@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flop_edt_app/components/custom_appbar.dart';
 import 'package:flop_edt_app/components/edt_viewer.dart';
+import 'package:flop_edt_app/components/empty_day.dart';
 import 'package:flop_edt_app/components/loading_widget.dart';
 import 'package:flop_edt_app/components/no_connection_screen.dart';
 import 'package:flop_edt_app/components/week_chooser.dart';
@@ -182,7 +183,10 @@ class _AppStateProviderState extends State<AppStateProvider> {
       return Scaffold(
         backgroundColor: theme.primary,
         appBar: CustomAppBar(
-            todayDate: todayDate, context: context, preferences: preferences, theme: theme),
+            todayDate: todayDate,
+            context: context,
+            preferences: preferences,
+            theme: theme),
         body: isLoading
             ? LoadingWidget(
                 semaine: _currentLoading,
@@ -211,13 +215,18 @@ class _AppStateProviderState extends State<AppStateProvider> {
                         onPageChanged: _handleDayChanged,
                         itemCount: courses[defaultWeek].length,
                         itemBuilder: (context, int index) {
-                          return EDTViewer(
-                            listCourses: applyFilters(defaultWeek),
-                            promo: departement,
-                            animate: preferences.isAnimated,
-                            theme: theme,
-                            today: todayDate,
-                          );
+                          List<Cours> l = applyFilters(defaultWeek);
+                          return l.length == 0
+                              ? EmptyDay(
+                                  theme: theme,
+                                )
+                              : EDTViewer(
+                                  listCourses: l,
+                                  promo: departement,
+                                  animate: preferences.isAnimated,
+                                  theme: theme,
+                                  today: todayDate,
+                                );
                         },
                       ),
                     ),
