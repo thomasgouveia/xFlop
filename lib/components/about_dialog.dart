@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flop_edt_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -61,13 +63,21 @@ class CustomDialog extends StatelessWidget {
             ),
           ),
           SizedBox(height: 16.0),
-          Text(
-            'Application en cours de développement, susceptible de comporter des bugs. \n\nPour toute question ou problème :',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14.0,
-            ),
-          ),
+          Platform.isIOS
+              ? Text(
+                  'Pour toute question ou problème :',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14.0,
+                  ),
+                )
+              : Text(
+                  'Application en cours de développement, susceptible de comporter des bugs. \n\nPour toute question ou problème :',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14.0,
+                  ),
+                ),
           Text(
             HELPER_EMAIL,
             style: TextStyle(fontWeight: FontWeight.bold),

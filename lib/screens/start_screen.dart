@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flop_edt_app/models/groups.dart';
 import 'package:flop_edt_app/navigator/app_navigator.dart';
 import 'package:flop_edt_app/utils/constants.dart';
@@ -79,7 +81,7 @@ class _StartPageState extends State<StartPage> {
         Positioned(
           bottom: 20,
           right: 20,
-          child: Text('xFlop! $VERSION'),
+          child: Platform.isIOS ? Container() : Text('xFlop! $VERSION'),
         ),
       ],
     ));
