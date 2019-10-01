@@ -14,6 +14,7 @@ class Cours {
   var startTime;
   var color;
   var textColor;
+  var coursDep;
   DateTime dateDebut;
   DateTime dateFin;
   TimeOfDay heure;
@@ -32,6 +33,7 @@ class Cours {
       this.indexInSemaine,
       this.startTime,
       this.heure,
+      this.coursDep,
       this.dateDebut,
       this.dateFin});
 

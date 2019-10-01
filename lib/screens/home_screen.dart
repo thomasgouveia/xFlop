@@ -26,6 +26,7 @@ class AppStateProvider extends StatefulWidget {
 
 class _AppStateProviderState extends State<AppStateProvider> {
   bool isLoading = true;
+  bool modeProf = true;
   bool isConnected;
   int _currentLoading; //For screen loading
 
@@ -126,15 +127,22 @@ class _AppStateProviderState extends State<AppStateProvider> {
   ///initialise la liste des cours
   Future<Map> initData(int week) async {
     Map weekMap = setMap();
-    List<List<dynamic>> list = await loadDataFromServer(
-        week, week == 1 ? todayDate.year + 1 : todayDate.year, departement);
+    List<List<dynamic>> list = modeProf
+        ? await loadDataFromServerProf(
+            week, week == 1 ? todayDate.year + 1 : todayDate.year, 'IC')
+        : await loadDataFromServer(
+            week, week == 1 ? todayDate.year + 1 : todayDate.year, departement);
+    print(list.length);
     for (int i = 1; i < list.length; i++) {
       var sublist = list[i];
       Cours cours = Cours.fromCSV(sublist);
+      cours.coursDep = cours.nomPromo == 'RT2A'
+          ? cours.nomPromo.substring(0, cours.nomPromo.length - 2)
+          : cours.nomPromo.substring(0, cours.nomPromo.length - 1);
       cours.dateDebut = DateTime(todayDate.year, todayDate.month, todayDate.day,
           cours.heure.hour, cours.heure.minute);
       cours.dateFin = cours.dateDebut
-          .add(Duration(minutes: constraints[departement][cours.coursType]));
+          .add(Duration(minutes: constraints[cours.coursDep][cours.coursType]));
       weekMap[cours.indexInSemaine].add(cours);
     }
     return weekMap;
@@ -168,8 +176,9 @@ class _AppStateProviderState extends State<AppStateProvider> {
   }
 
   ///Applique les filtres utilisateurs sur la liste de cours (évite de fetch à chaque changement)
-  List<Cours> applyFilters(int index) =>
-      filter(index, courses, todayDate, preferences);
+  List<Cours> applyFilters(int index) => modeProf
+      ? filterProf(index, courses, todayDate, preferences)
+      : filter(index, courses, todayDate, preferences);
 
   ///Construit l'interface en fonction de l'état de l'application
   Widget buildContent() {

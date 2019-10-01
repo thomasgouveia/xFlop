@@ -42,7 +42,7 @@ class EDTViewer extends StatelessWidget {
       if (previous == null) {
         previous = cours;
       }
-      double height = (constraints[promo][cours.coursType] + 10)
+      double height = (constraints[cours.coursDep][cours.coursType] + 10)
           .toDouble(); //On calcule la hauteur du container en fonction de la durée du cours
       var diff = cours == previous
           ? Duration(hours: cours.dateDebut.hour - 8)

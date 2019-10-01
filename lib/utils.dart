@@ -3,15 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 
-const DAY_INDEX = [
-  "Lun.",
-  "Mar.",
-  "Mer.",
-  "Jeu.",
-  "Ven.",
-  "Sam.",
-  "Dim."
-];
+const DAY_INDEX = ["Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam.", "Dim."];
 
 Future<List<List<dynamic>>> loadDataFromServer(
     int week, int year, String promo) async {
@@ -19,6 +11,19 @@ Future<List<List<dynamic>>> loadDataFromServer(
   var dep = promo == 'APSI' ? 'INFO' : promo;
   var url =
       'https://flopedt.iut-blagnac.fr/edt/$dep/fetch_cours_pl/$year/$week/0';
+  return http.get(url).then((response) {
+    if (response.statusCode == 200) {
+      listeCours = const CsvToListConverter().convert(response.body);
+    }
+    return listeCours;
+  });
+}
+
+Future<List<List<dynamic>>> loadDataFromServerProf(
+    int week, int year, String prof) async {
+  List<List<dynamic>> listeCours = [];
+  var url =
+      'https://flopedt.iut-blagnac.fr/edt/INFO/fetch_tutor_courses/$year/$week/$prof';
   return http.get(url).then((response) {
     if (response.statusCode == 200) {
       listeCours = const CsvToListConverter().convert(response.body);

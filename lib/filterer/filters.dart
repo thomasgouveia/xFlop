@@ -20,6 +20,16 @@ List<Cours> filter(int index, Map<int, Map<int, List<Cours>>> courses,
               cours.coursType == 'Exam' ||
               cours.coursType == 'Examen'))
       .toList();
+
+  ///On trie grâce à la date
+  filtered.sort((c1, c2) => c1.dateDebut.compareTo(c2.dateDebut));
+  return filtered;
+}
+
+List<Cours> filterProf(int index, Map<int, Map<int, List<Cours>>> courses,
+    DateTime date, Preferences preferences) {
+  List<Cours> filtered = courses[index][date.weekday];
+
   ///On trie grâce à la date
   filtered.sort((c1, c2) => c1.dateDebut.compareTo(c2.dateDebut));
   return filtered;

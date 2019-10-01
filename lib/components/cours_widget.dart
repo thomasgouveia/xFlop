@@ -19,7 +19,8 @@ class CoursWidget extends StatelessWidget {
       this.animate,
       this.theme,
       this.today,
-      this.height, this.isLunchTime})
+      this.height,
+      this.isLunchTime})
       : super(key: key);
 
   @override
@@ -43,7 +44,7 @@ class CoursWidget extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black26,
-                    offset: Offset(2.0, 5.0),
+                    offset: Offset(5.0, 5.0),
                     blurRadius: 10.0,
                   )
                 ],
