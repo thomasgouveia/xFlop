@@ -10,6 +10,7 @@ class EDTViewer extends StatelessWidget {
   final bool animate;
   final DateTime date;
   final MyTheme theme;
+  final bool isProf;
   final DateTime today;
 
   const EDTViewer(
@@ -18,6 +19,7 @@ class EDTViewer extends StatelessWidget {
       this.promo,
       this.animate,
       this.date,
+      this.isProf = false,
       this.theme,
       this.today})
       : super(key: key);
@@ -33,6 +35,7 @@ class EDTViewer extends StatelessWidget {
   ///Construit la liste des cours de la journée
   ///Prends en compte la durée d'un cours, les heures de trous, les différentes heure en débuts de journée
   ///et la pause du midi.
+  ///Diff est égal à -1 si les cours sont au mêmes moment
   List<Widget> buildCourses(BuildContext context) {
     List<Widget> grid = [];
     Cours previous;
@@ -54,21 +57,55 @@ class EDTViewer extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 2, top: 2),
         child: Row(
           children: <Widget>[
-            Expanded(
-                child: CoursWidget(
-              height: height,
-              today: today,
-              cours: cours,
-              delay: delay,
-              animate: animate,
-              theme: theme,
-            )),
+            diff.inHours == -1
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width / 2,
+                        child: CoursWidget(
+                          height: height,
+                          today: today,
+                          cours: cours,
+                          delay: delay,
+                          animate: animate,
+                          isProf: isProf,
+                          theme: theme,
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width / 2 - 20,
+                        padding: const EdgeInsets.only(left: 25),
+                        child: CoursWidget(
+                          height: height,
+                          today: today,
+                          cours: previous,
+                          isHour: false,
+                          isProf: isProf,
+                          delay: delay,
+                          animate: animate,
+                          theme: theme,
+                        ),
+                      ),
+                    ],
+                  )
+                : Expanded(
+                    child: CoursWidget(
+                      height: height,
+                      today: today,
+                      cours: cours,
+                      delay: delay,
+                      animate: animate,
+                      theme: theme,
+                      isProf: isProf,
+                    ),
+                  )
           ],
         ),
       );
       Widget noCoursesSpacer = Padding(
         padding: EdgeInsets.only(
-            top: diff.inHours == 0
+            top: diff.inHours == 0 || diff.inHours == -1
                 ? 0.0
                 : (diff.inMinutes * 90 / 90).toDouble()),
       );

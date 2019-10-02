@@ -20,6 +20,9 @@ import 'package:flop_edt_app/utils/week_utils.dart';
 import 'package:flutter/material.dart';
 
 class AppStateProvider extends StatefulWidget {
+  final Map<String, List<dynamic>> profs;
+
+  const AppStateProvider({Key key, this.profs}) : super(key: key);
   @override
   _AppStateProviderState createState() => _AppStateProviderState();
 }
@@ -27,6 +30,7 @@ class AppStateProvider extends StatefulWidget {
 class _AppStateProviderState extends State<AppStateProvider> {
   bool isLoading = true;
   bool modeProf = true;
+  String prof = 'IC';
   bool isConnected;
   int _currentLoading; //For screen loading
 
@@ -129,10 +133,9 @@ class _AppStateProviderState extends State<AppStateProvider> {
     Map weekMap = setMap();
     List<List<dynamic>> list = modeProf
         ? await loadDataFromServerProf(
-            week, week == 1 ? todayDate.year + 1 : todayDate.year, 'IC')
+            week, week == 1 ? todayDate.year + 1 : todayDate.year, prof)
         : await loadDataFromServer(
             week, week == 1 ? todayDate.year + 1 : todayDate.year, departement);
-    print(list.length);
     for (int i = 1; i < list.length; i++) {
       var sublist = list[i];
       Cours cours = Cours.fromCSV(sublist);
@@ -182,7 +185,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
 
   ///Construit l'interface en fonction de l'état de l'application
   Widget buildContent() {
-    if (preferences == null) {
+    if (preferences != null) {
       return StartPage();
     } else if (!isConnected) {
       return NoConnection(
@@ -218,6 +221,24 @@ class _AppStateProviderState extends State<AppStateProvider> {
                         ),
                       ),
                     ),
+                    modeProf
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 8, bottom: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Vous êtes : $prof',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: theme.textColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Container(),
                     Expanded(
                       child: PageView.builder(
                         controller: _viewerController,
@@ -234,6 +255,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
                                   promo: departement,
                                   animate: preferences.isAnimated,
                                   theme: theme,
+                                  isProf: modeProf,
                                   today: todayDate,
                                 );
                         },

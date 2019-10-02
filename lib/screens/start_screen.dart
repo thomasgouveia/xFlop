@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flop_edt_app/components/adaptative_switch.dart';
 import 'package:flop_edt_app/models/groups.dart';
 import 'package:flop_edt_app/navigator/app_navigator.dart';
 import 'package:flop_edt_app/utils/constants.dart';
@@ -37,6 +38,23 @@ class _StartPageState extends State<StartPage> {
               'Pour obtenir ton emploi du temps, merci de séléctionner ta promo et ton groupe ci-dessous. \n\nTu pourras modifier tes préférences directement depuis les paramètres à l\'avenir.',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: fontSize),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Mode professeur',
+                    style: TextStyle(fontSize: fontSize),
+                  ),
+                  AdaptableSwitch(
+                      switchValue: false,
+                      valueChanged: (test) {
+                        print(test);
+                      }),
+                ],
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 30),

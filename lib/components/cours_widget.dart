@@ -11,6 +11,8 @@ class CoursWidget extends StatelessWidget {
   final bool animate;
   final MyTheme theme;
   final DateTime today;
+  final bool isProf;
+  final bool isHour;
   final double height;
   const CoursWidget(
       {Key key,
@@ -20,6 +22,8 @@ class CoursWidget extends StatelessWidget {
       this.theme,
       this.today,
       this.height,
+      this.isProf = false,
+      this.isHour = true,
       this.isLunchTime})
       : super(key: key);
 
@@ -35,7 +39,7 @@ class CoursWidget extends StatelessWidget {
       opacity: isFinished ? 0.3 : 1, //! TEST
       child: Row(
         children: <Widget>[
-          coursHeure,
+          isHour ? coursHeure : Container(),
           Expanded(
             child: Container(
               decoration: BoxDecoration(
@@ -54,7 +58,10 @@ class CoursWidget extends StatelessWidget {
               child: Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[coursType, coursInfo],
+                  children: <Widget>[
+                    isProf ? Container() : coursType,
+                    coursInfo
+                  ],
                 ),
               ),
             ),
@@ -93,14 +100,14 @@ class CoursWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              cours.module,
+              isProf ? '${cours.coursType} ${cours.module}' : cours.module,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                   color: hexToColor(cours.textColor)),
             ),
             Text(
-              cours.nomProf,
+              isProf ? '${cours.nomPromo} - ${cours.nomGroupe}' : cours.nomProf,
               style: TextStyle(color: hexToColor(cours.textColor)),
             ),
             Text(
