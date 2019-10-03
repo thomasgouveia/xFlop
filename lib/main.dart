@@ -26,28 +26,6 @@ class XFlopApp extends StatefulWidget {
 }
 
 class _XFlopAppState extends State<XFlopApp> {
-  Map<String, List<dynamic>> allTutors = {};
-
-  @override
-  void initState() {
-    super.initState();
-    ['INFO', 'RT', 'GIM', 'CS'].forEach((departement) async =>
-        allTutors[departement] = await fetchProfsByDep(departement));
-  }
-
-  ///Crée la liste des professeurs en fonction du département
-  Future<List<dynamic>> fetchProfsByDep(String departement) async {
-    List<dynamic> listeProfs = [];
-    var url =
-        'https://flopedt.iut-blagnac.fr/edt/$departement/fetch_all_tutors/';
-    return http.get(url).then((response) {
-      if (response.statusCode == 200) {
-        listeProfs = json.decode(response.body) as List;
-      }
-      return listeProfs;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -56,7 +34,7 @@ class _XFlopAppState extends State<XFlopApp> {
       theme: ThemeData(
         fontFamily: 'Poppins',
       ),
-      home: AppStateProvider(profs: allTutors),
+      home: AppStateProvider(),
     );
   }
 }

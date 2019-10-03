@@ -6,9 +6,10 @@ import 'package:flop_edt_app/screens/home_screen.dart';
 ///Classe modélisant les différentes routes de l'application
 class AppNavigator {
   ///Redirige vers la page des paramètres
-  static void toParameters(BuildContext context, Preferences preferences) =>
+  static void toParameters(
+          BuildContext context, Preferences preferences, Map profs) =>
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => Parameters(preferences: preferences)));
+          builder: (context) => Parameters(preferences: preferences, profs: profs,)));
 
   ///Redirige vers l'emploi du temps
   static void toEDT(BuildContext context) =>

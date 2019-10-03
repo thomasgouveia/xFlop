@@ -20,17 +20,12 @@ import 'package:flop_edt_app/utils/week_utils.dart';
 import 'package:flutter/material.dart';
 
 class AppStateProvider extends StatefulWidget {
-  final Map<String, List<dynamic>> profs;
-
-  const AppStateProvider({Key key, this.profs}) : super(key: key);
   @override
   _AppStateProviderState createState() => _AppStateProviderState();
 }
 
 class _AppStateProviderState extends State<AppStateProvider> {
   bool isLoading = true;
-  bool modeProf = true;
-  String prof = 'IC';
   bool isConnected;
   int _currentLoading; //For screen loading
 
@@ -46,6 +41,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
   List<int> nextWeeks;
 
   Map<int, Map<int, List<Cours>>> courses;
+  Map<String, List<dynamic>> allTutors = {};
 
   //Booléen permettant de savoir si oui ou non la date calculée est un week end
   bool isWeekEnd;
@@ -65,7 +61,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
     nextWeeks = Week.calculateThreeNext(todayDate, defaultWeek);
     if (this.mounted) {
       loadPreferences().then((_) {
-        theme = MyTheme(preferences.isDarkMode);
+        theme = MyTheme(preferences.isDarkMode ?? false);
         departement = preferences.promo.substring(
             0,
             preferences.promo == 'RT2A'
@@ -92,11 +88,14 @@ class _AppStateProviderState extends State<AppStateProvider> {
     bool dark = await storage.readBool('dark');
     bool animate = await storage.readBool('animate');
     bool mono = await storage.readBool('mono');
+    bool mProf = await storage.readBool('isprof');
+    String prof = await storage.read('prof');
+    String profDep = await storage.read('profdep');
 
     //Check connection status :
     bool isConnected = await ConnectionChecker.isConnected();
     setState(() {
-      if (parent == null || promo == null) {
+      if (parent == null || promo == null || mProf == null) {
         storage.removeAll();
         this.preferences = null;
       } else {
@@ -104,6 +103,9 @@ class _AppStateProviderState extends State<AppStateProvider> {
         preferences = groupe != null && promo != null
             ? Preferences(
                 group: Group(groupe: groupe, parent: parent),
+                isProf: mProf,
+                prof: prof,
+                profDep: profDep,
                 promo: promo,
                 isDarkMode: dark ?? false,
                 isAnimated: animate ?? true,
@@ -115,6 +117,8 @@ class _AppStateProviderState extends State<AppStateProvider> {
 
   ///Charge toutes les semaines disponibles dans l'application
   loadAllWeeks() async {
+    ['INFO', 'RT', 'GIM', 'CS'].forEach((departement) async =>
+        allTutors[departement] = await fetchProfsByDep(departement));
     Map<int, Map<int, List<Cours>>> toSet = {};
     for (int i = 0; i < nextWeeks.length; i++) {
       setState(() {
@@ -131,9 +135,9 @@ class _AppStateProviderState extends State<AppStateProvider> {
   ///initialise la liste des cours
   Future<Map> initData(int week) async {
     Map weekMap = setMap();
-    List<List<dynamic>> list = modeProf
-        ? await loadDataFromServerProf(
-            week, week == 1 ? todayDate.year + 1 : todayDate.year, prof)
+    List<List<dynamic>> list = preferences.isProf
+        ? await loadDataFromServerProf(week,
+            week == 1 ? todayDate.year + 1 : todayDate.year, preferences.prof)
         : await loadDataFromServer(
             week, week == 1 ? todayDate.year + 1 : todayDate.year, departement);
     for (int i = 1; i < list.length; i++) {
@@ -179,14 +183,16 @@ class _AppStateProviderState extends State<AppStateProvider> {
   }
 
   ///Applique les filtres utilisateurs sur la liste de cours (évite de fetch à chaque changement)
-  List<Cours> applyFilters(int index) => modeProf
+  List<Cours> applyFilters(int index) => preferences.isProf
       ? filterProf(index, courses, todayDate, preferences)
       : filter(index, courses, todayDate, preferences);
 
   ///Construit l'interface en fonction de l'état de l'application
   Widget buildContent() {
-    if (preferences != null) {
-      return StartPage();
+    if (preferences == null) {
+      return StartPage(
+        profs: allTutors,
+      );
     } else if (!isConnected) {
       return NoConnection(
         theme: theme,
@@ -198,6 +204,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
             todayDate: todayDate,
             context: context,
             preferences: preferences,
+            profs: allTutors,
             theme: theme),
         body: isLoading
             ? LoadingWidget(
@@ -221,14 +228,14 @@ class _AppStateProviderState extends State<AppStateProvider> {
                         ),
                       ),
                     ),
-                    modeProf
+                    preferences.isProf
                         ? Padding(
                             padding: const EdgeInsets.only(top: 8, bottom: 8),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                  'Vous êtes : $prof',
+                                  'Vous êtes : ${preferences.prof}',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: theme.textColor,
@@ -255,7 +262,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
                                   promo: departement,
                                   animate: preferences.isAnimated,
                                   theme: theme,
-                                  isProf: modeProf,
+                                  isProf: preferences.isProf,
                                   today: todayDate,
                                 );
                         },

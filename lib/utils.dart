@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -16,6 +18,19 @@ Future<List<List<dynamic>>> loadDataFromServer(
       listeCours = const CsvToListConverter().convert(response.body);
     }
     return listeCours;
+  });
+}
+
+///Crée la liste des professeurs en fonction du département
+Future<List<dynamic>> fetchProfsByDep(String departement) async {
+  List<dynamic> listeProfs = [];
+  var url = 'https://flopedt.iut-blagnac.fr/edt/$departement/fetch_all_tutors/';
+  return http.get(url).then((response) {
+    if (response.statusCode == 200) {
+      listeProfs = json.decode(response.body) as List;
+    }
+    listeProfs.sort((p1, p2) => p1.compareTo(p2));
+    return listeProfs;
   });
 }
 

@@ -10,8 +10,9 @@ import 'package:flutter/material.dart';
 
 class Parameters extends StatefulWidget {
   final Preferences preferences;
+  final Map profs;
 
-  const Parameters({Key key, this.preferences}) : super(key: key);
+  const Parameters({Key key, this.preferences, this.profs}) : super(key: key);
 
   @override
   _ParametersState createState() => _ParametersState();
@@ -23,6 +24,9 @@ class _ParametersState extends State<Parameters> {
   bool isDark;
   bool isMono;
   bool isAnimated;
+  bool isProf;
+  String selectedProf;
+  String selectedDep;
   MyTheme theme;
 
   String error = "";
@@ -36,6 +40,9 @@ class _ParametersState extends State<Parameters> {
     isDark = widget.preferences.isDarkMode;
     isMono = widget.preferences.isMono;
     isAnimated = widget.preferences.isAnimated;
+    selectedProf = widget.preferences.prof;
+    selectedDep = widget.preferences.profDep;
+    isProf = widget.preferences.isProf;
     theme = MyTheme(isDark);
   }
 
@@ -86,13 +93,25 @@ class _ParametersState extends State<Parameters> {
                 ),
               ],
             ),
-            buildDropdown(
-                array: DEPARTEMENTS, valeur: selectedPromo, text: 'Promo :'),
-            buildDropdownGroup(
-              array: GROUPES[selectedPromo],
-              valeur: selectedGroupe,
-              text: 'Groupe: ',
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  'Mode professeur',
+                  style: TextStyle(color: theme.textColor),
+                ),
+                AdaptableSwitch(
+                  switchValue: isProf,
+                  valueChanged: (val) {
+                    setState(() {
+                      this.isProf = !this.isProf;
+                      storage.saveBool('isprof', val);
+                    });
+                  },
+                ),
+              ],
             ),
+            this.isProf ? profsChooser() : studentChooser(),
             Divider(
               color: Colors.grey,
             ),
@@ -163,6 +182,91 @@ class _ParametersState extends State<Parameters> {
           ],
         ),
       ),
+    );
+  }
+
+  Column studentChooser() {
+    return Column(
+      children: <Widget>[
+        buildDropdown(
+            array: DEPARTEMENTS, valeur: selectedPromo, text: 'Promo :'),
+        buildDropdownGroup(
+          array: GROUPES[selectedPromo],
+          valeur: selectedGroupe,
+          text: 'Groupe: ',
+        ),
+      ],
+    );
+  }
+
+  Widget profsChooser() {
+    List<String> dep = widget.profs.keys.toList();
+    List<dynamic> profs = widget.profs[selectedDep];
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text('Département :', style: TextStyle(color: theme.textColor)),
+            Container(
+              width: 70,
+              child: Theme(
+                data: Theme.of(context).copyWith(
+                  canvasColor: theme.primary,
+                ),
+                child: DropdownButton<dynamic>(
+                  value: selectedDep,
+                  style: TextStyle(color: theme.textColor),
+                  items: dep.map((value) {
+                    return DropdownMenuItem<dynamic>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (dynamic s) {
+                    setState(() {
+                      this.selectedDep = s;
+                      this.selectedProf = widget.profs[s][1];
+                      storage.save('profdep', s);
+                      storage.save('prof', selectedProf);
+                    });
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text('Professeur :', style: TextStyle(color: theme.textColor)),
+            Container(
+              width: 70,
+              child: Theme(
+                data: Theme.of(context).copyWith(
+                  canvasColor: theme.primary,
+                ),
+                child: DropdownButton<String>(
+                  value: selectedProf,
+                  style: TextStyle(color: theme.textColor),
+                  items: profs.map((value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (p) {
+                    setState(() {
+                      this.selectedProf = p;
+                      storage.save('prof', p);
+                    });
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 

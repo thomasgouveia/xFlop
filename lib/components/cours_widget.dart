@@ -53,7 +53,7 @@ class CoursWidget extends StatelessWidget {
                   )
                 ],
               ),
-              margin: EdgeInsets.only(top: 2, bottom: 2),
+              margin: EdgeInsets.only(top: 2, bottom: 2, right: 10),
               height: height,
               child: Center(
                 child: Row(

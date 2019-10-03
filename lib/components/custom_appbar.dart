@@ -10,6 +10,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   CustomAppBar({
     Key key,
     @required this.theme,
+    @required this.profs,
     @required this.todayDate,
     @required this.context,
     @required this.preferences,
@@ -20,6 +21,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final BuildContext context;
   final MyTheme theme;
   final Preferences preferences;
+  final Map profs;
 
   @override
   final Size preferredSize; // default is 56.0
@@ -106,7 +108,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
   _handleMenuClicked(String value) {
     switch (value) {
       case MENU_SETTINGS_VALUE:
-        AppNavigator.toParameters(context, widget.preferences);
+        AppNavigator.toParameters(context, widget.preferences, widget.profs);
         break;
       case MENU_ABOUT_VALUE:
         showDialog(

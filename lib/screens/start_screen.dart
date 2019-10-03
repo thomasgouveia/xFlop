@@ -9,8 +9,9 @@ import 'package:flutter/material.dart';
 
 class StartPage extends StatefulWidget {
   final bool isDarkMode;
+  final Map profs;
 
-  const StartPage({Key key, this.isDarkMode}) : super(key: key);
+  const StartPage({Key key, this.isDarkMode, this.profs}) : super(key: key);
 
   @override
   _StartPageState createState() => _StartPageState();
@@ -19,8 +20,11 @@ class StartPage extends StatefulWidget {
 class _StartPageState extends State<StartPage> {
   String selectedPromo = 'INFO1';
   Group selectedGroupe = GROUPES['INFO1'][0];
+  String selectedDep = 'INFO';
+  String selectedProf = 'PSE';
 
   final fontSize = 16.0;
+  bool isProf = false;
 
   @override
   Widget build(BuildContext context) {
@@ -49,50 +53,16 @@ class _StartPageState extends State<StartPage> {
                     style: TextStyle(fontSize: fontSize),
                   ),
                   AdaptableSwitch(
-                      switchValue: false,
-                      valueChanged: (test) {
-                        print(test);
+                      switchValue: isProf,
+                      valueChanged: (b) {
+                        setState(() {
+                          this.isProf = b;
+                        });
                       }),
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 30, bottom: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  DropdownButton<String>(
-                    value: selectedPromo,
-                    items: DEPARTEMENTS.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String s) {
-                      setState(() {
-                        this.selectedPromo = s;
-                        this.selectedGroupe = GROUPES[s][0];
-                      });
-                    },
-                  ),
-                  DropdownButton<Group>(
-                    value: selectedGroupe,
-                    items: GROUPES[selectedPromo].map((Group value) {
-                      return DropdownMenuItem<Group>(
-                        value: value,
-                        child: Text(value.groupe),
-                      );
-                    }).toList(),
-                    onChanged: (Group g) {
-                      setState(() {
-                        this.selectedGroupe = g;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
+            isProf ? _profContent() : _studentContent(),
             _validationButton,
           ],
         ),
@@ -104,6 +74,86 @@ class _StartPageState extends State<StartPage> {
       ],
     ));
   }
+
+  Widget _profContent() {
+    List<String> dep = widget.profs.keys.toList();
+    List<dynamic> profs = widget.profs[selectedDep];
+    return Padding(
+      padding: const EdgeInsets.only(top: 30, bottom: 30),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          DropdownButton<dynamic>(
+            value: selectedDep,
+            items: dep.map((value) {
+              return DropdownMenuItem<dynamic>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+            onChanged: (dynamic s) {
+              setState(() {
+                this.selectedDep = s;
+                this.selectedProf = widget.profs[s][1];
+              });
+            },
+          ),
+          DropdownButton<String>(
+            value: selectedProf,
+            items: profs.map((value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+            onChanged: (p) {
+              setState(() {
+                this.selectedProf = p;
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _studentContent() => Padding(
+        padding: const EdgeInsets.only(top: 30, bottom: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            DropdownButton<String>(
+              value: selectedPromo,
+              items: DEPARTEMENTS.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              onChanged: (String s) {
+                setState(() {
+                  this.selectedPromo = s;
+                  this.selectedGroupe = GROUPES[s][0];
+                });
+              },
+            ),
+            DropdownButton<Group>(
+              value: selectedGroupe,
+              items: GROUPES[selectedPromo].map((Group value) {
+                return DropdownMenuItem<Group>(
+                  value: value,
+                  child: Text(value.groupe),
+                );
+              }).toList(),
+              onChanged: (Group g) {
+                setState(() {
+                  this.selectedGroupe = g;
+                });
+              },
+            ),
+          ],
+        ),
+      );
 
   Widget get headingLogo => Column(
         children: <Widget>[
@@ -127,9 +177,13 @@ class _StartPageState extends State<StartPage> {
             storage.save('promo', selectedPromo);
             storage.save('groupe', selectedGroupe.groupe);
             storage.save('parent', selectedGroupe.parent);
+            storage.save('prof', selectedProf);
+            storage.save('profdep', selectedDep);
+            storage.saveBool('isprof', isProf);
             storage.saveBool('dark', false);
             storage.saveBool('animate', true);
             storage.saveBool('mono', false);
+
             AppNavigator.toEDT(context);
           },
           padding: EdgeInsets.all(15),
