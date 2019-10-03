@@ -24,6 +24,6 @@ Propulsé grâce au SDK Flutter.
 - [x] Département RT
 - [x] Département INFO
 - [ ] Filtre des professeurs
-- [ ] Mode professeur
+- [x] Mode professeur
 - [x] Affichage des examens particuliers
 - [x] Mode sombre
