@@ -3,6 +3,7 @@ import 'package:flop_edt_app/components/day_text_widget.dart';
 import 'package:flop_edt_app/models/user_preferences.dart';
 import 'package:flop_edt_app/navigator/app_navigator.dart';
 import 'package:flop_edt_app/themes/theme.dart';
+import 'package:flop_edt_app/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flop_edt_app/utils/constants.dart';
 
@@ -38,11 +39,12 @@ class _CustomAppBarState extends State<CustomAppBar> {
   Widget build(BuildContext context) {
     return AppBar(
       leading: _leading,
-      backgroundColor: Colors.grey[900],
+      backgroundColor: widget.theme.primary,
       title: _title,
+      elevation: 0.0,
       centerTitle: false,
       actions: <Widget>[
-        DayTextWidget(todayDate: widget.todayDate),
+        DayTextWidget(todayDate: widget.todayDate, color: widget.theme.textColor),
         _menu,
       ],
     );
@@ -56,7 +58,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
         child: PopupMenuButton<String>(
           icon: Icon(
             Icons.more_vert,
-            color: Colors.white,
+            color: widget.theme.textColor,
           ),
           initialValue: '',
           offset: Offset(0, 100),
@@ -91,7 +93,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
   ///Retourne le [Text] titre
   Widget get _title => Text(
         'xFlop!',
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 24, color: widget.theme.textColor),
       );
 
   ///Retourne le logo de l'application
@@ -99,7 +101,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
         child: Center(
           child: Image.asset(
             LOGO_ASSET_PATH,
-            width: 45,
+            width: 60,
             fit: BoxFit.contain,
           ),
         ),

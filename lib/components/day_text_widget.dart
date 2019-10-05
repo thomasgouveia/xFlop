@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 class DayTextWidget extends StatelessWidget {
   const DayTextWidget({
     Key key,
+    this.color,
     @required this.todayDate,
   }) : super(key: key);
 
   final DateTime todayDate;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class DayTextWidget extends StatelessWidget {
           Text(
             "${DAY_INDEX[todayDate.weekday - 1]} ${MyDateFormat(todayDate, DateFormatType.DAY_SLASHES_MONTH).date}"
                 .toUpperCase(),
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 20, color: color),
           ),
         ],
       ),

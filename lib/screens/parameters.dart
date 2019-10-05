@@ -1,5 +1,7 @@
 import 'package:flop_edt_app/components/adaptative_switch.dart';
 import 'package:flop_edt_app/components/error_widget.dart';
+import 'package:flop_edt_app/components/parameters_item.dart';
+import 'package:flop_edt_app/main.dart';
 import 'package:flop_edt_app/models/groups.dart';
 import 'package:flop_edt_app/models/user_preferences.dart';
 import 'package:flop_edt_app/navigator/app_navigator.dart';
@@ -7,6 +9,8 @@ import 'package:flop_edt_app/themes/theme.dart';
 import 'package:flop_edt_app/utils/constants.dart';
 import 'package:flop_edt_app/utils/shared_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 
 class Parameters extends StatefulWidget {
   final Preferences preferences;
@@ -54,7 +58,7 @@ class _ParametersState extends State<Parameters> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
-            color: Colors.white,
+            color: theme.textColor,
           ),
           onPressed: () {
             if (selectedGroupe != null) {
@@ -66,8 +70,12 @@ class _ParametersState extends State<Parameters> {
             }
           },
         ),
-        backgroundColor: Colors.grey[900],
-        title: Text('Paramètres de l\'application'),
+        backgroundColor: theme.primary,
+        elevation: 0.0,
+        title: Text(
+          'Paramètres de l\'application',
+          style: TextStyle(color: theme.textColor),
+        ),
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -82,68 +90,77 @@ class _ParametersState extends State<Parameters> {
             Padding(
               padding: EdgeInsets.only(top: 15),
             ),
-            Row(
-              children: <Widget>[
-                Text(
-                  'Général',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: theme.textColor),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'Mode professeur',
-                  style: TextStyle(color: theme.textColor),
-                ),
-                AdaptableSwitch(
-                  switchValue: isProf,
-                  valueChanged: (val) {
-                    setState(() {
-                      this.isProf = !this.isProf;
-                      storage.saveBool('isprof', val);
-                    });
-                  },
-                ),
-              ],
+            heading(text: 'Général'),
+            ParametersItem(
+              label: 'Mode professeur',
+              textColor: theme.textColor,
+              child: AdaptableSwitch(
+                switchValue: isProf,
+                valueChanged: (val) {
+                  setState(() {
+                    this.isProf = !this.isProf;
+                    storage.saveBool('isprof', val);
+                  });
+                },
+              ),
             ),
             this.isProf ? profsChooser() : studentChooser(),
             Divider(
               color: Colors.grey,
             ),
-            Row(
-              children: <Widget>[
-                Text(
-                  'Affichage',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: theme.textColor),
-                ),
-              ],
+            heading(text: 'Affichage'),
+            ParametersItem(
+              label: 'Mode sombre',
+              textColor: theme.textColor,
+              child: AdaptableSwitch(
+                switchValue: isDark,
+                valueChanged: (val) {
+                  setState(() {
+                    this.isDark = !isDark;
+                    theme = MyTheme(isDark);
+                    storage.saveBool('dark', val);
+                    FlutterStatusbarcolor.setStatusBarWhiteForeground(
+                        isDark ? true : false);
+                  });
+                },
+              ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'Mode sombre',
-                  style: TextStyle(color: theme.textColor),
+            ParametersItem(
+              label: 'Animation d\'apparition',
+              textColor: theme.textColor,
+              child: AdaptableSwitch(
+                switchValue: isAnimated,
+                valueChanged: (val) {
+                  setState(() {
+                    this.isAnimated = val;
+                    storage.saveBool('animate', val);
+                  });
+                },
+              ),
+            ),
+            Divider(
+              color: Colors.grey,
+            ),
+            heading(text: 'Données en cache'),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+            ),
+            ParametersItem(
+              label: 'Vider le cache \n(réinitialise l\'application)',
+              textColor: theme.textColor,
+              child: RaisedButton(
+                color: Colors.red,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25)),
+                child: Icon(
+                  Icons.clear,
+                  color: Colors.white,
                 ),
-                AdaptableSwitch(
-                  switchValue: isDark,
-                  valueChanged: (val) {
-                    setState(() {
-                      this.isDark = !isDark;
-                      theme = MyTheme(isDark);
-                      storage.saveBool('dark', val);
-                    });
-                  },
-                ),
-              ],
+                onPressed: () {
+                  storage.removeAll();
+                  RestartWidget.restartApp(context);
+                },
+              ),
             ),
             /*
             Row(
@@ -163,27 +180,23 @@ class _ParametersState extends State<Parameters> {
               ],
             ),
             */
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text('Animation d\'apparition',
-                    style: TextStyle(color: theme.textColor)),
-                AdaptableSwitch(
-                  switchValue: isAnimated,
-                  valueChanged: (val) {
-                    setState(() {
-                      this.isAnimated = val;
-                      storage.saveBool('animate', val);
-                    });
-                  },
-                ),
-              ],
-            )
           ],
         ),
       ),
     );
   }
+
+  Widget heading({text}) => Row(
+        children: <Widget>[
+          Text(
+            text,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: theme.textColor),
+          ),
+        ],
+      );
 
   Column studentChooser() {
     return Column(

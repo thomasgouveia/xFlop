@@ -1,14 +1,11 @@
-import 'dart:convert';
-
 import 'package:flop_edt_app/screens/home_screen.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.light));
+      statusBarIconBrightness: Brightness.dark));
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);

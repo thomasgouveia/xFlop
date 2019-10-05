@@ -21,7 +21,7 @@ class NoConnection extends StatelessWidget {
               size: 100,
               color: theme.textColor,
             ),
-            Text('Il semble que vous ne soyez pas connecté à internet..',
+            Text('Il semble que vous ne soyez pas connecté à internet...',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 18, color: theme.textColor)),
             Text(

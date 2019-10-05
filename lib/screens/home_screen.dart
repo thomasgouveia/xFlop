@@ -18,6 +18,7 @@ import 'package:flop_edt_app/utils/map_utils.dart';
 import 'package:flop_edt_app/utils/shared_storage.dart';
 import 'package:flop_edt_app/utils/week_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 
 class AppStateProvider extends StatefulWidget {
   @override
@@ -41,7 +42,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
   List<int> nextWeeks;
 
   Map<int, Map<int, List<Cours>>> courses;
-  Map<String, List<dynamic>> allTutors = {};
+  Map<String, List<dynamic>> allTutors;
 
   //Booléen permettant de savoir si oui ou non la date calculée est un week end
   bool isWeekEnd;
@@ -60,17 +61,17 @@ class _AppStateProviderState extends State<AppStateProvider> {
         defaultWeek; //Current garde toujours la semaine active en mémoire
     nextWeeks = Week.calculateThreeNext(todayDate, defaultWeek);
     if (this.mounted) {
-      loadPreferences().then((_) {
-        theme = MyTheme(preferences.isDarkMode ?? false);
-        departement = preferences.promo.substring(
-            0,
-            preferences.promo == 'RT2A'
-                ? preferences.promo.length - 2
-                : preferences.promo.length - 1);
-        if (isConnected) {
-          loadAllWeeks();
-        }
-      });
+      fetchProfs().then((_) => loadPreferences().then((_) {
+            theme = MyTheme(preferences.isDarkMode ?? false);
+            departement = preferences.promo.substring(
+                0,
+                preferences.promo == 'RT2A'
+                    ? preferences.promo.length - 2
+                    : preferences.promo.length - 1);
+            if (isConnected) {
+              loadAllWeeks();
+            }
+          }));
     }
   }
 
@@ -117,19 +118,24 @@ class _AppStateProviderState extends State<AppStateProvider> {
 
   ///Charge toutes les semaines disponibles dans l'application
   loadAllWeeks() async {
-    ['INFO', 'RT', 'GIM', 'CS'].forEach((departement) async =>
-        allTutors[departement] = await fetchProfsByDep(departement));
     Map<int, Map<int, List<Cours>>> toSet = {};
     for (int i = 0; i < nextWeeks.length; i++) {
+      var current = nextWeeks[i];
       setState(() {
-        _currentLoading = nextWeeks[i];
+        _currentLoading = current;
       });
-      toSet[nextWeeks[i]] = await initData(nextWeeks[i]);
+      toSet[current] = await initData(current);
     }
     setState(() {
       courses = toSet;
       this.isLoading = false;
     });
+  }
+
+  Future fetchProfs() async {
+    allTutors = {};
+    ['INFO', 'RT', 'GIM', 'CS'].forEach((departement) async =>
+        allTutors[departement] = await fetchProfsByDep(departement));
   }
 
   ///initialise la liste des cours
@@ -186,10 +192,11 @@ class _AppStateProviderState extends State<AppStateProvider> {
   List<Cours> applyFilters(int index) => preferences.isProf
       ? filterProf(index, courses, todayDate, preferences)
       : filter(index, courses, todayDate, preferences);
-
+  
   ///Construit l'interface en fonction de l'état de l'application
   Widget buildContent() {
-    if (preferences == null) {
+    if (preferences == null && allTutors != null) {
+      FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
       return StartPage(
         profs: allTutors,
       );
