@@ -2,9 +2,10 @@
 
 Un application mobile IOS & Android de visualisation d'emploi du temps généré par le logiciel [FlopEDT](http://www.flopedt.org/) 
 
-Pour l'instant destiné aux étudiants informatiques de l'IUT de Blagnac. 
+Pour l'instant destiné aux étudiants et aux professeurs de l'IUT de Blagnac. 
 
 Propulsé grâce au SDK Flutter. 
+/!\ Le code est pour l'instant assez mal organisé. Il sera revu plus tard.
 
 ![Screen shot of app](https://image.noelshack.com/fichiers/2019/38/7/1569176127-capture-d-ecran-2019-09-22-a-20-15-06.png "xFlop!")
 
