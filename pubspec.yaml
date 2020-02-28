@@ -1,5 +1,5 @@
 name: flop_edt_app
-description: A new Flutter project.
+description: Application de l'emploi du temps FlopEDT.
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -11,7 +11,7 @@ description: A new Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.4.1+16
+version: 2.0.0+1
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -28,6 +28,7 @@ dependencies:
   flutter_statusbarcolor: ^0.2.2
   jiffy: ^2.1.2
   intl: ^0.16.0
+  flutter_dotenv: ^2.1.0
   #json_serializable: ^3.2.2
   #json_annotation: ^3.0.0
 
@@ -60,8 +61,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - .env
     - assets/logo.png
-    - assets/sleep.png
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
 
