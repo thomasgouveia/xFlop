@@ -14,12 +14,13 @@ class EmptyDay extends StatelessWidget {
 
   Widget get _ui => Container(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
+            //Image.asset('assets/sleep.png', width: 200,),
             Text(
-              'Vous n\'avez pas cours aujourd\'hui. \n Quelle chance !',
+              'Vous n\'avez pas cours aujourd\'hui.',
               textAlign: TextAlign.center,
-              style: TextStyle(color: theme.textColor, fontSize: 16),
+              style: TextStyle(color: theme.textColor, fontSize: 18),
             ),
           ],
         ),

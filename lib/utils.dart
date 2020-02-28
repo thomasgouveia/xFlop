@@ -16,6 +16,7 @@ Future<List<List<dynamic>>> loadDataFromServer(
   return http.get(url).then((response) {
     if (response.statusCode == 200) {
       listeCours = const CsvToListConverter().convert(response.body);
+      print(listeCours);
     }
     return listeCours;
   });

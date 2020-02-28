@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'package:flop_edt_app/components/custom_appbar.dart';
+import 'package:flop_edt_app/components/edt/landscape_view.dart';
 import 'package:flop_edt_app/components/edt_viewer.dart';
 import 'package:flop_edt_app/components/empty_day.dart';
+import 'package:flop_edt_app/components/global/wrapper.dart';
 import 'package:flop_edt_app/components/loading_widget.dart';
 import 'package:flop_edt_app/components/no_connection_screen.dart';
+import 'package:flop_edt_app/components/tutors/tutor_indicator.dart';
 import 'package:flop_edt_app/components/week_chooser.dart';
 import 'package:flop_edt_app/filterer/filters.dart';
 import 'package:flop_edt_app/models/cours.dart';
@@ -48,6 +51,15 @@ class _AppStateProviderState extends State<AppStateProvider> {
   bool isWeekEnd;
 
   @override
+
+  ///Initialise l'état initial au lancement de l'application.
+  ///Calcule la date du jour à afficher en fonction de l'heure (si 19h dépassé alors on passe au jour d'après)
+  ///Effectue le test de si on est un week end ou non
+  ///Calcule le numéro de semaine correspondant à la date précèdemment calculé
+  ///Calcule les numéros 3 semaines suivants celle actuelle
+  ///Une fois le composant monté, récupère la liste des profs, puis charge les préférences (groupe, promo etc..),
+  ///défini le thème, détermine le département, puis vérifie si l'utilisateur est connecté à internet pour pouvoir
+  ///télécharger les données de l'emploi du temps.
   void initState() {
     super.initState();
     todayDate = DateTime.now().hour >= 19
@@ -76,9 +88,11 @@ class _AppStateProviderState extends State<AppStateProvider> {
   }
 
   ///Change l'état de chargement
+  ///[loading] est de type [bool], prends soit true, soit false comme valeur.
   setLoading(bool loading) => setState(() => this.isLoading = loading);
 
   ///Renvoi vrai si la date est un week end, faux sinon
+  ///retourne un [bool] en fonction de si la [DateTime] fournie est un jour de week end
   weekendTest(DateTime date) => date.weekday == 6 || date.weekday == 7;
 
   ///Charge les [Preferences] ou null si rien n'est trouvé.
@@ -116,7 +130,8 @@ class _AppStateProviderState extends State<AppStateProvider> {
     });
   }
 
-  ///Charge toutes les semaines disponibles dans l'application
+  ///Télécharge toutes les semaines disponibles dans l'application, pour un département.
+  ///
   loadAllWeeks() async {
     Map<int, Map<int, List<Cours>>> toSet = {};
     for (int i = 0; i < nextWeeks.length; i++) {
@@ -124,6 +139,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
       setState(() {
         _currentLoading = current;
       });
+      print(current);
       toSet[current] = await initData(current);
     }
     setState(() {
@@ -138,7 +154,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
         allTutors[departement] = await fetchProfsByDep(departement));
   }
 
-  ///initialise la liste des cours
+  ///initialise la liste des cours pour la semaine donnée.
   Future<Map> initData(int week) async {
     Map weekMap = setMap();
     List<List<dynamic>> list = preferences.isProf
@@ -155,7 +171,7 @@ class _AppStateProviderState extends State<AppStateProvider> {
       cours.dateDebut = DateTime(todayDate.year, todayDate.month, todayDate.day,
           cours.heure.hour, cours.heure.minute);
       cours.dateFin = cours.dateDebut
-          .add(Duration(minutes: constraints[cours.coursDep][cours.coursType]));
+          .add(Duration(minutes: constraints[cours.coursDep][cours.coursType] ?? 90));
       weekMap[cours.indexInSemaine].add(cours);
     }
     return weekMap;
@@ -189,10 +205,11 @@ class _AppStateProviderState extends State<AppStateProvider> {
   }
 
   ///Applique les filtres utilisateurs sur la liste de cours (évite de fetch à chaque changement)
-  List<Cours> applyFilters(int index) => preferences.isProf
-      ? filterProf(index, courses, todayDate, preferences)
-      : filter(index, courses, todayDate, preferences);
-  
+  List<Cours> applyFilters(bool isGrid, int index, {DateTime day}) =>
+      preferences.isProf
+          ? filterProf(index, courses, isGrid ? day : todayDate, preferences)
+          : filter(index, courses, isGrid ? day : todayDate, preferences);
+
   ///Construit l'interface en fonction de l'état de l'application
   Widget buildContent() {
     if (preferences == null && allTutors != null) {
@@ -201,10 +218,14 @@ class _AppStateProviderState extends State<AppStateProvider> {
         profs: allTutors,
       );
     } else if (!isConnected) {
+      FlutterStatusbarcolor.setStatusBarWhiteForeground(
+          preferences.isDarkMode ? true : false);
       return NoConnection(
         theme: theme,
       );
     } else {
+      FlutterStatusbarcolor.setStatusBarWhiteForeground(
+          preferences.isDarkMode ? true : false);
       return Scaffold(
         backgroundColor: theme.primary,
         appBar: CustomAppBar(
@@ -218,68 +239,99 @@ class _AppStateProviderState extends State<AppStateProvider> {
                 semaine: _currentLoading,
                 theme: theme,
               )
-            : Container(
-                margin: EdgeInsets.only(left: 10, right: 10),
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width,
-                      child: Center(
-                        child: WeekChooser(
-                          theme: theme,
-                          weeks: nextWeeks,
-                          valueChanged: _handleWeekChanged,
-                        ),
-                      ),
-                    ),
-                    preferences.isProf
-                        ? Padding(
-                            padding: const EdgeInsets.only(top: 8, bottom: 8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  'Vous êtes : ${preferences.prof}',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: theme.textColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                ),
-                              ],
-                            ),
-                          )
-                        : Container(),
-                    Expanded(
-                      child: PageView.builder(
-                        controller: _viewerController,
-                        onPageChanged: _handleDayChanged,
-                        itemCount: courses[defaultWeek].length,
-                        itemBuilder: (context, int index) {
-                          List<Cours> l = applyFilters(defaultWeek);
-                          return l.length == 0
-                              ? EmptyDay(
-                                  theme: theme,
-                                )
-                              : EDTViewer(
-                                  listCourses: l,
-                                  promo: departement,
-                                  animate: preferences.isAnimated,
-                                  theme: theme,
-                                  isProf: preferences.isProf,
-                                  today: todayDate,
-                                );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            : _staticBody,
       );
     }
+  }
+
+  ///Méthode qui contient les éléments de l'interface.
+  Widget get _staticBody {
+    bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+    return WrapperWidget(
+      left: 5,
+      right: 5,
+      child: Column(
+        children: <Widget>[
+          Container(
+            height: 50,
+            width: MediaQuery.of(context).size.width,
+            child: Center(
+              child: WeekChooser(
+                theme: theme,
+                weeks: nextWeeks,
+                valueChanged: _handleWeekChanged,
+              ),
+            ),
+          ),
+          TutorIndicator(preferences: preferences, color: theme.textColor),
+          Expanded(
+            child: PageView.builder(
+                    controller: _viewerController,
+                    onPageChanged: _handleDayChanged,
+                    itemCount: courses[defaultWeek].length,
+                    itemBuilder: (context, int index) {
+                      List<Cours> l = applyFilters(false, defaultWeek);
+                      return l.length == 0
+                          ? EmptyDay(
+                              theme: theme,
+                            )
+                          : EDTViewer(
+                              listCourses: l,
+                              promo: departement,
+                              animate: preferences.isAnimated,
+                              theme: theme,
+                              isProf: preferences.isProf,
+                              today: todayDate,
+                            );
+                    },
+                  )
+                  /*
+                : Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 1500,
+                      child: ListView(
+                        scrollDirection: Axis.vertical,
+                        children: <Widget>[
+                          Row(
+                            children: _generateGrid,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  */
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> get _generateGrid {
+    List<Widget> list = [];
+    var monday = todayDate.weekday > 1
+        ? todayDate.subtract(Duration(days: todayDate.weekday - 1))
+        : todayDate;
+    for (int i = 0; i < 5; i++) {
+      list.add(
+        Expanded(
+          child: EDTViewer(
+            listCourses: applyFilters(true, defaultWeek,
+                day: monday.add(Duration(days: i))),
+            primary: false,
+            isHours: false,
+            promo: departement,
+            animate: preferences.isAnimated,
+            theme: theme,
+            isProf: preferences.isProf,
+            today: monday.add(Duration(days: i)),
+          ),
+        ),
+      );
+    }
+    return list;
   }
 
   @override

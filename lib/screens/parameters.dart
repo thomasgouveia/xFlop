@@ -73,7 +73,7 @@ class _ParametersState extends State<Parameters> {
         backgroundColor: theme.primary,
         elevation: 0.0,
         title: Text(
-          'Paramètres de l\'application',
+          'Paramètres',
           style: TextStyle(color: theme.textColor),
         ),
       ),

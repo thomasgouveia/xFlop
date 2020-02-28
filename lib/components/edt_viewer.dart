@@ -11,6 +11,8 @@ class EDTViewer extends StatelessWidget {
   final DateTime date;
   final MyTheme theme;
   final bool isProf;
+  final bool isHours;
+  final bool primary;
   final DateTime today;
 
   const EDTViewer(
@@ -21,13 +23,13 @@ class EDTViewer extends StatelessWidget {
       this.date,
       this.isProf = false,
       this.theme,
-      this.today})
+      this.today, this.primary, this.isHours = true})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListView(
-      primary: true,
+      primary: primary ?? true,
       children: buildCourses(context),
     );
   }
@@ -45,7 +47,7 @@ class EDTViewer extends StatelessWidget {
       if (previous == null) {
         previous = cours;
       }
-      double height = (constraints[cours.coursDep][cours.coursType] + 10)
+      double height = (constraints[cours.coursDep][cours.coursType])
           .toDouble(); //On calcule la hauteur du container en fonction de la durée du cours
       var diff = cours == previous
           ? Duration(hours: cours.dateDebut.hour - 8)
@@ -67,6 +69,7 @@ class EDTViewer extends StatelessWidget {
                           height: height,
                           today: today,
                           cours: cours,
+                          isHour: isHours,
                           delay: delay,
                           animate: animate,
                           isProf: isProf,
@@ -80,7 +83,7 @@ class EDTViewer extends StatelessWidget {
                           height: height,
                           today: today,
                           cours: previous,
-                          isHour: false,
+                          isHour: isHours,
                           isProf: isProf,
                           delay: delay,
                           animate: animate,
@@ -94,6 +97,7 @@ class EDTViewer extends StatelessWidget {
                       height: height,
                       today: today,
                       cours: cours,
+                      isHour: isHours,
                       delay: delay,
                       animate: animate,
                       theme: theme,
@@ -107,7 +111,7 @@ class EDTViewer extends StatelessWidget {
         padding: EdgeInsets.only(
             top: diff.inHours == 0 || diff.inHours == -1
                 ? 0.0
-                : (diff.inMinutes * 90 / 90).toDouble()),
+                : (diff.inMinutes * 65 / 90).toDouble()),
       );
       grid.add(noCoursesSpacer);
       grid.add(coursContainer);

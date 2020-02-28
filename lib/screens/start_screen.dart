@@ -23,7 +23,7 @@ class _StartPageState extends State<StartPage> {
   String selectedDep = 'INFO';
   String selectedProf = 'PSE';
 
-  final fontSize = 16.0;
+  final fontSize = 14.0;
   bool isProf = false;
 
   @override

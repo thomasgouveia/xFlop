@@ -22,7 +22,7 @@ class DayTextWidget extends StatelessWidget {
           Text(
             "${DAY_INDEX[todayDate.weekday - 1]} ${MyDateFormat(todayDate, DateFormatType.DAY_SLASHES_MONTH).date}"
                 .toUpperCase(),
-            style: TextStyle(fontSize: 20, color: color),
+            style: TextStyle(fontSize: 18, color: color),
           ),
         ],
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ParametersItem extends StatelessWidget {
+  ///[Widget] représentant un item dans les paramètres.
   final Widget child;
   final String label;
   final Color textColor;

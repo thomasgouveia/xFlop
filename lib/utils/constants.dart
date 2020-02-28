@@ -45,8 +45,8 @@ Map<String, List<Group>> GROUPES = {
   'RT1': [
     Group(groupe: '1GA', parent: '1G1'),
     Group(groupe: '1GB', parent: '1G1'),
-    Group(groupe: '1GB', parent: '1G2'),
     Group(groupe: '1GC', parent: '1G2'),
+    Group(groupe: '1GD', parent: '1G2'),
     Group(groupe: '1GE', parent: '1GE'),
     Group(groupe: '1GF', parent: '1GF'),
   ],
@@ -99,6 +99,7 @@ Map<String, Map<String, int>> constraints = {
     'TP240': 240,
     'TP180': 180,
     'Examen': 90,
+    'Exam45': 45,
   }
 };
 

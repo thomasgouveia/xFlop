@@ -2,7 +2,6 @@ import 'package:flop_edt_app/components/fade_in.dart';
 import 'package:flop_edt_app/themes/theme.dart';
 import 'package:flutter/material.dart';
 
-///DEPRECAPTED
 class DefaultCoursContainer extends StatelessWidget {
   final double delay;
   final bool animate;
@@ -23,8 +22,7 @@ class DefaultCoursContainer extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                color: theme.defaultCours,
-                boxShadow: [],
+                color: Colors.amber,
               ),
               margin: EdgeInsets.only(top: 5, bottom: 5),
               height: 100,

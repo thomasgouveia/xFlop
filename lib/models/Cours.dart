@@ -46,11 +46,11 @@ class Cours {
         coursType: csv[6],
         salle: csv[7],
         roomType: csv[8],
-        textColor: csv[10],
-        heure: getHoursOfCourses(csv[12]),
-        indexInSemaine: getIndexSemaine(csv[11]),
+        textColor: csv[11],
+        heure: getHoursOfCourses(csv[13]),
+        indexInSemaine: getIndexSemaine(csv[12]),
         startTime: csv[12],
-        color: csv[9],
+        color: csv[10],
       );
 
   bool get isExam =>

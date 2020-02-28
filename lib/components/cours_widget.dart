@@ -59,7 +59,6 @@ class CoursWidget extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    isProf ? Container() : coursType,
                     coursInfo
                   ],
                 ),
@@ -100,7 +99,7 @@ class CoursWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              isProf ? '${cours.coursType} ${cours.module}' : cours.module,
+              '${cours.coursType} ${cours.module}',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -123,7 +122,6 @@ class CoursWidget extends StatelessWidget {
       );
 
   Widget get coursType => Container(
-        width: 100,
         padding: EdgeInsets.only(left: 20),
         child: Center(
           child: Text(
