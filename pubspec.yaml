@@ -29,6 +29,7 @@ dependencies:
   jiffy: ^2.1.2
   intl: ^0.16.0
   flutter_dotenv: ^2.1.0
+  flushbar: ^1.9.1
   #json_serializable: ^3.2.2
   #json_annotation: ^3.0.0
 
@@ -80,7 +81,20 @@ flutter:
   fonts:
     - family: 'Poppins'
       fonts:
-        - asset: fonts/Poppins-Regular.ttf
+        - asset: fonts/poppins/Poppins-Black.ttf
+          weight: 900
+        - asset: fonts/poppins/Poppins-Bold.ttf
+          weight: 700
+        - asset: fonts/poppins/Poppins-ExtraBold.ttf
+          weight: 800
+        - asset: fonts/poppins/Poppins-Light.ttf
+          weight: 300
+        - asset: fonts/poppins/Poppins-Medium.ttf
+          weight: 500
+        - asset: fonts/poppins/Poppins-Regular.ttf
+          weight: 400
+        - asset: fonts/poppins/Poppins-SemiBold.ttf
+          weight: 600
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

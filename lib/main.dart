@@ -1,9 +1,13 @@
+import 'package:flop_edt_app/router/router.dart';
 import 'package:flop_edt_app/state_manager/state_widget.dart';
+import 'package:flop_edt_app/theme/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 Future main() async {
   await DotEnv().load('.env');
+  await initializeDateFormatting("fr_FR", null);
   runApp(StateWidget(child: XFlopApp()));
 }
 
@@ -18,14 +22,11 @@ class _XFlopAppState extends State<XFlopApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'xFlop!',
-      theme: ThemeData(
-        fontFamily: 'Poppins',
-      ),
-      home: Scaffold(
-        body: Center(
-          child: Text('Refactor.'),
-        ),
-      ),
+      theme: AppTheme.lightTheme(),
+      darkTheme: AppTheme.darkTheme(),
+      routes: {
+        '/': (context) => Router(),
+      },
     );
   }
 }

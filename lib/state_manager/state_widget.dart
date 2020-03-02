@@ -1,4 +1,8 @@
+import 'package:flop_edt_app/api/api_provider.dart';
+import 'package:flop_edt_app/models/resources/course.dart';
+import 'package:flop_edt_app/models/resources/day.dart';
 import 'package:flop_edt_app/models/state/app_state.dart';
+import 'package:flop_edt_app/utils/date_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -34,10 +38,55 @@ class _StateWidgetState extends State<StateWidget> {
     if (widget.state != null) {
       state = widget.state;
     } else {
+      var todayMidnight = DateUtils.todayMidnight();
       state = AppState(
-        isLoading: true,
-      );
+          isLoading: true,
+          today: todayMidnight,
+          year: todayMidnight.year,
+          week: 10 //DateUtils.weekNumber(todayMidnight),
+          );
+      this.initData();
     }
+  }
+
+  void initData() async {
+    setState(() {
+      state.isLoading = true;
+    });
+    APIProvider api = APIProvider();
+
+    ///Récupération des cours de la semaine
+    var courses = await api.getCourses(
+      year: state.year,
+      department: state.departement,
+      group: state.groupe,
+      promo: state.promo,
+      week: state.week,
+    );
+
+    ///Récupération des jours de la semaine
+    var days = await api.getCompleteWeek(
+      year: state.year,
+      week: state.week,
+    );
+
+    ///On map les cours en fonction de leur jour
+    days.forEach((day) => this._mapCoursesToDays(day, courses));
+    setState(() {
+      state.cours = courses;
+      state.days = days;
+      state.isLoading = false;
+    });
+  }
+
+  ///Map les cours dans le jour ou ils se déroulent.
+  void _mapCoursesToDays(Day day, List<Cours> courses) {
+    courses.forEach((Cours cours) {
+      if (DateUtils.isToday(day.date, cours.dateEtHeureDebut))
+        day.cours.add(cours);
+    });
+    day.cours.sort((Cours c1, Cours c2) =>
+        c1.dateEtHeureDebut.compareTo(c2.dateEtHeureDebut));
   }
 
   @override
