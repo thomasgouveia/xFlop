@@ -95,6 +95,7 @@ class _ScheduleViewerState extends State<ScheduleViewer> {
                                           animate: true,
                                           cours: c,
                                           delay: 0.3,
+                                          isProf: state.settings.isTutor,
                                           height: c.duration.toDouble(),
                                         )),
                                   )
