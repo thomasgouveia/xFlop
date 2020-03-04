@@ -1,6 +1,8 @@
 import 'package:flop_edt_app/models/state/app_state.dart';
 import 'package:flop_edt_app/state_manager/state_widget.dart';
+import 'package:flop_edt_app/views/edt/components/edt_chooser.dart';
 import 'package:flop_edt_app/views/edt/components/week_selector.dart';
+import 'package:flop_edt_app/views/edt/edt_complete_week_viewer.dart';
 import 'package:flop_edt_app/views/edt/edt_viewer.dart';
 import 'package:flop_edt_app/views/settings/create_settings_screen.dart';
 import 'package:flop_edt_app/views/settings/settings_screen.dart';
@@ -14,7 +16,7 @@ class Router extends StatefulWidget {
 class _RouterState extends State<Router> {
   AppState state;
 
-  List<Widget> _children = [ScheduleViewer(), SettingsScreen()];
+  List<Widget> _children = [ScheduleChooser(), SettingsScreen()];
   int _selected = 0;
 
   void _onViewChanged(int index) => setState(() => _selected = index);

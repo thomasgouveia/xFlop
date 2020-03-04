@@ -3,7 +3,6 @@ import 'package:flop_edt_app/models/resources/day.dart';
 import 'package:flop_edt_app/models/state/app_state.dart';
 import 'package:flop_edt_app/state_manager/state_widget.dart';
 import 'package:flop_edt_app/views/edt/components/cours_widget.dart';
-import 'package:flop_edt_app/views/loader/loading_screen.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleViewer extends StatefulWidget {
@@ -50,64 +49,65 @@ class _ScheduleViewerState extends State<ScheduleViewer> {
           style: theme.textTheme.headline4,
         ),
         actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 20),
-            child: Center(
-              child: Text(
-                state.isLoading ? '' : state.days[_currentDayIndex].toString(),
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w300,
-                ),
+          Center(
+            child: Text(
+              state.days[_currentDayIndex].toString(),
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 17,
+                fontWeight: FontWeight.w300,
               ),
+            ),
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.apps,
+              color: Colors.black,
+            ),
+            onPressed: () => StateWidget.of(context).switchDisplayMode(),
+          ),
+        ],
+      ),
+      body: Column(
+        children: <Widget>[
+          SizedBox(
+            height: 20,
+          ),
+          Expanded(
+            child: PageView(
+              onPageChanged: (int newIndex) =>
+                  setState(() => _currentDayIndex = newIndex),
+              controller: controller,
+              scrollDirection: Axis.horizontal,
+              pageSnapping: true,
+              children: state.days
+                  .map(
+                    (Day day) => Container(
+                      height: (dayEnd - dayStart).toDouble() + 10,
+                      width: deviceSize.width,
+                      child: Stack(
+                        children: day.cours
+                            .map(
+                              (Cours c) => Positioned(
+                                  top: (c.startTimeFromMidnight - dayStart) *
+                                      1.toDouble(),
+                                  child: CoursWidget(
+                                    animate: true,
+                                    cours: c,
+                                    delay: 0.3,
+                                    isProf: state.settings.isTutor,
+                                    height: c.duration.toDouble(),
+                                  )),
+                            )
+                            .toList(),
+                      ),
+                    ),
+                  )
+                  .toList(),
             ),
           ),
         ],
       ),
-      body: state.isLoading
-          ? LoadingScreen()
-          : Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 20,
-                ),
-                Expanded(
-                  child: PageView(
-                    onPageChanged: (int newIndex) =>
-                        setState(() => _currentDayIndex = newIndex),
-                    controller: controller,
-                    scrollDirection: Axis.horizontal,
-                    pageSnapping: true,
-                    children: state.days
-                        .map(
-                          (Day day) => Container(
-                            height: (dayEnd - dayStart).toDouble() + 10,
-                            width: deviceSize.width,
-                            child: Stack(
-                              children: day.cours
-                                  .map(
-                                    (Cours c) => Positioned(
-                                        top: (c.startTimeFromMidnight -
-                                                dayStart) *
-                                            1.toDouble(),
-                                        child: CoursWidget(
-                                          animate: true,
-                                          cours: c,
-                                          delay: 0.3,
-                                          isProf: state.settings.isTutor,
-                                          height: c.duration.toDouble(),
-                                        )),
-                                  )
-                                  .toList(),
-                            ),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ),
-              ],
-            ),
     );
   }
 }

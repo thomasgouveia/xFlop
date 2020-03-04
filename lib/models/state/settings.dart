@@ -8,6 +8,7 @@ class Settings {
   String department;
   String groupe;
   Tutor tutor;
+  bool isGridDisplay;
   bool isTutor;
 
   static Future<Settings> getConfiguration() async {
@@ -29,6 +30,7 @@ class Settings {
     this.groupe,
     this.isTutor,
     this.tutor,
+    this.isGridDisplay: false
   });
 
   factory Settings.fromJSON(Map<String, dynamic> json) => Settings(
@@ -36,6 +38,7 @@ class Settings {
         promo: json['promo'],
         groupe: json['groupe'],
         isTutor: json['isTutor'],
+        isGridDisplay: json['isGridDisplay'],
         tutor: json['tutor'] == null ? null : Tutor.fromJSON(json['tutor']),
       );
 
@@ -45,6 +48,7 @@ class Settings {
         'groupe': this.groupe,
         'isTutor': this.isTutor,
         'tutor': this.tutor?.toMap,
+        'isGridDisplay': this.isGridDisplay,
       };
 
   String get toJSON => jsonEncode(this.toMap);

@@ -49,6 +49,8 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
                     fontSize: 30,
                   ),
                 ),
+                Text(
+                    'Afin de configurer votre emploi du temps, veuillez sélectionner votre département, votre promotion ainsi que votre groupe. Si vous êtes un professeur, veuillez activer le mode professeur, puis sélectionner votre nom dans la liste. Ces informations seront modifiables à tout moment depuis les paramètres de l\'application.'),
                 Container(
                   width: MediaQuery.of(context).size.width,
                   child: Column(
@@ -58,18 +60,26 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
                           onSelect: (value) {
                             setState(() {
                               department = value;
+                              promotion = null;
+                              groupe = null;
                             });
                           }),
-                      PromotionSelector(
-                        value: promotion,
-                        currentDep: department,
-                        onSelect: (promo) => setState(() => promotion = promo),
-                      ),
-                      GroupSelector(
-                        value: groupe,
-                        groups: promotion?.groups ?? <Group>[],
-                        onSelect: (group) => setState(() => groupe = group),
-                      ),
+                      department != ''
+                          ? PromotionSelector(
+                              value: promotion,
+                              currentDep: department,
+                              onSelect: (promo) =>
+                                  setState(() => promotion = promo),
+                            )
+                          : Container(),
+                      department != '' && promotion != null
+                          ? GroupSelector(
+                              value: groupe,
+                              groups: promotion?.groups ?? <Group>[],
+                              onSelect: (group) =>
+                                  setState(() => groupe = group),
+                            )
+                          : Container(),
                     ],
                   ),
                 ),

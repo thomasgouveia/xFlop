@@ -25,7 +25,12 @@ class Day {
   }
 
   @override
-  String toString() {
-    return DAYS_LABEL[date.weekday - 1] + ' ' + DateFormat('dd/MM').format(date);
+  String toString({withLabel: true}) {
+    if (withLabel) {
+      return DAYS_LABEL[date.weekday - 1] +
+          ' ' +
+          DateFormat('dd/MM').format(date);
+    }
+    return DateFormat('dd/MM').format(date);
   }
 }

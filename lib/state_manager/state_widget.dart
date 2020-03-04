@@ -57,20 +57,24 @@ class _StateWidgetState extends State<StateWidget> {
   void initData() async {
     APIProvider api = APIProvider();
     CacheProvider cache = await CacheProvider.instance;
-    Settings settings = null; //await Settings.getConfiguration();
+    Settings settings = await Settings.getConfiguration();
 
     //Chargement des données obligatoires
     var departments = await api.getDepartments();
     var map = <String, List<Promotion>>{};
     for (var dep in departments) {
+      //On exclue RESA des départements
       if (dep != 'RESA') {
         var promos = await api.getPromotions(department: dep);
         map[dep] = promos;
       }
     }
+    //On ajoute dans l'état
     setState(() {
       state.departments = departments;
       state.promos = map;
+      state.cache = cache;
+      state.settings = settings;
     });
 
     if (settings == null) {
@@ -79,50 +83,54 @@ class _StateWidgetState extends State<StateWidget> {
       });
       return;
     } else {
-      setState(() {
-        state.isLoading = true;
-      });
-      var courses = [];
-      if (settings.isTutor) {
-        ///Récupération des cours de la semaine
-        courses = await api.getCoursesOfProf(
-          year: state.year,
-          department: settings.department,
-          prof: settings.tutor?.initiales,
-          week: state.week,
-        );
-      } else {
-        ///Récupération des cours de la semaine
-        courses = await api.getCourses(
-          year: state.year,
-          department: settings.department,
-          group: settings.groupe,
-          promo: settings.promo,
-          week: state.week,
-        );
-      }
+      createData();
+    }
+  }
 
-      ///Récupération des jours de la semaine
-      var days = await api.getCompleteWeek(
+  void createData() async {
+    APIProvider api = APIProvider();
+    var settings = state.settings;
+    setState(() {
+      state.isLoading = true;
+    });
+    var courses = [];
+    if (settings.isTutor) {
+      ///Récupération des cours de la semaine
+      courses = await api.getCoursesOfProf(
         year: state.year,
+        department: settings.department,
+        prof: settings.tutor?.initiales,
         week: state.week,
       );
-
-      ///Récupération des profs
-      var profs = await api.getTutorsOfDepartment(dep: settings.department);
-
-      ///On map les cours en fonction de leur jour
-      days.forEach((day) => this._mapCoursesToDays(day, courses));
-      setState(() {
-        state.settings = settings;
-        state.settings.tutor = findTutor(settings, profs);
-        state.cours = courses;
-        state.days = days;
-        state.profs = profs;
-        state.cache = cache;
-        state.isLoading = false;
-      });
+    } else {
+      ///Récupération des cours de la semaine
+      courses = await api.getCourses(
+        year: state.year,
+        department: settings.department,
+        group: settings.groupe,
+        promo: settings.promo,
+        week: state.week,
+      );
     }
+
+    ///Récupération des jours de la semaine
+    var days = await api.getCompleteWeek(
+      year: state.year,
+      week: state.week,
+    );
+
+    ///Récupération des profs
+    var profs = await api.getTutorsOfDepartment(dep: settings.department);
+
+    ///On map les cours en fonction de leur jour
+    days.forEach((day) => this._mapCoursesToDays(day, courses));
+    setState(() {
+      state.settings.tutor = findTutor(settings, profs);
+      state.cours = courses;
+      state.days = days;
+      state.profs = profs;
+      state.isLoading = false;
+    });
   }
 
   Tutor findTutor(Settings settings, List<Tutor> profs) {
@@ -132,6 +140,13 @@ class _StateWidgetState extends State<StateWidget> {
         .where((Tutor element) => element.initiales == parsed.initiales)
         .toList();
     return results.length != 0 ? results[0] : null;
+  }
+
+  void switchDisplayMode() {
+    setState(() {
+      state.settings.isGridDisplay = !state.settings.isGridDisplay;
+      state.settings.saveConfiguration();
+    });
   }
 
   ///Map les cours dans le jour ou ils se déroulent.

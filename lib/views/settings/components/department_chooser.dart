@@ -34,7 +34,9 @@ class _DepartmentSelectorState extends State<DepartmentSelector> {
           widget.onSelect(value);
         });
       },
-      items: state.departments.map((dynamic dep) {
+      items: state.departments
+          .where((element) => element != 'RESA')
+          .map((dynamic dep) {
         return DropdownMenuItem<dynamic>(
           value: dep,
           child: Text('$dep'),

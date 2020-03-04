@@ -69,7 +69,7 @@ class _WeekSelectorState extends State<WeekSelector>
     } else {
       setState(() {
         state.week = newWeek;
-        StateWidget.of(context).initData();
+        StateWidget.of(context).createData();
         this.toggle();
       });
     }
