@@ -10,8 +10,10 @@ class AppState {
   bool isLoading;
   final DateTime today;
   int week;
+  int currentWeek;
   final int year;
   List<dynamic> departments;
+  List<int> weeks;
 
   //Données relatives au cours
   List<Cours> cours;
@@ -40,5 +42,7 @@ class AppState {
     this.departments = const [],
     this.cours = const [],
     this.profs = const {},
+    this.currentWeek,
+    this.weeks = const [],
   });
 }

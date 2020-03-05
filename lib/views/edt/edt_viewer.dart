@@ -30,10 +30,15 @@ class _ScheduleViewerState extends State<ScheduleViewer> {
     });
   }
 
+  ///Déplace l'utilisateur sur la vue du jour actuel
   void moveToCurrentDay() {
-    controller.jumpToPage(
-      state.today.weekday - 1,
-    );
+    ///On vérifie que l'on est sur la même semaine pour amener l'utilisateur sur le bon jour,
+    ///Sinon il va amener au jour pour chacune des semaines.
+    if (state.currentWeek == state.week) {
+      controller.jumpToPage(
+        state.today.weekday - 1,
+      );
+    }
   }
 
   @override
@@ -41,6 +46,7 @@ class _ScheduleViewerState extends State<ScheduleViewer> {
     state = StateWidget.of(context).state;
     var theme = Theme.of(context);
     var deviceSize = MediaQuery.of(context).size;
+    bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
         leading: Image.asset('assets/logo.png'),
@@ -52,9 +58,8 @@ class _ScheduleViewerState extends State<ScheduleViewer> {
         actions: <Widget>[
           Center(
             child: Text(
-              state.days[_currentDayIndex].toString(),
-              style: TextStyle(
-                color: Colors.black,
+              state.days[_currentDayIndex].toString().toUpperCase(),
+              style: theme.textTheme.bodyText1.copyWith(
                 fontSize: 17,
                 fontWeight: FontWeight.w300,
               ),
@@ -63,18 +68,17 @@ class _ScheduleViewerState extends State<ScheduleViewer> {
           IconButton(
             icon: Icon(
               Icons.apps,
-              color: Colors.black,
+              color: isDark ? Colors.white54 : Colors.black54,
             ),
             onPressed: () => StateWidget.of(context).switchDisplayMode(),
           ),
         ],
       ),
-      body: Column(
+      body: ListView(
         children: <Widget>[
-          SizedBox(
-            height: 20,
-          ),
-          Expanded(
+          Container(
+            height:
+                (Constants.DAY_END - Constants.DAY_START) * 1.toDouble() + 100,
             child: PageView(
               onPageChanged: (int newIndex) =>
                   setState(() => _currentDayIndex = newIndex),

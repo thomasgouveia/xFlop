@@ -43,11 +43,15 @@ class _StateWidgetState extends State<StateWidget> {
       state = widget.state;
     } else {
       var todayMidnight = DateUtils.todayMidnight();
+      var week = DateUtils.weekNumber(todayMidnight);
+      var weeks = DateUtils.calculateWeeks(todayMidnight);
       state = AppState(
         isLoading: true,
         today: todayMidnight,
         year: todayMidnight.year,
-        week: DateUtils.weekNumber(todayMidnight),
+        currentWeek: week,
+        week: week,
+        weeks: weeks,
       );
       this.initData();
     }

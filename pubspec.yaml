@@ -30,6 +30,7 @@ dependencies:
   intl: ^0.16.0
   flutter_dotenv: ^2.1.0
   flushbar: ^1.9.1
+  flutter_spinkit: "^4.1.2"
   #json_serializable: ^3.2.2
   #json_annotation: ^3.0.0
 

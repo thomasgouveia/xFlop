@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flop_edt_app/models/state/app_state.dart';
 import 'package:flop_edt_app/state_manager/state_widget.dart';
+import 'package:flop_edt_app/utils/date_utils.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,6 @@ class _WeekSelectorState extends State<WeekSelector>
   double maxHeight;
   bool isOpen;
   bool isBottomContentVisible;
-  List<int> weeks;
 
   @override
   void initState() {
@@ -29,7 +29,6 @@ class _WeekSelectorState extends State<WeekSelector>
     maxHeight = 300;
     isOpen = false;
     isBottomContentVisible = false;
-    weeks = [9,10, 11, 12, 13, 14, 15];
 
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
@@ -160,9 +159,9 @@ class _WeekSelectorState extends State<WeekSelector>
   ///Construit la liste des semaines disponibles
   Widget get _buildWeeksChoices => ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: weeks.length,
+        itemCount: state.weeks.length,
         itemBuilder: (BuildContext context, int index) {
-          int week = weeks[index];
+          int week = state.weeks[index];
           bool isActiveWeek = state.week == week;
           return GestureDetector(
             onTap: () => onWeekChanged(week),

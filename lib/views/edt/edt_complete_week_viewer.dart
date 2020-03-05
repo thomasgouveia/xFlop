@@ -3,6 +3,7 @@ import 'package:flop_edt_app/models/resources/course.dart';
 import 'package:flop_edt_app/models/resources/day.dart';
 import 'package:flop_edt_app/models/state/app_state.dart';
 import 'package:flop_edt_app/state_manager/state_widget.dart';
+import 'package:flop_edt_app/utils/constants.dart';
 import 'package:flop_edt_app/views/loader/loading_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -26,9 +27,10 @@ class _ScheduleCompleteWeekState extends State<ScheduleCompleteWeek> {
   Widget build(BuildContext context) {
     state = StateWidget.of(context).state;
     var theme = Theme.of(context);
+    bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
-        leading: Image.asset('assets/logo.png'),
+        leading: Image.asset(Constants.logoPath),
         centerTitle: false,
         title: Text(
           'xFlop!',
@@ -38,7 +40,7 @@ class _ScheduleCompleteWeekState extends State<ScheduleCompleteWeek> {
           IconButton(
             icon: Icon(
               Icons.view_column,
-              color: Colors.black,
+              color: isDark ? Colors.white54 : Colors.black54,
             ),
             onPressed: () => StateWidget.of(context).switchDisplayMode(),
           ),
@@ -84,7 +86,7 @@ class _ScheduleCompleteWeekState extends State<ScheduleCompleteWeek> {
               left: 20,
               child: Text(
                 day.toString(withLabel: false),
-                style: TextStyle(fontWeight: FontWeight.w600),
+                style: Theme.of(context).textTheme.bodyText1.copyWith(fontWeight: FontWeight.w600),
               ),
             ),
             for (var elem in day.cours) _buildCourse(elem, deviceSize, days),
@@ -109,7 +111,9 @@ class _ScheduleCompleteWeekState extends State<ScheduleCompleteWeek> {
         Container(
           width: deviceSize.width / days.length,
           height: elem.duration.toDouble(),
-          color: isFinished ? elem.backgroundColor.withOpacity(0.5) : elem.backgroundColor,
+          color: isFinished
+              ? elem.backgroundColor.withOpacity(0.5)
+              : elem.backgroundColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[

@@ -2,8 +2,6 @@ import 'package:flop_edt_app/models/state/app_state.dart';
 import 'package:flop_edt_app/state_manager/state_widget.dart';
 import 'package:flop_edt_app/views/edt/components/edt_chooser.dart';
 import 'package:flop_edt_app/views/edt/components/week_selector.dart';
-import 'package:flop_edt_app/views/edt/edt_complete_week_viewer.dart';
-import 'package:flop_edt_app/views/edt/edt_viewer.dart';
 import 'package:flop_edt_app/views/settings/create_settings_screen.dart';
 import 'package:flop_edt_app/views/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +30,7 @@ class _RouterState extends State<Router> {
             body: Stack(
               children: <Widget>[
                 _children[_selected],
-                _selected == 0
+                _selected == 0 && !state.isLoading
                     ? Positioned(
                         bottom: 0,
                         child: WeekSelector(),
@@ -40,17 +38,21 @@ class _RouterState extends State<Router> {
                     : Container(),
               ],
             ),
-            bottomNavigationBar: BottomNavigationBar(
-              onTap: _onViewChanged,
-              currentIndex: _selected,
-              selectedItemColor: theme.accentColor,
-              items: [
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.event), title: Text('EDT')),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.settings), title: Text('Paramètres'))
-              ],
-            ),
+            bottomNavigationBar: !state.isLoading
+                ? BottomNavigationBar(
+                    onTap: _onViewChanged,
+                    currentIndex: _selected,
+                    backgroundColor: theme.scaffoldBackgroundColor,
+                    selectedItemColor: theme.primaryColorLight,
+                    unselectedItemColor: theme.accentColor,
+                    items: [
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.event), title: Text('EDT')),
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.settings), title: Text('Paramètres'))
+                    ],
+                  )
+                : null,
           );
   }
 }

@@ -2,4 +2,5 @@
 class Constants {
   static final int DAY_START = 8 * 60;
   static final int DAY_END = 18 * 60 + 45;
+  static final String logoPath = 'assets/logo.png';
 }
