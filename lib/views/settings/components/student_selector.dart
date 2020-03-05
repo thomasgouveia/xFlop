@@ -8,8 +8,10 @@ import 'package:flutter/material.dart';
 
 class StudentSettingsSelector extends StatefulWidget {
   final ValueChanged onSelected;
+  final Settings settings;
 
-  const StudentSettingsSelector({Key key, this.onSelected}) : super(key: key);
+  const StudentSettingsSelector({Key key, this.onSelected, this.settings})
+      : super(key: key);
   @override
   _StudentSettingsSelectorState createState() =>
       _StudentSettingsSelectorState();
@@ -25,8 +27,9 @@ class _StudentSettingsSelectorState extends State<StudentSettingsSelector> {
   @override
   void initState() {
     super.initState();
-    department = 'INFO';
-    promotion = 'INFO1';
+    department = widget.settings?.department ?? 'INFO';
+    promotion = widget.settings?.promo ?? 'INFO1';
+    groupe = widget.settings?.groupe;
   }
 
   List<String> findGroupsByPromo(String department, promo) {
@@ -100,9 +103,11 @@ class _StudentSettingsSelectorState extends State<StudentSettingsSelector> {
         isUserHaveCompletedAllData
             ? Text(
                 'Vous faites parti du département $department, dans la promotion $promotion et le groupe $groupe.',
+                style: Theme.of(context).textTheme.bodyText1,
               )
             : Text(
                 'Veuillez sélectionner une promotion, un groupe et un département.',
+                style: Theme.of(context).textTheme.bodyText1,
               ),
       ],
     );

@@ -71,6 +71,7 @@ class Cours {
     return toReturn;
   }
 
+  ///Retourne vrai si le cours est un examen, faux sinon
   bool get isExam =>
       this.type == 'DS' ||
       this.type == 'Examen' ||

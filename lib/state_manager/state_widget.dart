@@ -42,9 +42,13 @@ class _StateWidgetState extends State<StateWidget> {
     if (widget.state != null) {
       state = widget.state;
     } else {
+      ///Récupération de la date d'aujourd'hui, à 00h01.
       var todayMidnight = DateUtils.todayMidnight();
+      ///Récupération de la semaine actuelle à partir de la date.
       var week = DateUtils.weekNumber(todayMidnight);
+      ///Récupération des semaines 
       var weeks = DateUtils.calculateWeeks(todayMidnight);
+      ///Initialisation du state
       state = AppState(
         isLoading: true,
         today: todayMidnight,
@@ -53,10 +57,15 @@ class _StateWidgetState extends State<StateWidget> {
         week: week,
         weeks: weeks,
       );
+      ///Initialisation des données
       this.initData();
     }
   }
 
+  ///Méthode appelée lors du démarrage de l'application.
+  ///Elle charge les paramètres depuis le cache, les données depuis l'api.
+  ///Si des paramètres existent déjà, l'utilisateur sera redirigé vers son EDT.
+  ///Sinon, il sera invité à créé ses paramètres.
   void initData() async {
     APIProvider api = APIProvider();
     CacheProvider cache = await CacheProvider.instance;
@@ -144,6 +153,7 @@ class _StateWidgetState extends State<StateWidget> {
   //   return results.length != 0 ? results[0] : null;
   // }
 
+  ///Met à jour le mode d'affichage. Soit en grille vue semaine, soit en colonne vu jour par jour.
   void switchDisplayMode() {
     setState(() {
       state.settings.isGridDisplay = !state.settings.isGridDisplay;
@@ -151,6 +161,7 @@ class _StateWidgetState extends State<StateWidget> {
     });
   }
 
+  ///Met à jour les settings avec les nouveaux passés en paramètres.
   void setSettings(Settings settings) {
     setState(() {
       state.settings = settings;

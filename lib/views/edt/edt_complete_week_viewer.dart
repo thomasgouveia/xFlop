@@ -70,13 +70,14 @@ class _ScheduleCompleteWeekState extends State<ScheduleCompleteWeek> {
     var days = state.days;
     var res = <Widget>[];
     var deviceSize = MediaQuery.of(context).size;
+    var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     days.forEach((Day day) {
       var container = Container(
         width: deviceSize.width / days.length,
         height: (dayEnd - dayStart).toDouble(),
         decoration: BoxDecoration(
           border: Border.all(
-              width: 1, color: Colors.black12, style: BorderStyle.solid),
+              width: 1, color: isDark ? Colors.white12 : Colors.black12, style: BorderStyle.solid),
         ),
         child: Stack(
           overflow: Overflow.visible,

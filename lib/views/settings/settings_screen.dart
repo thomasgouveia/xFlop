@@ -1,6 +1,9 @@
 import 'package:flop_edt_app/models/resources/tutor.dart';
 import 'package:flop_edt_app/models/state/app_state.dart';
+import 'package:flop_edt_app/models/state/settings.dart';
 import 'package:flop_edt_app/state_manager/state_widget.dart';
+import 'package:flop_edt_app/views/settings/components/student_selector.dart';
+import 'package:flop_edt_app/views/settings/components/tutor_settings_selector.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -11,10 +14,60 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   AppState state;
 
+  Settings settings;
+
+  void handleSelect() {
+    if (state.settings.isTutor) {
+      showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return SingleChildScrollView(
+              padding: EdgeInsets.all(5),
+              child: Column(
+                children: <Widget>[
+                  TutorSettingsSelector(
+                    onSelected: (value) {
+                      settings.tutor = value.tutor;
+                      settings.isTutor = true;
+                      StateWidget.of(context).setSettings(settings);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            );
+          });
+    } else {
+      showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                children: <Widget>[
+                  StudentSettingsSelector(
+                    settings: state.settings,
+                    onSelected: (value) {
+                      settings.department = value.department;
+                      settings.groupe = value.groupe;
+                      settings.promo = value.promo;
+                      settings.isTutor = false;
+                      StateWidget.of(context).setSettings(settings);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            );
+          });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     state = StateWidget.of(context).state;
-    print(state.settings);
+    var theme = Theme.of(context);
+    settings = state.settings;
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -25,7 +78,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: <Widget>[
                 Text(
                   'Paramètres',
-                  style: TextStyle(
+                  style: theme.textTheme.headline4.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 30,
                   ),
@@ -35,58 +88,66 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text('Mode professeur'),
+                        Text(
+                          'Mode professeur',
+                          style: theme.textTheme.bodyText1,
+                        ),
                         Switch.adaptive(
                           value: state.settings.isTutor,
                           onChanged: (bool newValue) {
                             setState(() {
-                              state.settings.isTutor = newValue;
-                              StateWidget.of(context).initData();
-                              state.cache.addJSON('settings', state.settings.toJSON);
+                              settings.isTutor = newValue;
+                              StateWidget.of(context).setSettings(settings);
                             });
                           },
                         )
                       ],
                     ),
-                    state.settings.isTutor
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text('Vous êtes :'),
-                              // DropdownButton<Tutor>(
-                              //   hint: Text("Professeurs"),
-                              //   value: state.settings.tutor,
-                              //   onChanged: (Tutor value) {
-                              //     setState(() {
-                              //       state.settings.tutor = value;
-                              //       state.settings.saveConfiguration();
-                              //       StateWidget.of(context).initData();
-                              //     });
-                              //   },
-                              //   items: state.profs.map((Tutor user) {
-                              //     return DropdownMenuItem<Tutor>(
-                              //       value: user,
-                              //       child: Text('${user.displayName}'),
-                              //     );
-                              //   }).toList(),
-                              // ),
-                            ],
-                          )
-                        : Container(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text('Mode sombre'),
-                        Switch.adaptive(value: false, onChanged: null)
+                        Text(
+                          settings.isTutor ? 'Enseignant :' : 'Groupe :',
+                          style: theme.textTheme.bodyText1,
+                        ),
+                        RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          color: Color(0xFFFF6C00),
+                          onPressed: handleSelect,
+                          child: settings.isTutor
+                              ? Text(
+                                  ' ${settings.tutor?.initiales ?? 'Aucun enseignant.'}',
+                                  style: theme.textTheme.bodyText1
+                                      .copyWith(color: Colors.white),
+                                )
+                              : Text(' ${settings.promo}-${settings.groupe}',
+                                  style: theme.textTheme.bodyText1
+                                      .copyWith(color: Colors.white)),
+                        ),
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text('Animation d\'apparition'),
-                        Switch.adaptive(value: false, onChanged: null)
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: <Widget>[
+                    //     Text(
+                    //       'Mode sombre',
+                    //       style: theme.textTheme.bodyText1,
+                    //     ),
+                    //     Switch.adaptive(value: false, onChanged: null)
+                    //   ],
+                    // ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: <Widget>[
+                    //     Text(
+                    //       'Animation d\'apparition',
+                    //       style: theme.textTheme.bodyText1,
+                    //     ),
+                    //     Switch.adaptive(value: false, onChanged: null)
+                    //   ],
+                    // ),
                   ],
                 ),
               ],

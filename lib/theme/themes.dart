@@ -1,8 +1,10 @@
 import 'package:flop_edt_app/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 
+///Classe représentant les deux thèmes (Clair et Sombre) de l'application.
 class AppTheme {
 
+  ///Retourne le theme clair de l'application.
   static ThemeData lightTheme() => ThemeData(
     fontFamily: 'Poppins',
     scaffoldBackgroundColor: Colors.white,
@@ -19,6 +21,7 @@ class AppTheme {
     )
   );
 
+  ///Retourne le thème sombre de l'application.
   static ThemeData darkTheme() => ThemeData(
     fontFamily: 'Poppins',
     appBarTheme: AppBarTheme(

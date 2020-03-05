@@ -4,6 +4,7 @@ import 'package:flop_edt_app/models/state/app_state.dart';
 import 'package:flop_edt_app/state_manager/state_widget.dart';
 import 'package:flop_edt_app/utils/constants.dart';
 import 'package:flop_edt_app/views/edt/components/cours_widget.dart';
+import 'package:flop_edt_app/views/utils/no_courses.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleViewer extends StatefulWidget {
@@ -93,21 +94,23 @@ class _ScheduleViewerState extends State<ScheduleViewer> {
                               10,
                       width: deviceSize.width,
                       child: Stack(
-                        children: day.cours
-                            .map(
-                              (Cours c) => Positioned(
-                                  top: (c.startTimeFromMidnight -
-                                          Constants.DAY_START) *
-                                      1.toDouble(),
-                                  child: CoursWidget(
-                                    animate: true,
-                                    cours: c,
-                                    delay: 0.3,
-                                    isProf: state.settings.isTutor,
-                                    height: c.duration.toDouble(),
-                                  )),
-                            )
-                            .toList(),
+                        children: day.cours.length == 0
+                            ? <Widget>[NoCourses()]
+                            : day.cours
+                                .map(
+                                  (Cours c) => Positioned(
+                                      top: (c.startTimeFromMidnight -
+                                              Constants.DAY_START) *
+                                          1.toDouble(),
+                                      child: CoursWidget(
+                                        animate: true,
+                                        cours: c,
+                                        delay: 0.3,
+                                        isProf: state.settings.isTutor,
+                                        height: c.duration.toDouble(),
+                                      )),
+                                )
+                                .toList(),
                       ),
                     ),
                   )

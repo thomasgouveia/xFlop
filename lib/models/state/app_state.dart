@@ -5,6 +5,9 @@ import 'package:flop_edt_app/models/resources/promotion.dart';
 import 'package:flop_edt_app/models/resources/tutor.dart';
 import 'package:flop_edt_app/models/state/settings.dart';
 
+///Classe modèle [AppState] représentant le state global de l'application.
+///C'est cette classe qui va stocker toutes les données importantes de l'application,
+///telles que la date du jour, s'il y a un état de chargement, la liste des départements etc.
 class AppState {
   //Données utiles
   bool isLoading;

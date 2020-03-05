@@ -25,6 +25,8 @@ class _TutorSettingsSelectorState extends State<TutorSettingsSelector> {
     filter = 'INFO';
   }
 
+  var isDark;
+
   bool get isUserHaveCompletedAllData => prof != null;
 
   void setFilter(String newFilter) => setState(() => filter = newFilter);
@@ -32,6 +34,7 @@ class _TutorSettingsSelectorState extends State<TutorSettingsSelector> {
   @override
   Widget build(BuildContext context) {
     state = StateWidget.of(context).state;
+    isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Column(
       children: <Widget>[
         Container(
@@ -57,9 +60,11 @@ class _TutorSettingsSelectorState extends State<TutorSettingsSelector> {
         isUserHaveCompletedAllData
             ? Text(
                 'Vous êtes $prof.',
+                style: Theme.of(context).textTheme.bodyText1,
               )
             : Text(
                 'Veuillez sélectionner votre nom dans la liste.',
+                style: Theme.of(context).textTheme.bodyText1,
               ),
       ],
     );
@@ -105,8 +110,8 @@ class _TutorSettingsSelectorState extends State<TutorSettingsSelector> {
                 borderRadius: BorderRadius.circular(50),
                 border: Border.all(
                     color: isFilter
-                        ? Theme.of(context).accentColor
-                        : Colors.black26,
+                        ? isDark ? Colors.white : Theme.of(context).accentColor
+                        : isDark ? Colors.white24 : Colors.black26,
                     width: 1),
               ),
               child: Center(
@@ -114,8 +119,8 @@ class _TutorSettingsSelectorState extends State<TutorSettingsSelector> {
                   label,
                   style: TextStyle(
                     color: isFilter
-                        ? Theme.of(context).accentColor
-                        : Colors.black26,
+                        ? isDark ? Colors.white : Theme.of(context).accentColor
+                        : isDark ? Colors.white24 : Colors.black26,
                   ),
                 ),
               ),
@@ -137,7 +142,8 @@ class _TutorSettingsSelectorState extends State<TutorSettingsSelector> {
             onTap: () {
               setState(() {
                 prof = tutor;
-                widget.onSelected(Settings(tutor: tutor, isTutor: true, department: filter));
+                widget.onSelected(
+                    Settings(tutor: tutor, isTutor: true, department: filter));
               });
             },
             leading: CircleAvatar(
@@ -152,7 +158,10 @@ class _TutorSettingsSelectorState extends State<TutorSettingsSelector> {
                 ),
               ),
             ),
-            title: Text('${tutor.displayName}'),
+            title: Text(
+              '${tutor.displayName}',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
           );
         },
       ),

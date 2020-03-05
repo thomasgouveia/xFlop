@@ -23,19 +23,22 @@ class _GroupSelectorState extends State<GroupSelector> {
     group = widget.value;
   }
 
+  var isDark;
+
   @override
   Widget build(BuildContext context) {
     state = StateWidget.of(context).state;
+    isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SizedBox(height: 10),
         Text(
           'Groupe : ',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
+          style: Theme.of(context).textTheme.bodyText1.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
         ),
         SizedBox(height: 10),
         Container(
@@ -65,16 +68,18 @@ class _GroupSelectorState extends State<GroupSelector> {
           margin: EdgeInsets.symmetric(horizontal: 5),
           padding: EdgeInsets.symmetric(horizontal: 30),
           decoration: BoxDecoration(
-              color: isSelected ? Color(0xFFFF6C00) : Colors.white,
+              color: isSelected ? Color(0xFFFF6C00) : Colors.transparent,
               borderRadius: BorderRadius.circular(50),
               border: isSelected
                   ? null
-                  : Border.all(width: 1, color: Colors.black26)),
+                  : Border.all(
+                      width: 1,
+                      color: isDark ? Colors.white24 : Colors.black26)),
           child: Center(
             child: Text(
               '$label',
               style:
-                  TextStyle(color: isSelected ? Colors.white : Colors.black26),
+                  TextStyle(color: isSelected ? Colors.white : isDark ? Colors.white24 : Colors.black26),
             ),
           ),
         ),
