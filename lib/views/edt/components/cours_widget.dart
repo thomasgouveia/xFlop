@@ -32,7 +32,8 @@ class CoursWidget extends StatelessWidget {
   }
 
   Widget get _ui {
-    bool isFinished = false;
+    var now = DateTime.now();
+    bool isFinished = cours.dateEtHeureFin.isBefore(now);
     return AnimatedOpacity(
       duration: Duration(milliseconds: 200),
       opacity: isFinished ? 0.3 : 1, //! TEST

@@ -15,7 +15,7 @@ class PromotionSelector extends StatefulWidget {
 }
 
 class _PromotionSelectorState extends State<PromotionSelector> {
-  Promotion promotion;
+  String promotion;
   AppState state;
 
   @override
@@ -27,21 +27,58 @@ class _PromotionSelectorState extends State<PromotionSelector> {
   @override
   Widget build(BuildContext context) {
     state = StateWidget.of(context).state;
-    return DropdownButton<Promotion>(
-      hint: Text("Promotion"),
-      value: promotion,
-      onChanged: (Promotion value) {
-        setState(() {
-          promotion = value;
-          widget.onSelect(value);
-        });
-      },
-      items: state.promos[widget.currentDep].map((Promotion promo) {
-        return DropdownMenuItem<Promotion>(
-          value: promo,
-          child: Text('${promo.promo}'),
-        );
-      }).toList(),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(height: 10),
+        Text(
+          'Promotion : ',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
+        SizedBox(height: 10),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: 40,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: state.promos[widget.currentDep]
+                .map((promo) =>
+                    this.buildCard(promo.promo, promo.promo == promotion))
+                .toList(),
+          ),
+        ),
+      ],
     );
   }
+
+  Widget buildCard(dynamic label, bool isSelected) => GestureDetector(
+        onTap: () {
+          setState(() {
+            promotion = label;
+            widget.onSelect(label);
+          });
+        },
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+          margin: EdgeInsets.symmetric(horizontal: 5),
+          padding: EdgeInsets.symmetric(horizontal: 30),
+          decoration: BoxDecoration(
+              color: isSelected ? Color(0xFFFF6C00) : Colors.white,
+              borderRadius: BorderRadius.circular(50),
+              border: isSelected
+                  ? null
+                  : Border.all(width: 1, color: Colors.black26)),
+          child: Center(
+            child: Text(
+              '$label',
+              style:
+                  TextStyle(color: isSelected ? Colors.white : Colors.black26),
+            ),
+          ),
+        ),
+      );
 }

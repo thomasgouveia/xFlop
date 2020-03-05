@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flop_edt_app/models/resources/course.dart';
 import 'package:flop_edt_app/models/resources/day.dart';
-import 'package:flop_edt_app/models/resources/group.dart';
 import 'package:flop_edt_app/models/resources/promotion.dart';
 import 'package:flop_edt_app/models/resources/tutor.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -81,11 +80,13 @@ class APIProvider {
     return <Promotion>[];
   }
 
-  Future<http.Response> getGroups({String department, promo}) async {
+  Future<List<String>> getGroups({String department, promo}) async {
     final url = _apiUrl + '&mode=groups&dep=$department&promo=$promo';
     final response = await http.get(url);
-    if (response.statusCode == 200)
-      return response;
+    if (response.statusCode == 200){
+      var res = jsonDecode(response.body)['response'];
+      return res != null ? res.cast<String>() : <String>[];
+    }
     return null;
   }
 }

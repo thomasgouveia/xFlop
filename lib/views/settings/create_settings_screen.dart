@@ -1,11 +1,8 @@
-import 'package:flop_edt_app/models/resources/group.dart';
-import 'package:flop_edt_app/models/resources/promotion.dart';
 import 'package:flop_edt_app/models/state/app_state.dart';
 import 'package:flop_edt_app/models/state/settings.dart';
 import 'package:flop_edt_app/state_manager/state_widget.dart';
-import 'package:flop_edt_app/views/settings/components/department_chooser.dart';
-import 'package:flop_edt_app/views/settings/components/group_selector.dart';
-import 'package:flop_edt_app/views/settings/components/promo_selector.dart';
+import 'package:flop_edt_app/views/settings/components/student_selector.dart';
+import 'package:flop_edt_app/views/settings/components/tutor_settings_selector.dart';
 import 'package:flutter/material.dart';
 
 class CreateSettingsScreen extends StatefulWidget {
@@ -15,20 +12,23 @@ class CreateSettingsScreen extends StatefulWidget {
 
 class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
   AppState state;
-  String department;
-  Promotion promotion;
-  Group groupe;
+
+  bool isProfSelected;
+  Settings settings;
 
   @override
   void initState() {
     super.initState();
-    department = 'INFO';
+    isProfSelected = false;
   }
 
-  updatePromotion() {
-    //var promo = state.promos.where((promo) => promo.department == department).toList();
-    //print('Promo=' + promo.toString());
+  void handleSettingsReceived(dynamic value) {
+    setState(() {
+      settings = value;
+    });
   }
+
+  void saveSettings() => StateWidget.of(context).setSettings(settings);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
-          child: Padding(
+          child: Container(
             padding: EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -51,39 +51,18 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
                 ),
                 Text(
                     'Afin de configurer votre emploi du temps, veuillez sélectionner votre département, votre promotion ainsi que votre groupe. Si vous êtes un professeur, veuillez activer le mode professeur, puis sélectionner votre nom dans la liste. Ces informations seront modifiables à tout moment depuis les paramètres de l\'application.'),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    children: <Widget>[
-                      DepartmentSelector(
-                          value: department,
-                          onSelect: (value) {
-                            setState(() {
-                              department = value;
-                              promotion = null;
-                              groupe = null;
-                            });
-                          }),
-                      department != ''
-                          ? PromotionSelector(
-                              value: promotion,
-                              currentDep: department,
-                              onSelect: (promo) =>
-                                  setState(() => promotion = promo),
-                            )
-                          : Container(),
-                      department != '' && promotion != null
-                          ? GroupSelector(
-                              value: groupe,
-                              groups: promotion?.groups ?? <Group>[],
-                              onSelect: (group) =>
-                                  setState(() => groupe = group),
-                            )
-                          : Container(),
-                    ],
-                  ),
+                isProfSelected
+                    ? TutorSettingsSelector(
+                        onSelected: handleSettingsReceived,
+                      )
+                    : StudentSettingsSelector(
+                        onSelected: handleSettingsReceived,
+                      ),
+                SizedBox(
+                  height: 10,
                 ),
-                _validateButton(theme)
+                _validateButton(theme),
+                _changeModeButton(),
               ],
             ),
           ),
@@ -92,17 +71,31 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
     );
   }
 
-  Widget _validateButton(ThemeData theme) => RaisedButton(
-        onPressed: () {
-          //Settings settings = Settings(department: department, groupe: groupe.name, promo: promotion.name);
-          //print(settings);
-        },
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-        padding: EdgeInsets.all(10),
-        child: Text(
-          'Valider',
-          style: TextStyle(color: Colors.white, fontSize: 16),
+  Widget _changeModeButton() => Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.all(5),
+        child: FlatButton(
+          onPressed: () => setState(() => isProfSelected = !isProfSelected),
+          child: Text(
+              isProfSelected ? 'Je suis un étudiant' : 'Je suis un enseignant'),
         ),
-        color: theme.accentColor,
+      );
+
+  Widget _validateButton(ThemeData theme) => Container(
+        padding: EdgeInsets.all(5),
+        width: MediaQuery.of(context).size.width,
+        child: RaisedButton(
+          onPressed: settings == null ? null : () {
+            saveSettings();
+          },
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          padding: EdgeInsets.all(10),
+          child: Text(
+            'Valider',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+          color: theme.accentColor,
+        ),
       );
 }

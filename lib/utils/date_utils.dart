@@ -4,6 +4,8 @@ class DateUtils {
   ///Retourne un [DateTime] représentant la date d'ajourd'hui, à 00h01.
   static DateTime todayMidnight() {
     var now = DateTime.now();
+    var date = DateTime(now.year, now.month, now.day, 0, 1);
+    var isWeekEnd = date.weekday == 6 || date.weekday == 7;
     return DateTime(now.year, now.month, now.day, 0, 1);
   }
 

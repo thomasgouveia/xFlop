@@ -7,7 +7,6 @@ import 'package:flop_edt_app/models/resources/tutor.dart';
 import 'package:flop_edt_app/models/state/app_state.dart';
 import 'package:flop_edt_app/models/state/settings.dart';
 import 'package:flop_edt_app/utils/date_utils.dart';
-import 'package:flop_edt_app/views/settings/create_settings_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -45,11 +44,11 @@ class _StateWidgetState extends State<StateWidget> {
     } else {
       var todayMidnight = DateUtils.todayMidnight();
       state = AppState(
-          isLoading: true,
-          today: todayMidnight,
-          year: todayMidnight.year,
-          week: 10 //DateUtils.weekNumber(todayMidnight),
-          );
+        isLoading: true,
+        today: todayMidnight,
+        year: todayMidnight.year,
+        week: DateUtils.weekNumber(todayMidnight),
+      );
       this.initData();
     }
   }
@@ -62,11 +61,14 @@ class _StateWidgetState extends State<StateWidget> {
     //Chargement des données obligatoires
     var departments = await api.getDepartments();
     var map = <String, List<Promotion>>{};
+    var mapProfs = <String, List<Tutor>>{};
     for (var dep in departments) {
       //On exclue RESA des départements
       if (dep != 'RESA') {
         var promos = await api.getPromotions(department: dep);
+        var profs = await api.getTutorsOfDepartment(dep: dep);
         map[dep] = promos;
+        mapProfs[dep] = profs;
       }
     }
     //On ajoute dans l'état
@@ -74,6 +76,7 @@ class _StateWidgetState extends State<StateWidget> {
       state.departments = departments;
       state.promos = map;
       state.cache = cache;
+      state.profs = mapProfs;
       state.settings = settings;
     });
 
@@ -119,32 +122,35 @@ class _StateWidgetState extends State<StateWidget> {
       week: state.week,
     );
 
-    ///Récupération des profs
-    var profs = await api.getTutorsOfDepartment(dep: settings.department);
-
     ///On map les cours en fonction de leur jour
     days.forEach((day) => this._mapCoursesToDays(day, courses));
     setState(() {
-      state.settings.tutor = findTutor(settings, profs);
       state.cours = courses;
       state.days = days;
-      state.profs = profs;
       state.isLoading = false;
     });
   }
 
-  Tutor findTutor(Settings settings, List<Tutor> profs) {
-    Tutor parsed = settings.tutor;
-    if (parsed == null) return null;
-    var results = profs
-        .where((Tutor element) => element.initiales == parsed.initiales)
-        .toList();
-    return results.length != 0 ? results[0] : null;
-  }
+  // Tutor findTutor(Settings settings, List<Tutor> profs) {
+  //   Tutor parsed = settings.tutor;
+  //   if (parsed == null) return null;
+  //   var results = profs
+  //       .where((Tutor element) => element.initiales == parsed.initiales)
+  //       .toList();
+  //   return results.length != 0 ? results[0] : null;
+  // }
 
   void switchDisplayMode() {
     setState(() {
       state.settings.isGridDisplay = !state.settings.isGridDisplay;
+      state.settings.saveConfiguration();
+    });
+  }
+
+  void setSettings(Settings settings) {
+    setState(() {
+      state.settings = settings;
+      createData();
       state.settings.saveConfiguration();
     });
   }

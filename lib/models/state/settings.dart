@@ -28,7 +28,7 @@ class Settings {
     this.promo,
     this.department,
     this.groupe,
-    this.isTutor,
+    this.isTutor: false,
     this.tutor,
     this.isGridDisplay: false
   });

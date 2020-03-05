@@ -55,6 +55,9 @@ class _ScheduleCompleteWeekState extends State<ScheduleCompleteWeek> {
                   Row(
                     children: _buildGrid,
                   ),
+                  SizedBox(
+                    height: 100,
+                  ),
                 ],
               ),
       ),
@@ -70,8 +73,9 @@ class _ScheduleCompleteWeekState extends State<ScheduleCompleteWeek> {
         width: deviceSize.width / days.length,
         height: (dayEnd - dayStart).toDouble(),
         decoration: BoxDecoration(
-            border: Border.all(
-                width: 1, color: Colors.black26, style: BorderStyle.solid)),
+          border: Border.all(
+              width: 1, color: Colors.black12, style: BorderStyle.solid),
+        ),
         child: Stack(
           overflow: Overflow.visible,
           children: <Widget>[
@@ -96,6 +100,8 @@ class _ScheduleCompleteWeekState extends State<ScheduleCompleteWeek> {
     var fontSize = 13.0;
     var profFontSize = 12.0;
     var roomFontSize = 11.0;
+    bool isFinished = elem.dateEtHeureFin.isBefore(DateTime.now());
+    var textColor = isFinished ? Colors.white : elem.textColor;
     return Positioned(
       top: (elem.startTimeFromMidnight - dayStart) * 1.toDouble(),
       child: FadeIn(
@@ -103,7 +109,7 @@ class _ScheduleCompleteWeekState extends State<ScheduleCompleteWeek> {
         Container(
           width: deviceSize.width / days.length,
           height: elem.duration.toDouble(),
-          color: elem.backgroundColor,
+          color: isFinished ? elem.backgroundColor.withOpacity(0.5) : elem.backgroundColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -111,16 +117,16 @@ class _ScheduleCompleteWeekState extends State<ScheduleCompleteWeek> {
                 elem.module,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: elem.textColor,
+                    color: textColor,
                     fontSize: fontSize),
               ),
               Text(
                 elem.enseignant,
-                style: TextStyle(color: elem.textColor, fontSize: profFontSize),
+                style: TextStyle(color: textColor, fontSize: profFontSize),
               ),
               Text(
                 elem.salle,
-                style: TextStyle(color: elem.textColor, fontSize: roomFontSize),
+                style: TextStyle(color: textColor, fontSize: roomFontSize),
               )
             ],
           ),

@@ -53,23 +53,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text('Vous êtes :'),
-                              DropdownButton<Tutor>(
-                                hint: Text("Professeurs"),
-                                value: state.settings.tutor,
-                                onChanged: (Tutor value) {
-                                  setState(() {
-                                    state.settings.tutor = value;
-                                    state.settings.saveConfiguration();
-                                    StateWidget.of(context).initData();
-                                  });
-                                },
-                                items: state.profs.map((Tutor user) {
-                                  return DropdownMenuItem<Tutor>(
-                                    value: user,
-                                    child: Text('${user.displayName}'),
-                                  );
-                                }).toList(),
-                              ),
+                              // DropdownButton<Tutor>(
+                              //   hint: Text("Professeurs"),
+                              //   value: state.settings.tutor,
+                              //   onChanged: (Tutor value) {
+                              //     setState(() {
+                              //       state.settings.tutor = value;
+                              //       state.settings.saveConfiguration();
+                              //       StateWidget.of(context).initData();
+                              //     });
+                              //   },
+                              //   items: state.profs.map((Tutor user) {
+                              //     return DropdownMenuItem<Tutor>(
+                              //       value: user,
+                              //       child: Text('${user.displayName}'),
+                              //     );
+                              //   }).toList(),
+                              // ),
                             ],
                           )
                         : Container(),

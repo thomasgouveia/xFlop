@@ -29,7 +29,7 @@ class _WeekSelectorState extends State<WeekSelector>
     maxHeight = 300;
     isOpen = false;
     isBottomContentVisible = false;
-    weeks = [10, 11, 12, 13, 14, 15];
+    weeks = [9,10, 11, 12, 13, 14, 15];
 
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));

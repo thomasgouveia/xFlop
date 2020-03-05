@@ -25,23 +25,57 @@ class _DepartmentSelectorState extends State<DepartmentSelector> {
   @override
   Widget build(BuildContext context) {
     state = StateWidget.of(context).state;
-    return DropdownButton<dynamic>(
-      hint: Text("Département"),
-      value: department == '' ? null : department,
-      onChanged: (dynamic value) {
-        setState(() {
-          department = value;
-          widget.onSelect(value);
-        });
-      },
-      items: state.departments
-          .where((element) => element != 'RESA')
-          .map((dynamic dep) {
-        return DropdownMenuItem<dynamic>(
-          value: dep,
-          child: Text('$dep'),
-        );
-      }).toList(),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(height: 10),
+        Text(
+          'Département : ',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
+        SizedBox(height: 10),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: 40,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: state.promos.keys
+                .map((dep) => this.buildCard(dep, dep == department))
+                .toList(),
+          ),
+        ),
+      ],
     );
   }
+
+  Widget buildCard(dynamic label, bool isSelected) => GestureDetector(
+        onTap: () {
+          setState(() {
+            department = label;
+            widget.onSelect(label);
+          });
+        },
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+          margin: EdgeInsets.symmetric(horizontal: 5),
+          padding: EdgeInsets.symmetric(horizontal: 30),
+          decoration: BoxDecoration(
+              color: isSelected ? Color(0xFFFF6C00) : Colors.white,
+              borderRadius: BorderRadius.circular(50),
+              border: isSelected
+                  ? null
+                  : Border.all(width: 1, color: Colors.black26)),
+          child: Center(
+            child: Text(
+              '$label',
+              style:
+                  TextStyle(color: isSelected ? Colors.white : Colors.black26),
+            ),
+          ),
+        ),
+      );
 }

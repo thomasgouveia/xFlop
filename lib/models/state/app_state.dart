@@ -18,7 +18,7 @@ class AppState {
   List<Day> days;
 
   //Données relatives aux profs
-  List<Tutor> profs;
+  Map<String, List<Tutor>> profs;
 
   //Groupes
   Map<String, List<Promotion>> promos;
@@ -39,6 +39,6 @@ class AppState {
     this.promos = const {},
     this.departments = const [],
     this.cours = const [],
-    this.profs = const [],
+    this.profs = const {},
   });
 }
