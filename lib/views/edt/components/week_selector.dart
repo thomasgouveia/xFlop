@@ -26,7 +26,7 @@ class _WeekSelectorState extends State<WeekSelector>
   void initState() {
     super.initState();
     minHeight = 50;
-    maxHeight = 300;
+    maxHeight = 120;
     isOpen = false;
     isBottomContentVisible = false;
 
@@ -36,8 +36,8 @@ class _WeekSelectorState extends State<WeekSelector>
 
   @override
   void dispose() {
-    super.dispose();
     _animationController.dispose();
+    super.dispose();
   }
 
   void toggle() {
@@ -100,53 +100,53 @@ class _WeekSelectorState extends State<WeekSelector>
                   milliseconds: 500,
                 ),
                 curve: Curves.easeInOut,
-                height: isOpen ? 230 : 0,
+                height: isOpen ? 60 : 0,
                 width: MediaQuery.of(context).size.width,
                 child: Visibility(
                   visible: isBottomContentVisible,
                   child: Column(
                     children: <Widget>[
                       Container(height: 40, child: _buildWeeksChoices),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Informations sur la semaine',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Expanded(
-                        child: Container(
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 6,
-                            itemBuilder: (context, int index) {
-                              return GestureDetector(
-                                onTap: () => print('Tapped'),
-                                child: Container(
-                                  width: 180,
-                                  padding: EdgeInsets.all(10),
-                                  margin: EdgeInsets.symmetric(horizontal: 10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text('Général'),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
+                      // SizedBox(height: 10),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.start,
+                      //   children: <Widget>[
+                      //     Text(
+                      //       'Informations sur la semaine',
+                      //       style: TextStyle(color: Colors.white),
+                      //     ),
+                      //   ],
+                      // ),
+                      // SizedBox(height: 10),
+                      // Expanded(
+                      //   child: Container(
+                      //     child: ListView.builder(
+                      //       scrollDirection: Axis.horizontal,
+                      //       itemCount: 6,
+                      //       itemBuilder: (context, int index) {
+                      //         return GestureDetector(
+                      //           onTap: () => print('Tapped'),
+                      //           child: Container(
+                      //             width: 180,
+                      //             padding: EdgeInsets.all(10),
+                      //             margin: EdgeInsets.symmetric(horizontal: 10),
+                      //             decoration: BoxDecoration(
+                      //               color: Colors.white,
+                      //               borderRadius: BorderRadius.circular(30),
+                      //             ),
+                      //             child: Column(
+                      //               crossAxisAlignment:
+                      //                   CrossAxisAlignment.start,
+                      //               children: <Widget>[
+                      //                 Text('Général'),
+                      //               ],
+                      //             ),
+                      //           ),
+                      //         );
+                      //       },
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 )),

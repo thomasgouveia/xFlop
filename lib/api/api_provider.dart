@@ -33,6 +33,7 @@ class APIProvider {
       {int year, week, String promo, department, group}) async {
     final url = _apiUrl +
         '&mode=courses&dep=$department&promo=$promo&year=$year&week=$week&group=$group';
+    print(url);
     final response = await http.get(url);
     if (response.statusCode == 200)
       return Cours.createListFromResponse(response);
@@ -41,6 +42,7 @@ class APIProvider {
 
   Future<List<dynamic>> getDepartments() async {
     final url = _apiUrl + '&mode=departments';
+    print(url);
     final response = await http.get(url);
     if (response.statusCode == 200)
       return jsonDecode(response.body)['response'];
@@ -51,6 +53,7 @@ class APIProvider {
       {int year, week, String department, prof}) async {
     final url = _apiUrl +
         '&mode=courses&dep=$department&prof=$prof&year=$year&week=$week';
+    print(url);
     final response = await http.get(url);
     if (response.statusCode == 200)
       return Cours.createListFromResponse(response);

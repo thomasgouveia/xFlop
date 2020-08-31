@@ -1,4 +1,4 @@
-import 'package:flop_edt_app/router/router.dart';
+import 'package:flop_edt_app/router/router.dart' as Custom;
 import 'package:flop_edt_app/state_manager/state_widget.dart';
 import 'package:flop_edt_app/theme/themes.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,7 @@ class _XFlopAppState extends State<XFlopApp> {
       theme: AppTheme.lightTheme(),
       darkTheme: AppTheme.darkTheme(),
       routes: {
-        '/': (context) => Router(),
+        '/': (context) => Custom.Router(),
       },
     );
   }

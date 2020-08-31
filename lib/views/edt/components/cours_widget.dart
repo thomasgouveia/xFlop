@@ -35,39 +35,42 @@ class CoursWidget extends StatelessWidget {
     var now = DateTime.now();
     bool isFinished = cours.dateEtHeureFin.isBefore(now);
     var theme = Theme.of(context);
-    return AnimatedOpacity(
-      duration: Duration(milliseconds: 200),
-      opacity: isFinished ? 0.3 : 1, //! TEST
-      child: Row(
-        children: <Widget>[
-          isHour
-              ? coursHeure(
-                  MediaQuery.of(context).platformBrightness == Brightness.dark)
-              : Container(),
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: cours.isExam ? Colors.red : cours.backgroundColor,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    offset: Offset(5.0, 5.0),
-                    blurRadius: 10.0,
-                  )
-                ],
-              ),
-              //margin: EdgeInsets.only(top: 2, bottom: 2, right: 10),
-              height: height,
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[coursInfo],
+    return GestureDetector(
+      onTap: () => cours.displayInformations(context),
+      child: AnimatedOpacity(
+        duration: Duration(milliseconds: 200),
+        opacity: isFinished ? 0.3 : 1, //! TEST
+        child: Row(
+          children: <Widget>[
+            isHour
+                ? coursHeure(MediaQuery.of(context).platformBrightness ==
+                    Brightness.dark)
+                : Container(),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: cours.isExam ? Colors.red : cours.backgroundColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      offset: Offset(5.0, 5.0),
+                      blurRadius: 10.0,
+                    )
+                  ],
+                ),
+                //margin: EdgeInsets.only(top: 2, bottom: 2, right: 10),
+                height: height,
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[coursInfo],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

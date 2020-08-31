@@ -78,4 +78,21 @@ class Cours {
       this.type == 'Exam' ||
       this.type == 'CTRL' ||
       this.type == 'CTRLP';
+
+  void displayInformations(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          color: this.backgroundColor,
+          child: Column(
+            children: <Widget>[
+              Text(this.module),
+              Text(this.enseignant),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }

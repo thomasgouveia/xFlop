@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flop_edt_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/constants.dart';
+
 class CustomDialog extends StatelessWidget {
   final String buttonText;
   final Image image;
