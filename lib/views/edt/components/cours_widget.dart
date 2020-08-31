@@ -28,46 +28,54 @@ class CoursWidget extends StatelessWidget {
     return Container(
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.symmetric(horizontal: 10),
-        child: animate ? FadeIn(delay, _ui) : _ui);
+        child: animate ? FadeIn(delay, this._ui(context)) : _ui(context));
   }
 
-  Widget get _ui {
-    bool isFinished = false;
-    return AnimatedOpacity(
-      duration: Duration(milliseconds: 200),
-      opacity: isFinished ? 0.3 : 1, //! TEST
-      child: Row(
-        children: <Widget>[
-          isHour ? coursHeure : Container(),
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: cours.isExam ? Colors.red : cours.backgroundColor,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    offset: Offset(5.0, 5.0),
-                    blurRadius: 10.0,
-                  )
-                ],
-              ),
-              //margin: EdgeInsets.only(top: 2, bottom: 2, right: 10),
-              height: height,
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[coursInfo],
+  Widget _ui(BuildContext context) {
+    var now = DateTime.now();
+    bool isFinished = cours.dateEtHeureFin.isBefore(now);
+    var theme = Theme.of(context);
+    return GestureDetector(
+      onTap: () => cours.displayInformations(context),
+      child: AnimatedOpacity(
+        duration: Duration(milliseconds: 200),
+        opacity: isFinished ? 0.3 : 1, //! TEST
+        child: Row(
+          children: <Widget>[
+            isHour
+                ? coursHeure(MediaQuery.of(context).platformBrightness ==
+                    Brightness.dark)
+                : Container(),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: cours.isExam ? Colors.red : cours.backgroundColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      offset: Offset(5.0, 5.0),
+                      blurRadius: 10.0,
+                    )
+                  ],
+                ),
+                //margin: EdgeInsets.only(top: 2, bottom: 2, right: 10),
+                height: height,
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[coursInfo],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget get coursHeure => Container(
+  Widget coursHeure(bool isDark) => Container(
         width: 50,
         height: cours.duration.toDouble(),
         child: Column(
@@ -77,15 +85,17 @@ class CoursWidget extends StatelessWidget {
               (cours.dateEtHeureDebut.minute == 0)
                   ? '${cours.dateEtHeureDebut.hour}h${cours.dateEtHeureDebut.minute}0'
                   : '${cours.dateEtHeureDebut.hour}h${cours.dateEtHeureDebut.minute}',
-              style:
-                  TextStyle(fontWeight: FontWeight.w500, color: Colors.black),
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: isDark ? Colors.white : Colors.black),
             ),
             Text(
               (cours.dateEtHeureFin.minute == 0)
                   ? '${cours.dateEtHeureFin.hour}h${cours.dateEtHeureFin.minute}0'
                   : '${cours.dateEtHeureFin.hour}h${cours.dateEtHeureFin.minute}',
-              style:
-                  TextStyle(fontWeight: FontWeight.w500, color: Colors.black),
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: isDark ? Colors.white : Colors.black),
             ),
           ],
         ),
