@@ -86,7 +86,7 @@ class APIProvider {
   Future<List<String>> getGroups({String department, promo}) async {
     final url = _apiUrl + '&mode=groups&dep=$department&promo=$promo';
     final response = await http.get(url);
-    if (response.statusCode == 200){
+    if (response.statusCode == 200) {
       var res = jsonDecode(response.body)['response'];
       return res != null ? res.cast<String>() : <String>[];
     }
