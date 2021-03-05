@@ -6,7 +6,7 @@ import 'package:flop_edt_app/models/resources/promotion.dart';
 import 'package:flop_edt_app/models/resources/tutor.dart';
 import 'package:flop_edt_app/models/state/app_state.dart';
 import 'package:flop_edt_app/models/state/settings.dart';
-import 'package:flop_edt_app/utils/date_utils.dart';
+import 'package:flop_edt_app/utils/date_utils.dart' as du;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -43,13 +43,13 @@ class _StateWidgetState extends State<StateWidget> {
       state = widget.state;
     } else {
       ///Récupération de la date d'aujourd'hui, à 00h01.
-      var todayMidnight = DateUtils.todayMidnight();
+      var todayMidnight = du.DateUtils.todayMidnight();
 
       ///Récupération de la semaine actuelle à partir de la date.
-      var week = DateUtils.weekNumber(todayMidnight);
+      var week = du.DateUtils.weekNumber(todayMidnight);
 
       ///Récupération des semaines
-      var weeks = DateUtils.calculateWeeks(todayMidnight);
+      var weeks = du.DateUtils.calculateWeeks(todayMidnight);
 
       ///Initialisation du state
       state = AppState(
@@ -177,7 +177,7 @@ class _StateWidgetState extends State<StateWidget> {
   ///Map les cours dans le jour ou ils se déroulent.
   void _mapCoursesToDays(Day day, List<Cours> courses) {
     courses.forEach((Cours cours) {
-      if (DateUtils.isToday(day.date, cours.dateEtHeureDebut))
+      if (du.DateUtils.isToday(day.date, cours.dateEtHeureDebut))
         day.cours.add(cours);
     });
     day.cours.sort((Cours c1, Cours c2) =>

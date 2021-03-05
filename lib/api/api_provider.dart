@@ -84,10 +84,12 @@ class APIProvider {
 
   Future<List<Day>> getCompleteWeek({int year, week}) async {
     return Day.getCompleteWeek(year: year, week: week);
+    /*
     final url = _apiUrl + '&mode=week&week=$week&year=$year';
     final response = await http.get(url, headers: _headers);
     if (response.statusCode == 200) return Day.createListFromResponse(response);
     return <Day>[];
+    */
   }
 
   Future<List<Tutor>> getTutorsOfDepartment({String dep}) async {
@@ -102,25 +104,29 @@ class APIProvider {
   }
 
   Future<List<Promotion>> getPromotions({String department}) async {
-    return [
-      Promotion(
-          department: department,
-          name: department + "1",
-          promo: department + "1",
-          groups:
-              await getGroups(department: department, promo: department + "1")),
-      Promotion(
-          department: department,
-          name: department + "2",
-          promo: department + "2",
-          groups:
-              await getGroups(department: department, promo: department + "1")),
-    ];
+    /*
     final url = _apiUrl +
-        '&mode=promo&dep=departmentaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+        '&mode=promo&dep=department';
+        */
+    final url = _apiUrl + 'groups/trainingprogram/?dept=$department';
     final response = await http.get(url, headers: _headers);
-    if (response.statusCode == 200)
-      return (await Promotion.createListFromResponse(response));
+    print(url);
+    if (response.statusCode == 200) {
+      //return (await Promotion.createListFromResponse(response));
+
+      var res = jsonDecode(response.body);
+      List<Promotion> promos = [];
+      for (var promo in res) {
+        promos.add(Promotion(
+          department: department,
+          name: promo['name'],
+          promo: promo['abbrev'],
+          groups:
+              await getGroups(department: department, promo: promo['abbrev']),
+        ));
+      }
+      return promos;
+    }
     return <Promotion>[];
   }
 
@@ -129,10 +135,11 @@ class APIProvider {
     final response = await http.get(url, headers: _headers);
     if (response.statusCode == 200) {
       var res = jsonDecode(response.body);
-      print(res);
-      return res != null
-          ? res.map((dynamic group) => (group as Map)['name'])
-          : <String>[];
+      List<String> groups = [];
+      for (var group in res) {
+        groups.add(group['name']);
+      }
+      return groups;
     }
     return null;
   }
