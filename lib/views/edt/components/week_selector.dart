@@ -31,7 +31,7 @@ class _WeekSelectorState extends State<WeekSelector>
     isBottomContentVisible = false;
 
     _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+        AnimationController(duration: Duration(milliseconds: 500));
   }
 
   @override
