@@ -4,6 +4,7 @@ import 'package:flop_edt_app/views/edt/components/edt_chooser.dart';
 import 'package:flop_edt_app/views/edt/components/week_selector.dart';
 import 'package:flop_edt_app/views/settings/create_settings_screen.dart';
 import 'package:flop_edt_app/views/settings/settings_screen.dart';
+import 'package:flop_edt_app/views/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
 ///Widget [Router] permettant de réaliser la navigation de l'application.
