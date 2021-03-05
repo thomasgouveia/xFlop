@@ -7,8 +7,10 @@ import 'package:http/http.dart';
 class Tutor {
   ///Les initiales du tuteur, de type [String]
   String initiales;
+
   ///Le prénom du tuteur, de type [String]
   String prenom;
+
   ///Le nom du tuteur, de type [String]
   String nom;
 
@@ -27,7 +29,7 @@ class Tutor {
 
   ///Méthode statique qui crée une liste d'enseignants depuis une réponse HTTP.
   static List<Tutor> createListFromResponse(Response response) {
-    var profs = jsonDecode(response.body)['response'];
+    var profs = jsonDecode(response.body);
     var result = <Tutor>[];
     profs.forEach((dynamic prof) => result.add(Tutor.fromJSON(prof)));
     return result;
