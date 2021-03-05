@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 class Day {
   ///La date du jour de type [DateTime]
   final DateTime date;
+
   ///La liste de cours, de type [List<Cours>]
   final List<Cours> cours;
 
@@ -26,7 +27,7 @@ class Day {
 
   ///Méthode statique permettant de créer une liste de jour à partir d'une réponse HTTP.
   static List<Day> createListFromResponse(Response response) {
-    var dates = jsonDecode(response.body)['response'];
+    var dates = jsonDecode(response.body);
     var result = <Day>[];
     dates.forEach((dynamic date) => result.add(Day.fromJSON(date)));
     return result;
@@ -43,5 +44,15 @@ class Day {
           DateFormat('dd/MM').format(date);
     }
     return DateFormat('dd/MM').format(date);
+  }
+
+  static List<Day> getCompleteWeek({int year, week}) {
+    int firstDayOfWeek =
+        week * 7 - (DateTime(year).add(Duration(days: week * 7)).weekday - 1);
+    return [0, 1, 2, 3, 4]
+        .map((int nb) => Day(
+            cours: [],
+            date: DateTime(year).add(Duration(days: firstDayOfWeek + nb))))
+        .toList();
   }
 }

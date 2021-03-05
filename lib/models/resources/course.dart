@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
+import 'day.dart';
+
 ///Classe [Cours] permettant de représenter en objet
 ///un cours retourné par l'API.
 class Cours {
@@ -44,7 +46,7 @@ class Cours {
       this.indexInWeek,
       this.dateEtHeureDebut,
       this.dateEtHeureFin});
-
+/*
   factory Cours.fromJSON(Map<String, dynamic> json) => Cours(
         id: json['id'],
         enseignant: json['enseignant'],
@@ -62,12 +64,40 @@ class Cours {
         dateEtHeureFin: DateTime.parse(json['date'])
             .add(Duration(minutes: json['duration'])),
       );
+*/
+  factory Cours.fromJSON(Map<String, dynamic> json, year, week) => Cours(
+        id: json['id'],
+        enseignant: json['course']['tutor'],
+        module: json['course']['module']['abbrev'] ?? "??",
+        groupe: json['course']['groups'][0]['name'],
+        promo: json['course']['groups'][0]['train_prog'],
+        type: json['course']['type'],
+        salle: json['room'],
+        backgroundColor:
+            ColorUtils.fromHex(json['course']['module']['display']['color_bg']),
+        textColor: ColorUtils.fromHex(
+            json['course']['module']['display']['color_txt']),
+        startTimeFromMidnight: json['start_time'],
+        duration: 90,
+        indexInWeek: ["m", "tu", "w", "th", "f"].indexOf(json['day']),
+        dateEtHeureDebut: Day.getCompleteWeek(
+                year: year,
+                week: week)[["m", "tu", "w", "th", "f"].indexOf(json['day'])]
+            .date
+            .add(Duration(minutes: json['start_time'])),
+        dateEtHeureFin: Day.getCompleteWeek(
+                year: year,
+                week: week)[["m", "tu", "w", "th", "f"].indexOf(json['day'])]
+            .date
+            .add(Duration(minutes: json['start_time'] + 90)),
+      );
 
   ///Crée une liste de [Cours] à partir de la réponse API.
-  static List<Cours> createListFromResponse(Response response) {
-    var courses = jsonDecode(response.body)['response'];
+  static List<Cours> createListFromResponse(Response response, year, week) {
+    var courses = jsonDecode(response.body);
     var toReturn = <Cours>[];
-    courses.forEach((dynamic json) => toReturn.add(Cours.fromJSON(json)));
+    courses.forEach(
+        (dynamic json) => toReturn.add(Cours.fromJSON(json, year, week)));
     return toReturn;
   }
 

@@ -47,7 +47,7 @@ class APIProvider {
     print(url);
     final response = await http.get(url, headers: _headers);
     if (response.statusCode == 200)
-      return Cours.createListFromResponse(response);
+      return Cours.createListFromResponse(response, year, week);
     return <Cours>[];
   }
 
@@ -78,15 +78,13 @@ class APIProvider {
     print(url);
     final response = await http.get(url, headers: _headers);
     if (response.statusCode == 200)
-      return Cours.createListFromResponse(response);
+      return Cours.createListFromResponse(response, year, week);
     return <Cours>[];
   }
 
   Future<List<Day>> getCompleteWeek({int year, week}) async {
-    /*
+    return Day.getCompleteWeek(year: year, week: week);
     final url = _apiUrl + '&mode=week&week=$week&year=$year';
-    */
-    final url = _apiUrl + 'fetch/dweek/';
     final response = await http.get(url, headers: _headers);
     if (response.statusCode == 200) return Day.createListFromResponse(response);
     return <Day>[];
@@ -109,12 +107,14 @@ class APIProvider {
           department: department,
           name: department + "1",
           promo: department + "1",
-          groups: []),
+          groups:
+              await getGroups(department: department, promo: department + "1")),
       Promotion(
           department: department,
           name: department + "2",
           promo: department + "2",
-          groups: []),
+          groups:
+              await getGroups(department: department, promo: department + "1")),
     ];
     final url = _apiUrl +
         '&mode=promo&dep=departmentaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
@@ -128,8 +128,11 @@ class APIProvider {
     final url = _apiUrl + 'groups/groups/?dept=$department';
     final response = await http.get(url, headers: _headers);
     if (response.statusCode == 200) {
-      var res = jsonDecode(response.body)['response'];
-      return res != null ? res.cast<String>() : <String>[];
+      var res = jsonDecode(response.body);
+      print(res);
+      return res != null
+          ? res.map((dynamic group) => (group as Map)['name'])
+          : <String>[];
     }
     return null;
   }

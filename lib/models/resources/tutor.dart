@@ -21,10 +21,17 @@ class Tutor {
   Tutor({this.initiales, this.prenom, this.nom});
 
   ///Instancie un objet de type [Tutor] depuis un [Map] de type JSON.
+  /*
   factory Tutor.fromJSON(Map<String, dynamic> json) => Tutor(
         initiales: json['initiales'],
         prenom: json['prenom'],
         nom: json['nom'],
+      );
+      */
+  factory Tutor.fromJSON(Map<String, dynamic> json) => Tutor(
+        initiales: json['username'],
+        prenom: json['first_name'],
+        nom: json['last_name'],
       );
 
   ///Méthode statique qui crée une liste d'enseignants depuis une réponse HTTP.

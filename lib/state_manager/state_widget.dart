@@ -44,10 +44,13 @@ class _StateWidgetState extends State<StateWidget> {
     } else {
       ///Récupération de la date d'aujourd'hui, à 00h01.
       var todayMidnight = DateUtils.todayMidnight();
+
       ///Récupération de la semaine actuelle à partir de la date.
       var week = DateUtils.weekNumber(todayMidnight);
-      ///Récupération des semaines 
+
+      ///Récupération des semaines
       var weeks = DateUtils.calculateWeeks(todayMidnight);
+
       ///Initialisation du state
       state = AppState(
         isLoading: true,
@@ -57,6 +60,7 @@ class _StateWidgetState extends State<StateWidget> {
         week: week,
         weeks: weeks,
       );
+
       ///Initialisation des données
       this.initData();
     }
