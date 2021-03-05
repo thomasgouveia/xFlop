@@ -106,7 +106,7 @@ class _StudentSettingsSelectorState extends State<StudentSettingsSelector> {
                 style: Theme.of(context).textTheme.bodyText1,
               )
             : Text(
-                'Veuillez sélectionner une promotion, un groupe et un département.',
+                'Veuillez sélectionner une promotion, un groupe et un département OU vous connectez.',
                 style: Theme.of(context).textTheme.bodyText1,
               ),
       ],
