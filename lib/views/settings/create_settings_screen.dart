@@ -4,6 +4,7 @@ import 'package:flop_edt_app/state_manager/state_widget.dart';
 import 'package:flop_edt_app/utils/constants.dart';
 import 'package:flop_edt_app/views/settings/components/student_selector.dart';
 import 'package:flop_edt_app/views/settings/components/tutor_settings_selector.dart';
+import 'package:flop_edt_app/views/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class CreateSettingsScreen extends StatefulWidget {
@@ -74,7 +75,7 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
                   height: 10,
                 ),
                 _validateButton(theme),
-                _changeModeButton(),
+                _loginButton(theme),
               ],
             ),
           ),
@@ -83,13 +84,24 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
     );
   }
 
-  Widget _changeModeButton() => Container(
-        width: MediaQuery.of(context).size.width,
+  Widget _loginButton(ThemeData theme) => Container(
         padding: EdgeInsets.all(5),
-        child: FlatButton(
-          onPressed: () => setState(() => isProfSelected = !isProfSelected),
+        width: MediaQuery.of(context).size.width,
+        child: RaisedButton(
+          color: theme.accentColor,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LoginScreen()),
+            );
+          },
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          padding: EdgeInsets.all(10),
           child: Text(
-              isProfSelected ? 'Je suis un étudiant' : 'Je suis un enseignant', style: Theme.of(context).textTheme.bodyText1),
+            'Se connecter',
+            style: theme.textTheme.button,
+          ),
         ),
       );
 
@@ -108,7 +120,7 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
           padding: EdgeInsets.all(10),
           child: Text(
             'Valider',
-            style: TextStyle(color: Colors.white, fontSize: 16),
+            style: theme.textTheme.button,
           ),
         ),
       );
