@@ -24,6 +24,11 @@ class _XFlopAppState extends State<XFlopApp> {
       title: 'xFlop!',
       theme: AppTheme.lightTheme(),
       darkTheme: AppTheme.darkTheme(),
+      themeMode: ThemeMode.system,
+      /* ThemeMode.system to follow system theme, 
+         ThemeMode.light for light theme, 
+         ThemeMode.dark for dark theme
+      */
       routes: {
         '/': (context) => Custom.Router(),
       },

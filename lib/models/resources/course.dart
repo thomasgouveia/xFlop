@@ -67,7 +67,7 @@ class Cours {
 */
   factory Cours.fromJSON(Map<String, dynamic> json, year, week) => Cours(
         id: json['id'],
-        enseignant: json['course']['tutor'],
+        enseignant: json['tutor'] ?? "??",
         module: json['course']['module']['abbrev'] ?? "??",
         groupe: json['course']['groups'][0]['name'],
         promo: json['course']['groups'][0]['train_prog'],

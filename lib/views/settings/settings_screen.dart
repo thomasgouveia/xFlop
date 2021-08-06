@@ -2,6 +2,7 @@ import 'package:flop_edt_app/models/resources/tutor.dart';
 import 'package:flop_edt_app/models/state/app_state.dart';
 import 'package:flop_edt_app/models/state/settings.dart';
 import 'package:flop_edt_app/state_manager/state_widget.dart';
+import 'package:flop_edt_app/views/login/login_screen.dart';
 import 'package:flop_edt_app/views/settings/components/student_selector.dart';
 import 'package:flop_edt_app/views/settings/components/tutor_settings_selector.dart';
 import 'package:flutter/material.dart';
@@ -128,6 +129,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ],
                     ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    _loginButton(theme),
                     // Row(
                     //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     //   children: <Widget>[
@@ -135,7 +140,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     //       'Mode sombre',
                     //       style: theme.textTheme.bodyText1,
                     //     ),
-                    //     Switch.adaptive(value: false, onChanged: null)
+                    //     Switch.adaptive(value: ThemeMode == , onChanged: null)
                     //   ],
                     // ),
                     // Row(
@@ -145,7 +150,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     //       'Animation d\'apparition',
                     //       style: theme.textTheme.bodyText1,
                     //     ),
-                    //     Switch.adaptive(value: false, onChanged: null)
+                    //     Switch.adaptive()
                     //   ],
                     // ),
                   ],
@@ -157,4 +162,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
+
+  Widget _loginButton(ThemeData theme) => Container(
+        padding: EdgeInsets.all(5),
+        width: MediaQuery.of(context).size.width,
+        child: RaisedButton(
+          color: theme.accentColor,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LoginScreen()),
+            );
+          },
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          padding: EdgeInsets.all(10),
+          child: Text(
+            'Se connecter',
+            style: theme.textTheme.button,
+          ),
+        ),
+      );
 }

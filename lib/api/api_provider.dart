@@ -43,7 +43,7 @@ class APIProvider {
         '&mode=courses&dep=$department&promo=$promo&year=$year&week=$week&group=$group';
         */
     final url = _apiUrl +
-        'fetch/scheduledcourses/?dept=$department&week=$week&year=$year';
+        'fetch/scheduledcourses/?dept=$department&week=$week&year=$year&train_prog=$promo&group=$group';
     print(url);
     final response = await http.get(url, headers: _headers);
     if (response.statusCode == 200)
@@ -108,7 +108,7 @@ class APIProvider {
     final url = _apiUrl +
         '&mode=promo&dep=department';
         */
-    final url = _apiUrl + 'groups/trainingprogram/?dept=$department';
+    final url = _apiUrl + 'base/trainingprogram/name/?dept=$department';
     final response = await http.get(url, headers: _headers);
     print(url);
     if (response.statusCode == 200) {
@@ -131,13 +131,41 @@ class APIProvider {
   }
 
   Future<List<String>> getGroups({String department, promo}) async {
-    final url = _apiUrl + 'groups/groups/?dept=$department';
+    final url = _apiUrl + 'groups/groups/tree/?dept=$department';
     final response = await http.get(url, headers: _headers);
     if (response.statusCode == 200) {
       var res = jsonDecode(response.body);
       List<String> groups = [];
-      for (var group in res) {
-        groups.add(group['name']);
+      if (promo != null) {
+        for (var prom in res) {
+          if (prom['promo'] == promo) {
+            if (prom['children'] == null) {
+              groups.add(prom['name']);
+            } else {
+              for (var child in prom['children']) {
+                if (child['children'] != null) {
+                  for (var childSub in child['children']) {
+                    if (childSub['children'] != null) {
+                      for (var childSubSub in childSub['children']) {
+                        if (childSubSub['children'] == null) {
+                          groups.add(childSubSub['name']);
+                        }
+                      }
+                    } else {
+                      groups.add(childSub['name']);
+                    }
+                  }
+                } else {
+                  groups.add(child['name']);
+                }
+              }
+            }
+          }
+        }
+      } else {
+        for (var group in res) {
+          groups.add(group['name']);
+        }
       }
       return groups;
     }
