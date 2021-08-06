@@ -13,6 +13,7 @@ class AppTheme {
       textTheme: TextTheme(
         headline4: TextStyle(color: Colors.black, fontSize: 24),
         bodyText1: TextStyle(color: Colors.black),
+        button: TextStyle(color: Colors.white, fontSize: 16),
       ),
       appBarTheme: AppBarTheme(
         color: Colors.white,

@@ -47,105 +47,108 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: TextField(
-                controller: userController,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(color: theme.accentColor)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: theme.accentColor, width: 2.0)),
-                    labelText: 'Username',
-                    labelStyle: theme.textTheme.bodyText1,
-                    hintText: 'Entrez un username'),
-                style: theme.textTheme.bodyText1,
-                onChanged: (value) {
-                  if (userController.text != "") {
-                    setState(() {
-                      userNoEmpty = true;
-                    });
-                  } else {
-                    setState(() {
-                      userNoEmpty = false;
-                    });
-                  }
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
-              child: TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: theme.accentColor, width: 2.0)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: theme.accentColor, width: 2.0)),
-                    labelText: 'Mot de passe',
-                    labelStyle: theme.textTheme.bodyText1,
-                    hintText: 'Enter mot de passe'),
-                style: theme.textTheme.bodyText1,
-                onChanged: (value) {
-                  if (passwordController.text != "") {
-                    setState(() {
-                      passwordNoEmpty = true;
-                    });
-                  } else {
-                    setState(() {
-                      passwordNoEmpty = false;
-                    });
-                  }
-                },
-              ),
-            ),
-            FlatButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => PasswordForgotScreen()),
-                );
-              },
-              child: Text(
-                'Mot de passe oublié ?',
-                style: theme.textTheme.bodyText1,
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(5),
-              width: MediaQuery.of(context).size.width,
-              child: RaisedButton(
-                color: (passwordNoEmpty & userNoEmpty
-                    ? theme.accentColor
-                    : Color(0xFF242424)),
-                onPressed: () {
+            _usernameTextfield(theme),
+            _passwordTextfield(theme),
+            _forgotPassButton(theme),
+            _connectionButton(theme),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _usernameTextfield(ThemeData theme) => Padding(
+        padding: EdgeInsets.symmetric(horizontal: 15),
+        child: TextField(
+          controller: userController,
+          decoration: InputDecoration(
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(color: theme.accentColor)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: theme.accentColor, width: 2.0)),
+              labelText: 'Nom d\'utilisateur',
+              labelStyle: theme.textTheme.bodyText1,
+              hintText: 'Entrez un nom d\'utilisateur'),
+          style: theme.textTheme.bodyText1,
+          onChanged: (value) {
+            if (userController.text != "") {
+              setState(() {
+                userNoEmpty = true;
+              });
+            } else {
+              setState(() {
+                userNoEmpty = false;
+              });
+            }
+          },
+        ),
+      );
+
+  Widget _passwordTextfield(ThemeData theme) => Padding(
+        padding:
+            const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
+        child: TextField(
+          controller: passwordController,
+          obscureText: true,
+          decoration: InputDecoration(
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(color: theme.accentColor, width: 2.0)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: theme.accentColor, width: 2.0)),
+              labelText: 'Mot de passe',
+              labelStyle: theme.textTheme.bodyText1,
+              hintText: 'Enter mot de passe'),
+          style: theme.textTheme.bodyText1,
+          onChanged: (value) {
+            if (passwordController.text != "") {
+              setState(() {
+                passwordNoEmpty = true;
+              });
+            } else {
+              setState(() {
+                passwordNoEmpty = false;
+              });
+            }
+          },
+        ),
+      );
+
+  Widget _forgotPassButton(ThemeData theme) => TextButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PasswordForgotScreen()),
+          );
+        },
+        child: Text(
+          'Mot de passe oublié ?',
+          style: theme.textTheme.bodyText1,
+        ),
+      );
+
+  Widget _connectionButton(ThemeData theme) => Container(
+        padding: EdgeInsets.all(5),
+        width: MediaQuery.of(context).size.width,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: theme.accentColor,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+            padding: EdgeInsets.all(10),
+          ),
+          onPressed: (passwordNoEmpty & userNoEmpty)
+              ? null
+              : () {
                   //== TODO ==
                   //
                   // login check
                   //
                   //==========
                 },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50)),
-                padding: EdgeInsets.all(10),
-                child: Text(
-                  'Se connecter',
-                  style: TextStyle(
-                      color: (passwordNoEmpty & userNoEmpty
-                          ? theme.textTheme.button.color
-                          : theme.accentColor)),
-                ),
-              ),
-            ),
-          ],
+          child: Text(
+            'Se connecter',
+            style: theme.textTheme.button,
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

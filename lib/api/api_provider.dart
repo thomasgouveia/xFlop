@@ -24,7 +24,7 @@ class APIProvider {
     this._key = DotEnv().env['API_KEY'];
     this._apiBase = DotEnv().env['API_BASE'];
     */
-    _apiBase = "http://93.5.151.246:8000/api/";
+    _apiBase = "https://flopedt.iut-blagnac.fr/fr/api/";
   }
 
   //String get _apiUrl => this._apiBase + this._key;

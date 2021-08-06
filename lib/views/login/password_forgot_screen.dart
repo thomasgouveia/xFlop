@@ -43,67 +43,80 @@ class _PasswordForgotScreenState extends State<PasswordForgotScreen> {
                 ],
               ),
             ),
-            Text('Un lien sera envoyé à l\'adresse suivante',
-                style: theme.textTheme.button),
-            Container(
-              margin: EdgeInsets.all(15),
-              child: TextField(
-                controller: emailController,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(color: theme.accentColor)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: theme.accentColor, width: 2.0)),
-                    labelText: 'Adresse e-mail',
-                    labelStyle: theme.textTheme.bodyText1,
-                    hintText: 'Entrez un e-mail'),
-                style: theme.textTheme.bodyText1,
-                onChanged: (value) {
-                  if (emailController.text.isValidEmail()) {
-                    setState(() {
-                      buttonActivated = true;
-                    });
-                  } else {
-                    setState(() {
-                      buttonActivated = false;
-                    });
-                  }
-                },
+            Text(
+              'Mot de passe oublié ?',
+              style: theme.textTheme.headline4.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
               ),
             ),
-            Container(
-              padding: EdgeInsets.all(5),
-              width: MediaQuery.of(context).size.width,
-              child: RaisedButton(
-                color:
-                    (buttonActivated ? theme.accentColor : Color(0xFF242424)),
-                onPressed: () {
-                  if (buttonActivated) {
-                    // == TODO ==
-                    //
-                    // emailSending();
-                    //
-                    // ==========
-                  }
-                },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50)),
-                padding: EdgeInsets.all(10),
-                child: Text(
-                  'Envoyer',
-                  style: TextStyle(
-                      color: (buttonActivated
-                          ? theme.textTheme.button.color
-                          : theme.accentColor)),
-                ),
+            Text(
+              'Un lien sera envoyé à l\'adresse suivante',
+              style: theme.textTheme.headline4.copyWith(
+                fontWeight: FontWeight.normal,
+                fontSize: 15,
               ),
             ),
+            _mailAdressTextfield(theme),
+            _sendButton(theme)
           ],
         ),
       ),
     );
   }
+
+  Widget _mailAdressTextfield(ThemeData theme) => Container(
+        margin: EdgeInsets.all(15),
+        child: TextField(
+          controller: emailController,
+          decoration: InputDecoration(
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(color: theme.accentColor)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: theme.accentColor, width: 2.0)),
+              labelText: 'Adresse e-mail',
+              labelStyle: theme.textTheme.bodyText1,
+              hintText: 'Entrez un e-mail'),
+          style: theme.textTheme.bodyText1,
+          onChanged: (value) {
+            if (emailController.text.isValidEmail()) {
+              setState(() {
+                buttonActivated = true;
+              });
+            } else {
+              setState(() {
+                buttonActivated = false;
+              });
+            }
+          },
+        ),
+      );
+
+  Widget _sendButton(ThemeData theme) => Container(
+        padding: EdgeInsets.all(5),
+        width: MediaQuery.of(context).size.width,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: theme.accentColor,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+            padding: EdgeInsets.all(10),
+          ),
+          onPressed: (buttonActivated)
+              ? null
+              : () {
+                  // == TODO ==
+                  //
+                  // emailSending();
+                  //
+                  // ==========
+                },
+          child: Text(
+            'Envoyer',
+            style: theme.textTheme.button,
+          ),
+        ),
+      );
 }
 
 extension EmailValidator on String {
