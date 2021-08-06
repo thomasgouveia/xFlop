@@ -7,7 +7,7 @@ Pour l'instant destiné aux étudiants et aux professeurs de l'IUT de Blagnac.
 Propulsé grâce au SDK Flutter. 
 /!\ Le code est pour l'instant assez mal organisé. Il sera revu plus tard.
 
-![Screen shot of app](http://image.noelshack.com/fichiers/2021/31/6/1628287250-screenshot-1628286941.png "xFlop!") { width: 200px; }
+
 
 
 ## Fonctionnalités
