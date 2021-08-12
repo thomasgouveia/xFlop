@@ -42,12 +42,83 @@ class APIProvider {
     final url = _apiUrl +
         '&mode=courses&dep=$department&promo=$promo&year=$year&week=$week&group=$group';
         */
-    final url = _apiUrl +
+
+    //Récupération des cours de TD
+    var responseTD;
+    if (group.length > 1) {
+      var groupParent;
+      final url = _apiUrl + 'groups/groups/tree/?dept=$department';
+      final response = await http.get(url, headers: _headers);
+      if (response.statusCode == 200) {
+        var res = jsonDecode(response.body);
+        for (var val in res) {
+          if (val['promo'] == promo) {
+            if (val['children'] == null) {
+              // jsp
+            } else {
+              for (var child in val['children']) {
+                if (child['children'] != null) {
+                  for (var childSub in child['children']) {
+                    if (childSub['children'] != null) {
+                      for (var childSubSub in childSub['children']) {
+                        if (childSubSub['children'] == null) {
+                          if (childSubSub['name'] == group) {
+                            var parent = childSubSub['parent'];
+                            if (childSub['name'] == parent) {
+                              groupParent = childSub['name'];
+                            }
+                          }
+                        }
+                      }
+                    } else {
+                      if (childSub['name'] == group) {
+                        var parent = childSub['parent'];
+                        if (child['name'] == parent) {
+                          groupParent = child['name'];
+                        }
+                      }
+                    }
+                  }
+                } else {
+                  if (child['name'] == group) {
+                    var parent = child['parent'];
+                    if (val['name'] == parent) {
+                      groupParent = val['name'];
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      final urlTD = _apiUrl +
+          'fetch/scheduledcourses/?dept=$department&week=$week&year=$year&train_prog=$promo&group=$groupParent';
+      print(urlTD);
+      responseTD = await http.get(urlTD, headers: _headers);
+    } else {
+      responseTD = null;
+    }
+
+    //retourne les cours TP du grp
+    final urlTP = _apiUrl +
         'fetch/scheduledcourses/?dept=$department&week=$week&year=$year&train_prog=$promo&group=$group';
-    print(url);
-    final response = await http.get(url, headers: _headers);
-    if (response.statusCode == 200)
-      return Cours.createListFromResponse(response, year, week);
+
+    //retourne les cours d'Amphi
+    final urlCM = _apiUrl +
+        'fetch/scheduledcourses/?dept=$department&week=$week&year=$year&train_prog=$promo';
+
+    print(urlTP);
+    final responseTP = await http.get(urlTP, headers: _headers);
+
+    print(urlCM);
+    final responseCM = await http.get(urlCM, headers: _headers);
+
+    if (responseTP.statusCode == 200 &&
+        responseCM.statusCode == 200 &&
+        (responseTD == null || responseTD.statusCode == 200))
+      return Cours.createListFromResponses(
+          responseTP, responseCM, responseTD, year, week);
     return <Cours>[];
   }
 

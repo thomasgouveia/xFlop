@@ -110,8 +110,12 @@ class _TutorSettingsSelectorState extends State<TutorSettingsSelector> {
                 borderRadius: BorderRadius.circular(50),
                 border: Border.all(
                     color: isFilter
-                        ? isDark ? Colors.white : Theme.of(context).accentColor
-                        : isDark ? Colors.white24 : Colors.black26,
+                        ? isDark
+                            ? Colors.white
+                            : Theme.of(context).accentColor
+                        : isDark
+                            ? Colors.white24
+                            : Colors.black26,
                     width: 1),
               ),
               child: Center(
@@ -119,8 +123,12 @@ class _TutorSettingsSelectorState extends State<TutorSettingsSelector> {
                   label,
                   style: TextStyle(
                     color: isFilter
-                        ? isDark ? Colors.white : Theme.of(context).accentColor
-                        : isDark ? Colors.white24 : Colors.black26,
+                        ? isDark
+                            ? Colors.white
+                            : Theme.of(context).accentColor
+                        : isDark
+                            ? Colors.white24
+                            : Colors.black26,
                   ),
                 ),
               ),
