@@ -24,7 +24,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           context: context,
           builder: (context) {
             return Container(
-                color: theme.accentColor,
+                color: theme.scaffoldBackgroundColor,
                 child: SingleChildScrollView(
                   padding: EdgeInsets.all(5),
                   child: Column(
@@ -47,7 +47,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           builder: (context) {
             return Container(
               padding: EdgeInsets.all(10),
-              color: theme.accentColor,
+              color: theme.scaffoldBackgroundColor,
               child: Column(
                 children: <Widget>[
                   StudentSettingsSelector(
