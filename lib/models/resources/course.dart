@@ -15,6 +15,7 @@ class Cours {
   final String groupe;
   final String promo;
   final String module;
+  final String name;
   final String type;
   final String salle;
   final Color backgroundColor;
@@ -37,6 +38,7 @@ class Cours {
       this.groupe,
       this.promo,
       this.module,
+      this.name,
       this.type,
       this.salle,
       this.backgroundColor,
@@ -69,6 +71,7 @@ class Cours {
         id: json['id'],
         enseignant: json['tutor'] ?? "??",
         module: json['course']['module']['abbrev'] ?? "??",
+        name: json['course']['module']['name'] ?? "??",
         groupe: json['course']['groups'][0]['name'],
         promo: json['course']['groups'][0]['train_prog'],
         type: json['course']['type'],
@@ -101,6 +104,30 @@ class Cours {
     return toReturn;
   }
 
+  ///Crée une liste de [Cours] à partir de la réponse API.
+  static List<Cours> createListFromResponses(Response responseTP,
+      Response responseCM, Response responseTD, year, week) {
+    var coursesTP = jsonDecode(utf8.decode(responseTP.bodyBytes));
+    var coursesCM = jsonDecode(utf8.decode(responseCM.bodyBytes));
+    var toReturn = <Cours>[];
+    var coursCM = <Cours>[];
+    coursesTP.forEach(
+        (dynamic json) => toReturn.add(Cours.fromJSON(json, year, week)));
+    coursesCM.forEach(
+        (dynamic json) => coursCM.add(Cours.fromJSON(json, year, week)));
+    for (var cours in coursCM) {
+      if (cours.type == 'CM') {
+        toReturn.add(cours);
+      }
+    }
+    if (responseTD != null) {
+      var coursTD = jsonDecode(utf8.decode(responseTD.bodyBytes));
+      coursTD.forEach(
+          (dynamic json) => toReturn.add(Cours.fromJSON(json, year, week)));
+    }
+    return toReturn;
+  }
+
   ///Retourne vrai si le cours est un examen, faux sinon
   bool get isExam =>
       this.type == 'DS' ||
@@ -117,8 +144,41 @@ class Cours {
           color: this.backgroundColor,
           child: Column(
             children: <Widget>[
-              Text(this.module),
-              Text(this.enseignant),
+              Padding(padding: EdgeInsets.all(2)),
+              Text(this.module,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 22,
+                    color: this.textColor,
+                  )),
+              Text(
+                this.name,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: this.textColor,
+                ),
+              ),
+              Text(
+                this.type,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: this.textColor,
+                ),
+              ),
+              Text(
+                this.salle,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: this.textColor,
+                ),
+              ),
+              Text(
+                this.enseignant,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: this.textColor,
+                ),
+              ),
             ],
           ),
         );

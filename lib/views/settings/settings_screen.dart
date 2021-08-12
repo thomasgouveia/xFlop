@@ -18,25 +18,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Settings settings;
 
   void handleSelect() {
+    var theme = Theme.of(context);
     if (state.settings.isTutor) {
       showModalBottomSheet(
           context: context,
           builder: (context) {
-            return SingleChildScrollView(
-              padding: EdgeInsets.all(5),
-              child: Column(
-                children: <Widget>[
-                  TutorSettingsSelector(
-                    onSelected: (value) {
-                      settings.tutor = value.tutor;
-                      settings.isTutor = true;
-                      StateWidget.of(context).setSettings(settings);
-                      Navigator.of(context).pop();
-                    },
+            return Container(
+                color: theme.accentColor,
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.all(5),
+                  child: Column(
+                    children: <Widget>[
+                      TutorSettingsSelector(
+                        onSelected: (value) {
+                          settings.tutor = value.tutor;
+                          settings.isTutor = true;
+                          StateWidget.of(context).setSettings(settings);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            );
+                ));
           });
     } else {
       showModalBottomSheet(
@@ -44,6 +47,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           builder: (context) {
             return Container(
               padding: EdgeInsets.all(10),
+              color: theme.accentColor,
               child: Column(
                 children: <Widget>[
                   StudentSettingsSelector(
