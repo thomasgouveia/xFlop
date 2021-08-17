@@ -2,14 +2,12 @@ import 'package:flop_edt_app/models/state/app_state.dart';
 import 'package:flop_edt_app/models/state/settings.dart';
 import 'package:flop_edt_app/state_manager/state_widget.dart';
 import 'package:flop_edt_app/theme/changeThemeButtonWidget.dart';
-import 'package:flop_edt_app/theme/themes.dart';
 import 'package:flop_edt_app/views/divers/about_screen.dart';
 import 'package:flop_edt_app/views/divers/contact_screen.dart';
 import 'package:flop_edt_app/views/login/login_screen.dart';
 import 'package:flop_edt_app/views/settings/components/student_selector.dart';
 import 'package:flop_edt_app/views/settings/components/tutor_settings_selector.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -294,7 +292,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             style: theme.textTheme.button,
           ),
         ),
-      ); 
+      );
 
   Widget _faqButton(ThemeData theme) => Container(
         padding: EdgeInsets.all(5),
@@ -332,5 +330,5 @@ class _SettingsScreenState extends State<SettingsScreen> {
             style: theme.textTheme.button,
           ),
         ),
-      ); 
+      );
 }

@@ -11,7 +11,7 @@ description: Application de l'emploi du temps FlopEDT.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.0.0+20
+version: 3.2.0+20
 
 environment:
   sdk: ">=2.8.0 <3.0.0"
@@ -34,6 +34,9 @@ dependencies:
   flutter_spinkit: "^4.1.2"
   provider: ^5.0.0
   package_info: ^2.0.2
+  url_launcher: ^6.0.5
+  flutter_email_sender: ^5.0.2
+  image_picker: ^0.6.5+3
   #json_serializable: ^3.2.2
   #json_annotation: ^3.0.0
 
