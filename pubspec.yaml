@@ -32,6 +32,8 @@ dependencies:
   flutter_dotenv: ^2.1.0
   flushbar: ^1.10.4
   flutter_spinkit: "^4.1.2"
+  provider: ^5.0.0
+  package_info: ^2.0.2
   #json_serializable: ^3.2.2
   #json_annotation: ^3.0.0
 

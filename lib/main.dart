@@ -4,6 +4,7 @@ import 'package:flop_edt_app/theme/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:provider/provider.dart';
 
 Future main() async {
   await DotEnv().load('.env');
@@ -18,16 +19,20 @@ class XFlopApp extends StatefulWidget {
 
 class _XFlopAppState extends State<XFlopApp> {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'xFlop!',
-      theme: AppTheme.darkTheme(),
-      darkTheme: AppTheme.lightTheme(),
-      // themeMode: ThemeMode.system,
-      routes: {
-        '/': (context) => Custom.Router(),
-      },
-    );
-  }
+  Widget build(BuildContext context) =>
+      ChangeNotifierProvider(
+        create: (context) => ThemeProvider(),
+        builder: (context, _) {
+        final themeProvider = Provider.of<ThemeProvider>(context);
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'xFlop!',
+          theme: AppTheme.lightTheme(),
+          darkTheme: AppTheme.darkTheme(),
+          themeMode: themeProvider.themeMode,
+          routes: {
+            '/': (context) => Custom.Router(),
+          },
+        );
+      });
 }
