@@ -25,7 +25,9 @@ class _LoginScreenState extends State<LoginScreen> {
     var theme = Theme.of(context);
     state = StateWidget.of(context).state;
     return Scaffold(
-      body: SingleChildScrollView(
+        body: SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: Column(
           children: <Widget>[
             Padding(
@@ -47,6 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
             ),
+            SizedBox(height: 20,),
             _usernameTextfield(theme),
             _passwordTextfield(theme),
             _forgotPassButton(theme),
@@ -54,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget _usernameTextfield(ThemeData theme) => Padding(
@@ -62,10 +65,10 @@ class _LoginScreenState extends State<LoginScreen> {
         child: TextField(
           controller: userController,
           decoration: InputDecoration(
-              border: OutlineInputBorder(
-                  borderSide: BorderSide(color: theme.accentColor)),
-              focusedBorder: OutlineInputBorder(
+              enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: theme.accentColor, width: 2.0)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white, width: 2.0)),
               labelText: 'Nom d\'utilisateur',
               labelStyle: theme.textTheme.bodyText1,
               hintText: 'Entrez un nom d\'utilisateur'),
@@ -91,24 +94,23 @@ class _LoginScreenState extends State<LoginScreen> {
           controller: passwordController,
           obscureText: true,
           decoration: InputDecoration(
-              border: OutlineInputBorder(
+              enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: theme.accentColor, width: 2.0)),
               focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: theme.accentColor, width: 2.0)),
+                  borderSide: BorderSide(color: Colors.white, width: 2.0)),
               labelText: 'Mot de passe',
               labelStyle: theme.textTheme.bodyText1,
               hintText: 'Enter mot de passe'),
           style: theme.textTheme.bodyText1,
           onChanged: (value) {
-            if (passwordController.text != "") {
+            passwordController.text != "" ?
               setState(() {
                 passwordNoEmpty = true;
-              });
-            } else {
+              }) : 
               setState(() {
                 passwordNoEmpty = false;
               });
-            }
+            
           },
         ),
       );
@@ -130,12 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: EdgeInsets.all(5),
         width: MediaQuery.of(context).size.width,
         child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: theme.accentColor,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-            padding: EdgeInsets.all(10),
-          ),
+          style: theme.elevatedButtonTheme.style,
           onPressed: (passwordNoEmpty & userNoEmpty)
               ? null
               : () {
