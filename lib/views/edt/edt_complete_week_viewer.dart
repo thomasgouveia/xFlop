@@ -77,7 +77,9 @@ class _ScheduleCompleteWeekState extends State<ScheduleCompleteWeek> {
         height: (dayEnd - dayStart).toDouble(),
         decoration: BoxDecoration(
           border: Border.all(
-              width: 1, color: isDark ? Colors.white12 : Colors.black12, style: BorderStyle.solid),
+              width: 1,
+              color: isDark ? Colors.white12 : Colors.black12,
+              style: BorderStyle.solid),
         ),
         child: Stack(
           overflow: Overflow.visible,
@@ -87,7 +89,10 @@ class _ScheduleCompleteWeekState extends State<ScheduleCompleteWeek> {
               left: 20,
               child: Text(
                 day.toString(withLabel: false),
-                style: Theme.of(context).textTheme.bodyText1.copyWith(fontWeight: FontWeight.w600),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    .copyWith(fontWeight: FontWeight.w600),
               ),
             ),
             for (var elem in day.cours) _buildCourse(elem, deviceSize, days),
@@ -126,7 +131,7 @@ class _ScheduleCompleteWeekState extends State<ScheduleCompleteWeek> {
                     fontSize: fontSize),
               ),
               Text(
-                elem.enseignant,
+                elem.enseignant.initiales,
                 style: TextStyle(color: textColor, fontSize: profFontSize),
               ),
               Text(
