@@ -28,8 +28,9 @@ class AppTheme {
           color: Colors.white,
           elevation: 0,
         ),
+        accentIconTheme: IconThemeData(color: Colors.black54),
         iconTheme: IconThemeData(color: Colors.black),
-        
+        selectedRowColor: Colors.black12,
       );
 
   ///Retourne le thème sombre de l'application.
@@ -51,6 +52,7 @@ class AppTheme {
         accentColor: ColorUtils.fromHex('#383838'),
         primaryColor: ColorUtils.fromHex('#121212'),
         scaffoldBackgroundColor: ColorUtils.fromHex('#121212'),
+        accentIconTheme: IconThemeData(color: Colors.white54),
         textTheme: TextTheme(
           headline4: TextStyle(color: Colors.white, fontSize: 24),
           headline3: TextStyle(color: Colors.grey.shade600, fontSize: 16),
@@ -58,6 +60,7 @@ class AppTheme {
           button: TextStyle(color: Colors.white, fontSize: 16),
         ),
         iconTheme: IconThemeData(color: Colors.white),
+        selectedRowColor: Colors.white12,
       );
 }
 

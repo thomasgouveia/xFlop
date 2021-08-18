@@ -40,7 +40,7 @@ class _ScheduleCompleteWeekState extends State<ScheduleCompleteWeek> {
           IconButton(
             icon: Icon(
               Icons.view_column,
-              color: isDark ? Colors.white54 : Colors.black54,
+              color: theme.accentIconTheme.color,
             ),
             onPressed: () => StateWidget.of(context).switchDisplayMode(),
           ),
@@ -55,7 +55,7 @@ class _ScheduleCompleteWeekState extends State<ScheduleCompleteWeek> {
                     height: 40,
                   ),
                   Row(
-                    children: _buildGrid,
+                    children: _buildGrid(theme),
                   ),
                   SizedBox(
                     height: 100,
@@ -66,7 +66,7 @@ class _ScheduleCompleteWeekState extends State<ScheduleCompleteWeek> {
     );
   }
 
-  List<Widget> get _buildGrid {
+  List<Widget> _buildGrid(ThemeData theme) {
     var days = state.days;
     var res = <Widget>[];
     var deviceSize = MediaQuery.of(context).size;
@@ -78,7 +78,7 @@ class _ScheduleCompleteWeekState extends State<ScheduleCompleteWeek> {
         decoration: BoxDecoration(
           border: Border.all(
               width: 1,
-              color: isDark ? Colors.white12 : Colors.black12,
+              color: theme.selectedRowColor,
               style: BorderStyle.solid),
         ),
         child: Stack(

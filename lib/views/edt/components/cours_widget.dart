@@ -44,7 +44,7 @@ class CoursWidget extends StatelessWidget {
           children: <Widget>[
             isHour
                 ? coursHeure(MediaQuery.of(context).platformBrightness ==
-                    Brightness.dark)
+                    Brightness.dark, theme)
                 : Container(),
             Expanded(
               child: Container(
@@ -75,7 +75,7 @@ class CoursWidget extends StatelessWidget {
     );
   }
 
-  Widget coursHeure(bool isDark) => Container(
+  Widget coursHeure(bool isDark, ThemeData theme) => Container(
         width: 50,
         height: cours.duration.toDouble(),
         child: Column(
@@ -87,7 +87,7 @@ class CoursWidget extends StatelessWidget {
                   : '${cours.dateEtHeureDebut.hour}h${cours.dateEtHeureDebut.minute}',
               style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  color: isDark ? Colors.white : Colors.black),
+                  color: theme.textTheme.bodyText1.color),
             ),
             Text(
               (cours.dateEtHeureFin.minute == 0)
@@ -95,7 +95,7 @@ class CoursWidget extends StatelessWidget {
                   : '${cours.dateEtHeureFin.hour}h${cours.dateEtHeureFin.minute}',
               style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  color: isDark ? Colors.white : Colors.black),
+                  color: theme.textTheme.bodyText1.color),
             ),
           ],
         ),

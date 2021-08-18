@@ -68,13 +68,13 @@ class _RouterState extends State<Router> {
         backgroundColor: theme.scaffoldBackgroundColor,
         selectedItemColor: theme.primaryColorLight,
         unselectedItemColor:
-            !(MediaQuery.of(context).platformBrightness == Brightness.dark)
+            !(theme.iconTheme.color == Colors.white)
                 ? Colors.black38
                 : theme.accentColor,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.event), title: Text('EDT')),
+          BottomNavigationBarItem(icon: Icon(Icons.event), label: 'EDT'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.settings), title: Text('Paramètres'))
+              icon: Icon(Icons.settings), label: 'Paramètres')
         ],
       );
     }

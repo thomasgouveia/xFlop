@@ -4,6 +4,7 @@ import 'dart:ffi';
 import 'package:flop_edt_app/models/resources/tutor.dart';
 import 'package:flop_edt_app/utils/color_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
@@ -193,7 +194,7 @@ class Cours {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 16,
               ),
               Container(
                   padding: EdgeInsets.all(15),
@@ -249,7 +250,7 @@ class Cours {
                     ),
                   ])),
               SizedBox(
-                height: 20,
+                height: 16,
               ),
               Container(
                 padding: EdgeInsets.all(15),
@@ -309,6 +310,7 @@ class Cours {
                           : Colors.black,
                     ),
                   ),
+                  _contactButton(context, this.enseignant.mail),
                 ]),
               )
             ],
@@ -317,4 +319,51 @@ class Cours {
       },
     );
   }
+
+Widget _contactButton(BuildContext context, String recipient) => Container(
+        padding: EdgeInsets.all(5),
+        width: MediaQuery.of(context).size.width,
+        child: ElevatedButton.icon(
+          style: ElevatedButton.styleFrom(
+            primary: this.backgroundColor,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+            padding: EdgeInsets.all(10),
+          ),
+          onPressed: () {
+            send(recipient, context);
+            
+          },
+          icon: Icon(IconData(63081, fontFamily: 'MaterialIcons'),
+          color: this.textColor,),
+          label: Text(
+            'Contacter l\'enseignant',
+            style: TextStyle(color: this.textColor, fontSize: 16),
+          ),
+        ),
+      );
+
+      Future<void> send(String recipient, BuildContext context) async {
+    final Email email = Email(
+      recipients: [recipient],
+    );
+
+    String platformResponse;
+
+    try {
+      await FlutterEmailSender.send(email);
+      platformResponse = 'success';
+    } catch (error) {
+      platformResponse = error.toString();
+    }
+
+    // if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(platformResponse),
+      ),
+    );
+  }
+
 }

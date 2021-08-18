@@ -27,7 +27,8 @@ class _DepartmentSelectorState extends State<DepartmentSelector> {
   @override
   Widget build(BuildContext context) {
     state = StateWidget.of(context).state;
-    isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    var theme = Theme.of(context);
+    isDark = theme.iconTheme.color == Colors.white ;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
