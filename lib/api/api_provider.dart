@@ -114,11 +114,16 @@ class APIProvider {
     print(urlCM);
     final responseCM = await http.get(urlCM, headers: _headers);
 
+    //Récupération des prof du département
+    final url = _apiUrl + 'user/tutor/?dept=$department';
+    final responseTutors = await http.get(url, headers: _headers);
+
     if (responseTP.statusCode == 200 &&
         responseCM.statusCode == 200 &&
+        responseTutors.statusCode == 200 &&
         (responseTD == null || responseTD.statusCode == 200))
       return Cours.createListFromResponses(
-          responseTP, responseCM, responseTD, year, week);
+          responseTP, responseCM, responseTD, responseTutors, year, week);
     return <Cours>[];
   }
 

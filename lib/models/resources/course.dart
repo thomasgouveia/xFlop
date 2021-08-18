@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:ffi';
 
+import 'package:flop_edt_app/models/resources/tutor.dart';
 import 'package:flop_edt_app/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -11,7 +13,8 @@ import 'day.dart';
 ///un cours retourné par l'API.
 class Cours {
   final int id;
-  final String enseignant;
+  Tutor enseignant;
+  final String enseignantInitial;
   final String groupe;
   final String promo;
   final String module;
@@ -35,6 +38,7 @@ class Cours {
   Cours(
       {this.id,
       this.enseignant,
+      this.enseignantInitial,
       this.groupe,
       this.promo,
       this.module,
@@ -69,7 +73,7 @@ class Cours {
 */
   factory Cours.fromJSON(Map<String, dynamic> json, year, week) => Cours(
         id: json['id'],
-        enseignant: json['tutor'] ?? "??",
+        enseignantInitial: json['tutor'] ?? "??",
         module: json['course']['module']['abbrev'] ?? "??",
         name: json['course']['module']['name'] ?? "??",
         groupe: json['course']['groups'][0]['name'],
@@ -105,8 +109,13 @@ class Cours {
   }
 
   ///Crée une liste de [Cours] à partir de la réponse API.
-  static List<Cours> createListFromResponses(Response responseTP,
-      Response responseCM, Response responseTD, year, week) {
+  static List<Cours> createListFromResponses(
+      Response responseTP,
+      Response responseCM,
+      Response responseTD,
+      Response responseTutors,
+      year,
+      week) {
     var coursesTP = jsonDecode(utf8.decode(responseTP.bodyBytes));
     var coursesCM = jsonDecode(utf8.decode(responseCM.bodyBytes));
     var toReturn = <Cours>[];
@@ -125,6 +134,31 @@ class Cours {
       coursTD.forEach(
           (dynamic json) => toReturn.add(Cours.fromJSON(json, year, week)));
     }
+    var tutors = Tutor.createListFromResponse(responseTutors);
+    toReturn.forEach((cours) {
+      tutors.forEach((tutor) {
+        print(cours.enseignantInitial);
+        if (cours.enseignantInitial == tutor.initiales) {
+          cours.enseignant = tutor;
+        }
+        if (cours.enseignantInitial == '??') {
+          cours.enseignant = Tutor(
+              initiales: cours.enseignantInitial,
+              nom: '??',
+              prenom: '??',
+              mail: '??');
+        }
+      });
+    });
+    toReturn.forEach((element) {
+      if (element.enseignant == null) {
+        element.enseignant = Tutor(
+            initiales: element.enseignantInitial,
+            nom: '??',
+            prenom: '??',
+            mail: '??');
+      }
+    });
     return toReturn;
   }
 
@@ -158,27 +192,125 @@ class Cours {
                   color: this.textColor,
                 ),
               ),
-              Text(
-                this.type,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: this.textColor,
-                ),
+              SizedBox(
+                height: 20,
               ),
-              Text(
-                this.salle,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: this.textColor,
-                ),
+              Container(
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(5),
+                        topRight: Radius.circular(5),
+                        bottomLeft: Radius.circular(5),
+                        bottomRight: Radius.circular(5)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Column(children: [
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Icon(IconData(58330, fontFamily: 'MaterialIcons')),
+                      Text(
+                        'Salle',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: (this.textColor == Colors.white)
+                              ? Colors.black
+                              : Colors.black,
+                        ),
+                      ),
+                    ]),
+                    Text(
+                      this.type,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: (this.textColor == Colors.white)
+                            ? Colors.black
+                            : Colors.black,
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        this.salle,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: (this.textColor == Colors.white)
+                              ? Colors.black
+                              : Colors.black,
+                        ),
+                      ),
+                    ),
+                  ])),
+              SizedBox(
+                height: 20,
               ),
-              Text(
-                this.enseignant,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: this.textColor,
+              Container(
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(5),
+                      topRight: Radius.circular(5),
+                      bottomLeft: Radius.circular(5),
+                      bottomRight: Radius.circular(5)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
                 ),
-              ),
+                child: Column(children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Icon(IconData(62753, fontFamily: 'MaterialIcons')),
+                    Text(
+                      'Enseignant',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: (this.textColor == Colors.white)
+                            ? Colors.black
+                            : Colors.black,
+                      ),
+                    ),
+                  ]),
+                  Text(
+                    this.enseignant.initiales,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: (this.textColor == Colors.white)
+                          ? Colors.black
+                          : Colors.black,
+                    ),
+                  ),
+                  Text(
+                    this.enseignant.displayName,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: (this.textColor == Colors.white)
+                          ? Colors.black
+                          : Colors.black,
+                    ),
+                  ),
+                  Text(
+                    this.enseignant.mail,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: (this.textColor == Colors.white)
+                          ? Colors.black
+                          : Colors.black,
+                    ),
+                  ),
+                ]),
+              )
             ],
           ),
         );

@@ -14,11 +14,20 @@ class Tutor {
   ///Le nom du tuteur, de type [String]
   String nom;
 
+  ///L'adresse mail du tuteur, de type [String]
+  String mail;
+
   ///Getter qui renvoi le [prenom] [nom] de l'enseignant.
   String get displayName => this.prenom + ' ' + this.nom;
 
+  ///Getter qui renvoi les [initiales] de l'enseignant.
+  String get displayInitiales => this.initiales;
+
+  ///Getter qui renvoi le [mail] de l'enseignant.
+  String get displayMail => this.mail;
+
   ///Constructeur de la classe [Tutor].
-  Tutor({this.initiales, this.prenom, this.nom});
+  Tutor({this.initiales, this.prenom, this.nom, this.mail});
 
   ///Instancie un objet de type [Tutor] depuis un [Map] de type JSON.
   /*
@@ -32,11 +41,12 @@ class Tutor {
         initiales: json['username'],
         prenom: json['first_name'],
         nom: json['last_name'],
+        mail: json['email'],
       );
 
   ///Méthode statique qui crée une liste d'enseignants depuis une réponse HTTP.
   static List<Tutor> createListFromResponse(Response response) {
-    var profs = jsonDecode(response.body);
+    var profs = jsonDecode(utf8.decode(response.bodyBytes));
     var result = <Tutor>[];
     profs.forEach((dynamic prof) => result.add(Tutor.fromJSON(prof)));
     return result;
@@ -47,6 +57,7 @@ class Tutor {
         'initiales': this.initiales,
         'prenom': this.prenom,
         'nom': this.nom,
+        'email': this.mail,
       };
 
   ///Retourne l'objet [Tutor] sous format JSON.
