@@ -115,7 +115,9 @@ class CoursWidget extends StatelessWidget {
               ),
             ),
             Text(
-              isProf ? '${cours.promo} - ${cours.groupe}' : cours.enseignant,
+              isProf
+                  ? '${cours.promo} - ${cours.groupe}'
+                  : cours.enseignant.initiales,
               style: TextStyle(color: cours.textColor),
             ),
             Text(

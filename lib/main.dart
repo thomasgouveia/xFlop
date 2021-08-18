@@ -22,8 +22,8 @@ class _XFlopAppState extends State<XFlopApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'xFlop!',
-      theme: AppTheme.darkTheme(),
-      darkTheme: AppTheme.lightTheme(),
+      theme: AppTheme.lightTheme(),
+      darkTheme: AppTheme.darkTheme(),
       // themeMode: ThemeMode.system,
       routes: {
         '/': (context) => Custom.Router(),
