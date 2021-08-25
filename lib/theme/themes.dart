@@ -16,6 +16,8 @@ class AppTheme {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
             padding: EdgeInsets.all(10),
+            shadowColor: Color(0xFF07023B),
+            elevation: 7.5,
           ),
         ),
         textTheme: TextTheme(
@@ -47,6 +49,8 @@ class AppTheme {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
             padding: EdgeInsets.all(10),
+            shadowColor: Color(0xFF404040),
+            elevation: 5,
           ),
         ),
         accentColor: ColorUtils.fromHex('#383838'),

@@ -49,7 +49,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              'Connexion',
+              style: theme.textTheme.headline4.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
             _usernameTextfield(theme),
             _passwordTextfield(theme),
             _forgotPassButton(theme),
@@ -61,17 +73,38 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _usernameTextfield(ThemeData theme) => Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15),
+      padding: EdgeInsets.symmetric(horizontal: 15),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30.0),
+          boxShadow: [
+            BoxShadow(
+              offset: Offset(0, 1),
+              blurRadius: 5.0,
+              color: Colors.black.withOpacity(0.25),
+            ),
+          ],
+        ),
         child: TextField(
           controller: userController,
           decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: theme.accentColor, width: 2.0)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white, width: 2.0)),
-              labelText: 'Nom d\'utilisateur',
-              labelStyle: theme.textTheme.bodyText1,
-              hintText: 'Entrez un nom d\'utilisateur'),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent),
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent),
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            
+            hintText: 'Entrez un nom d\'utilisateur',
+            hintStyle: TextStyle(
+                color: (theme.iconTheme.color == Colors.white)
+                    ? Colors.grey.shade500
+                    : theme.accentColor),
+            filled: true,
+            fillColor: (theme.iconTheme.color == Colors.white)
+                ? theme.accentColor
+                : Colors.white,
+          ),
           style: theme.textTheme.bodyText1,
           onChanged: (value) {
             if (userController.text != "") {
@@ -85,35 +118,55 @@ class _LoginScreenState extends State<LoginScreen> {
             }
           },
         ),
-      );
+      ));
 
   Widget _passwordTextfield(ThemeData theme) => Padding(
-        padding:
-            const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
+      padding:
+          const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30.0),
+          boxShadow: [
+            BoxShadow(
+              offset: Offset(0, 1),
+              blurRadius: 5.0,
+              color: Colors.black.withOpacity(0.25),
+            ),
+          ],
+        ),
         child: TextField(
           controller: passwordController,
           obscureText: true,
           decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: theme.accentColor, width: 2.0)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white, width: 2.0)),
-              labelText: 'Mot de passe',
-              labelStyle: theme.textTheme.bodyText1,
-              hintText: 'Enter mot de passe'),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent),
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent),
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            
+            hintText: 'Enter mot de passe',
+            hintStyle: TextStyle(
+                color: (theme.iconTheme.color == Colors.white)
+                    ? Colors.grey.shade500
+                    : theme.accentColor),
+            filled: true,
+            fillColor: (theme.iconTheme.color == Colors.white)
+                ? theme.accentColor
+                : Colors.white,
+          ),
           style: theme.textTheme.bodyText1,
           onChanged: (value) {
-            passwordController.text != "" ?
-              setState(() {
-                passwordNoEmpty = true;
-              }) : 
-              setState(() {
-                passwordNoEmpty = false;
-              });
-            
+            passwordController.text != ""
+                ? setState(() {
+                    passwordNoEmpty = true;
+                  })
+                : setState(() {
+                    passwordNoEmpty = false;
+                  });
           },
         ),
-      );
+      ));
 
   Widget _forgotPassButton(ThemeData theme) => TextButton(
         onPressed: () {

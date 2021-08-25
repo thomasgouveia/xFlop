@@ -57,6 +57,7 @@ class _PasswordForgotScreenState extends State<PasswordForgotScreen> {
                 fontSize: 15,
               ),
             ),
+            SizedBox(height: 20,),
             _mailAdressTextfield(theme),
             _sendButton(theme)
           ],
@@ -67,16 +68,35 @@ class _PasswordForgotScreenState extends State<PasswordForgotScreen> {
 
   Widget _mailAdressTextfield(ThemeData theme) => Container(
         margin: EdgeInsets.all(15),
-        child: TextField(
+        child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30.0),
+          boxShadow: [
+            BoxShadow(
+              offset: Offset(0, 1),
+              blurRadius: 5.0,
+              color: Colors.black.withOpacity(0.25),
+            ),
+          ],
+        ),
+        child:TextField(
           controller: emailController,
           decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: theme.accentColor, width: 2.0)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white, width: 2.0)),
-              labelText: 'Adresse e-mail',
-              labelStyle: theme.textTheme.bodyText1,
-              hintText: 'Entrez un e-mail'),
+                borderSide: BorderSide(color: Colors.transparent),
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent),
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+              hintText: 'Entrez un e-mail',hintStyle: TextStyle(
+                color: (theme.iconTheme.color == Colors.white)
+                    ? Colors.grey.shade500
+                    : theme.accentColor),
+            filled: true,
+            fillColor: (theme.iconTheme.color == Colors.white)
+                ? theme.accentColor
+                : Colors.white,
+          ),
           style: theme.textTheme.bodyText1,
           onChanged: (value) {
             if (emailController.text.isValidEmail()) {
@@ -89,7 +109,7 @@ class _PasswordForgotScreenState extends State<PasswordForgotScreen> {
               });
             }
           },
-        ),
+        ),)
       );
 
   Widget _sendButton(ThemeData theme) => Container(

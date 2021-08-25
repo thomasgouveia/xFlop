@@ -216,14 +216,13 @@ class Cours {
                   ),
                   child: Column(children: [
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Icon(IconData(58330, fontFamily: 'MaterialIcons')),
+                      Icon(IconData(58330, fontFamily: 'MaterialIcons'),
+                      color: Colors.black,),
                       Text(
                         'Salle',
                         style: TextStyle(
                           fontSize: 16,
-                          color: (this.textColor == Colors.white)
-                              ? Colors.black
-                              : Colors.black,
+                          color: Colors.black,
                         ),
                       ),
                     ]),
@@ -231,9 +230,7 @@ class Cours {
                       this.type,
                       style: TextStyle(
                         fontSize: 16,
-                        color: (this.textColor == Colors.white)
-                            ? Colors.black
-                            : Colors.black,
+                        color:Colors.black,
                       ),
                     ),
                     Center(
@@ -242,9 +239,7 @@ class Cours {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
-                          color: (this.textColor == Colors.white)
-                              ? Colors.black
-                              : Colors.black,
+                          color:Colors.black,
                         ),
                       ),
                     ),
@@ -272,14 +267,13 @@ class Cours {
                 ),
                 child: Column(children: [
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Icon(IconData(62753, fontFamily: 'MaterialIcons')),
+                    Icon(IconData(62753, fontFamily: 'MaterialIcons'),
+                    color: Colors.black,),
                     Text(
                       'Enseignant',
                       style: TextStyle(
                         fontSize: 16,
-                        color: (this.textColor == Colors.white)
-                            ? Colors.black
-                            : Colors.black,
+                        color: Colors.black,
                       ),
                     ),
                   ]),
@@ -287,27 +281,21 @@ class Cours {
                     this.enseignant.initiales,
                     style: TextStyle(
                       fontSize: 16,
-                      color: (this.textColor == Colors.white)
-                          ? Colors.black
-                          : Colors.black,
+                      color: Colors.black,
                     ),
                   ),
                   Text(
                     this.enseignant.displayName,
                     style: TextStyle(
                       fontSize: 16,
-                      color: (this.textColor == Colors.white)
-                          ? Colors.black
-                          : Colors.black,
+                      color: Colors.black,
                     ),
                   ),
                   Text(
                     this.enseignant.mail,
                     style: TextStyle(
                       fontSize: 16,
-                      color: (this.textColor == Colors.white)
-                          ? Colors.black
-                          : Colors.black,
+                      color: Colors.black,
                     ),
                   ),
                   _contactButton(context, this.enseignant.mail),

@@ -87,17 +87,14 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
   Widget _loginButton(ThemeData theme) => Container(
         padding: EdgeInsets.all(5),
         width: MediaQuery.of(context).size.width,
-        child: RaisedButton(
-          color: theme.accentColor,
+        child: ElevatedButton(
+          style: theme.elevatedButtonTheme.style,
           onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => LoginScreen()),
             );
           },
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-          padding: EdgeInsets.all(10),
           child: Text(
             'Se connecter',
             style: theme.textTheme.button,
@@ -108,16 +105,14 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
   Widget _validateButton(ThemeData theme) => Container(
         padding: EdgeInsets.all(5),
         width: MediaQuery.of(context).size.width,
-        child: RaisedButton(
-          color: theme.accentColor,
+        child: ElevatedButton(
+          style: theme.elevatedButtonTheme.style,
           onPressed: settings == null
               ? null
               : () {
                   saveSettings();
                 },
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-          padding: EdgeInsets.all(10),
+          
           child: Text(
             'Valider',
             style: theme.textTheme.button,

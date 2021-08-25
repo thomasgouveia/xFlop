@@ -24,7 +24,7 @@ class _ContactScreenState extends State<ContactScreen> {
   bool isHTML = false;
 
   final _recipientController = TextEditingController(
-    text: 'charles.bogacki@gmail.com',
+    text: '',
   );
 
   final _subjectController = TextEditingController();
@@ -186,7 +186,7 @@ class _ContactScreenState extends State<ContactScreen> {
           controller: _recipientController,
           decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: theme.accentColor, width: 2.0)),
+                  borderSide: BorderSide(color: Colors.transparent)),
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.white, width: 2.0)),
               labelText: 'Destinataire',
@@ -208,18 +208,36 @@ class _ContactScreenState extends State<ContactScreen> {
       );
 
   Widget _subjectTextfield(ThemeData theme) => Padding(
-        padding:
-            const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
+      padding:
+          const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30.0),
+          boxShadow: [
+            BoxShadow(
+              offset: Offset(0, 1),
+              blurRadius: 5.0,
+              color: Colors.black.withOpacity(0.25),
+            ),
+          ],
+        ),
         child: TextField(
           controller: _subjectController,
           decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: theme.accentColor, width: 2.0)),
+                  borderSide: BorderSide(color: Colors.transparent),
+                  borderRadius: BorderRadius.all(Radius.circular(30))),
               focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white, width: 2.0)),
-              labelText: 'Sujet',
-              labelStyle: theme.textTheme.bodyText1,
-              hintText: 'Entrez un sujet'),
+                  borderSide: BorderSide(color: Colors.transparent),
+                  borderRadius: BorderRadius.all(Radius.circular(30))),
+              // labelText: 'Sujet',
+              // labelStyle: theme.textTheme.bodyText1,
+              hintText: 'Entrez un sujet',
+              hintStyle: TextStyle(color: (theme.iconTheme.color == Colors.white)
+                ? Colors.grey.shade500 : theme.accentColor),
+            filled: true,
+            fillColor: (theme.iconTheme.color == Colors.white)
+                ? theme.accentColor : Colors.white,),
           style: theme.textTheme.bodyText1,
           // onChanged: (value) {
           //   if (userController.text != "") {
@@ -233,24 +251,41 @@ class _ContactScreenState extends State<ContactScreen> {
           //   }
           // },
         ),
-      );
+      ));
 
   Widget _bodyTextfield(ThemeData theme) => Padding(
-        padding:
-            const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 30),
+      padding:
+          const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 30),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30.0),
+          boxShadow: [
+            BoxShadow(
+              offset: Offset(0, 1),
+              blurRadius: 5.0,
+              color: Colors.black.withOpacity(0.25),
+            ),
+          ],
+        ),
         child: TextField(
           controller: _bodyController,
           // maxLines: null,
           // expands: true,
           textAlignVertical: TextAlignVertical.top,
           decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: theme.accentColor, width: 2.0)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white, width: 2.0)),
-              labelText: 'Message',
-              labelStyle: theme.textTheme.bodyText1,
-              hintText: 'Entrez un message'),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent),
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent),
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            hintText: 'Entrez un message',
+            hintStyle: TextStyle(color: (theme.iconTheme.color == Colors.white)
+                ? Colors.grey.shade500 : theme.accentColor),
+            filled: true,
+            fillColor: (theme.iconTheme.color == Colors.white)
+                ? theme.accentColor : Colors.white,
+          ),
           style: theme.textTheme.bodyText1,
           // onChanged: (value) {
           //     if (userController.text != "") {
@@ -264,7 +299,7 @@ class _ContactScreenState extends State<ContactScreen> {
           //     }
           // },
         ),
-      );
+      ));
   Widget _sendButton(ThemeData theme) => Container(
         padding: EdgeInsets.all(5),
         width: MediaQuery.of(context).size.width,

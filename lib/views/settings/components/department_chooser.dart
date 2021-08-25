@@ -28,7 +28,7 @@ class _DepartmentSelectorState extends State<DepartmentSelector> {
   Widget build(BuildContext context) {
     state = StateWidget.of(context).state;
     var theme = Theme.of(context);
-    isDark = theme.iconTheme.color == Colors.white ;
+    isDark = theme.iconTheme.color == Colors.white;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -81,7 +81,9 @@ class _DepartmentSelectorState extends State<DepartmentSelector> {
               style: TextStyle(
                   color: isSelected
                       ? Colors.white
-                      : isDark ? Colors.white24 : Colors.black26),
+                      : isDark
+                          ? Colors.white24
+                          : Colors.black26),
             ),
           ),
         ),

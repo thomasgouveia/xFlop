@@ -82,7 +82,20 @@ class _WeekSelectorState extends State<WeekSelector>
     return GestureDetector(
       onTap: toggle,
       child: AnimatedContainer(
-        color: theme.accentColor,
+        decoration: BoxDecoration(
+          color: theme.accentColor,
+          boxShadow: [
+            BoxShadow(
+              color: (theme.iconTheme.color == Colors.white)
+                ? Colors.black38
+                : theme.accentColor,
+              spreadRadius: 2,
+              blurRadius: 10,
+              offset: Offset(0, 3), // changes position of shadow
+            ),
+          ],
+        ),
+        
         duration: Duration(milliseconds: 500),
         curve: Curves.easeInOut,
         height: isOpen ? maxHeight : minHeight,

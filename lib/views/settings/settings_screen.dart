@@ -241,9 +241,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget _userButton(ThemeData theme) => ElevatedButton(
         style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
-          ),
+          shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+            padding: EdgeInsets.all(10),
+            shadowColor: Color(0xFFFF6C00),
+            elevation: 5,
           primary: Color(0xFFFF6C00),
         ),
         onPressed: handleSelect,
