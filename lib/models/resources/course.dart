@@ -80,7 +80,7 @@ class Cours {
         groupe: json['course']['groups'][0]['name'],
         promo: json['course']['groups'][0]['train_prog'],
         type: json['course']['type'],
-        salle: json['room'],
+        salle: json['room'] != null ? json['room'] : (json['is_visio'] != null ? "??" : "visio"),
         backgroundColor:
             ColorUtils.fromHex(json['course']['module']['display']['color_bg']),
         textColor: ColorUtils.fromHex(
@@ -138,7 +138,6 @@ class Cours {
     var tutors = Tutor.createListFromResponse(responseTutors);
     toReturn.forEach((cours) {
       tutors.forEach((tutor) {
-        print(cours.enseignantInitial);
         if (cours.enseignantInitial == tutor.initiales) {
           cours.enseignant = tutor;
         }
