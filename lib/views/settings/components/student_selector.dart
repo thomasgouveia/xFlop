@@ -2,6 +2,7 @@ import 'package:flop_edt_app/models/state/app_state.dart';
 import 'package:flop_edt_app/models/state/settings.dart';
 import 'package:flop_edt_app/state_manager/state_widget.dart';
 import 'package:flop_edt_app/views/settings/components/department_chooser.dart';
+import 'package:flop_edt_app/views/settings/components/etablissement_chooser.dart';
 import 'package:flop_edt_app/views/settings/components/group_selector.dart';
 import 'package:flop_edt_app/views/settings/components/promo_selector.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class StudentSettingsSelector extends StatefulWidget {
 class _StudentSettingsSelectorState extends State<StudentSettingsSelector> {
   AppState state;
 
+  String etablissement;
   String department;
   String promotion;
   String groupe;
@@ -67,6 +69,7 @@ class _StudentSettingsSelectorState extends State<StudentSettingsSelector> {
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: <Widget>[
+              EtablissementSelector(),
               DepartmentSelector(
                 onSelect: (value) => setState(() {
                   department = value;

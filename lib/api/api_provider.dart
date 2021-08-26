@@ -27,6 +27,8 @@ class APIProvider {
     _apiBase = "https://flopedt.iut-blagnac.fr/fr/api/";
   }
 
+  void set _apiUrl(String etablissementUrl) => etablissementUrl + "fr/api/";
+
   //String get _apiUrl => this._apiBase + this._key;
   String get _apiUrl => this._apiBase;
 
@@ -125,6 +127,19 @@ class APIProvider {
       return Cours.createListFromResponses(
           responseTP, responseCM, responseTD, responseTutors, year, week);
     return <Cours>[];
+  }
+
+  Future<List<dynamic>> getEtablissements() async {
+    final url = 'https://api.flopedt.org/clients/';
+    final response = await http.get(url, headers: _headers);
+    if (response.statusCode == 200)
+      /*
+    return jsonDecode(response.body)['response'];
+    */
+      return (jsonDecode(response.body))
+          .map((dynamic obj) => (obj as Map<String, dynamic>)["flop_url"])
+          .toList();
+    return <dynamic>[];
   }
 
   Future<List<dynamic>> getDepartments() async {

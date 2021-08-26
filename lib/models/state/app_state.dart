@@ -15,6 +15,7 @@ class AppState {
   int week;
   int currentWeek;
   final int year;
+  List<dynamic> etablissement;
   List<dynamic> departments;
   List<int> weeks;
 
@@ -41,6 +42,7 @@ class AppState {
     this.year,
     this.settings,
     this.cache,
+    this.etablissement = const [],
     this.promos = const {},
     this.departments = const [],
     this.cours = const [],
