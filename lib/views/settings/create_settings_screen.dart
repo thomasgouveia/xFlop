@@ -7,6 +7,8 @@ import 'package:flop_edt_app/views/settings/components/tutor_settings_selector.d
 import 'package:flop_edt_app/views/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
+import 'components/etablissement_chooser.dart';
+
 class CreateSettingsScreen extends StatefulWidget {
   @override
   _CreateSettingsScreenState createState() => _CreateSettingsScreenState();
@@ -31,6 +33,31 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
   }
 
   void saveSettings() => StateWidget.of(context).setSettings(settings);
+
+  void handleSelect() {
+    var theme = Theme.of(context);
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+              color: theme.scaffoldBackgroundColor,
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(5),
+                child: Column(
+                  children: <Widget>[
+                    EtablissementSelector(
+                      settings: state.settings,
+                      onSelect: (value) {
+                        settings.etablissement = value.etablissement;
+                        StateWidget.of(context).setSettings(settings);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
+              ));
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +91,10 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
                   'Afin de configurer votre emploi du temps, veuillez sélectionner votre département, votre promotion ainsi que votre groupe. Si vous êtes un professeur, veuillez activer le mode professeur, puis sélectionner votre nom dans la liste. Ces informations seront modifiables à tout moment depuis les paramètres de l\'application.',
                   style: theme.textTheme.bodyText1,
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                _userButton(theme),
                 isProfSelected
                     ? TutorSettingsSelector(
                         onSelected: handleSettingsReceived,
@@ -83,6 +114,19 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
       ),
     );
   }
+
+  Widget _userButton(ThemeData theme) => ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          padding: EdgeInsets.all(10),
+          shadowColor: Color(0xFFFF6C00),
+          elevation: 5,
+          primary: Color(0xFFFF6C00),
+        ),
+        onPressed: handleSelect,
+        child: Text('Etablissement'),
+      );
 
   Widget _loginButton(ThemeData theme) => Container(
         padding: EdgeInsets.all(5),
@@ -112,7 +156,6 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
               : () {
                   saveSettings();
                 },
-          
           child: Text(
             'Valider',
             style: theme.textTheme.button,

@@ -76,6 +76,7 @@ class _StateWidgetState extends State<StateWidget> {
     Settings settings = await Settings.getConfiguration();
 
     //Chargement des données obligatoires
+    var etablissements = await api.getEtablissements();
     var departments = await api.getDepartments();
     var map = <String, List<Promotion>>{};
     var mapProfs = <String, List<Tutor>>{};
@@ -90,6 +91,7 @@ class _StateWidgetState extends State<StateWidget> {
     }
     //On ajoute dans l'état
     setState(() {
+      state.etablissements = etablissements;
       state.departments = departments;
       state.promos = map;
       state.cache = cache;

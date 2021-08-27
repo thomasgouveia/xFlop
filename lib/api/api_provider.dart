@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flop_edt_app/models/resources/course.dart';
 import 'package:flop_edt_app/models/resources/day.dart';
+import 'package:flop_edt_app/models/resources/etablissement.dart';
 import 'package:flop_edt_app/models/resources/promotion.dart';
 import 'package:flop_edt_app/models/resources/tutor.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -133,12 +134,7 @@ class APIProvider {
     final url = 'https://api.flopedt.org/clients/';
     final response = await http.get(url, headers: _headers);
     if (response.statusCode == 200)
-      /*
-    return jsonDecode(response.body)['response'];
-    */
-      return (jsonDecode(response.body))
-          .map((dynamic obj) => (obj as Map<String, dynamic>)["flop_url"])
-          .toList();
+      return Etablissement.createListFromResponse(response);
     return <dynamic>[];
   }
 
