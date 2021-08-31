@@ -80,7 +80,9 @@ class Cours {
         groupe: json['course']['groups'][0]['name'],
         promo: json['course']['groups'][0]['train_prog'],
         type: json['course']['type'],
-        salle: json['room'] != null ? json['room'] : (json['is_visio'] != null ? "??" : "visio"),
+        salle: json['room'] != null
+            ? json['room']
+            : (json['is_visio'] != null ? "??" : "visio"),
         backgroundColor:
             ColorUtils.fromHex(json['course']['module']['display']['color_bg']),
         textColor: ColorUtils.fromHex(
@@ -111,30 +113,12 @@ class Cours {
 
   ///Crée une liste de [Cours] à partir de la réponse API.
   static List<Cours> createListFromResponses(
-      Response responseTP,
-      Response responseCM,
-      Response responseTD,
-      Response responseTutors,
-      year,
-      week) {
-    var coursesTP = jsonDecode(utf8.decode(responseTP.bodyBytes));
-    var coursesCM = jsonDecode(utf8.decode(responseCM.bodyBytes));
+      Response response, Response responseTutors, year, week) {
+    var courses = jsonDecode(utf8.decode(response.bodyBytes));
     var toReturn = <Cours>[];
-    var coursCM = <Cours>[];
-    coursesTP.forEach(
+    courses.forEach(
         (dynamic json) => toReturn.add(Cours.fromJSON(json, year, week)));
-    coursesCM.forEach(
-        (dynamic json) => coursCM.add(Cours.fromJSON(json, year, week)));
-    for (var cours in coursCM) {
-      if (cours.type == 'CM') {
-        toReturn.add(cours);
-      }
-    }
-    if (responseTD != null) {
-      var coursTD = jsonDecode(utf8.decode(responseTD.bodyBytes));
-      coursTD.forEach(
-          (dynamic json) => toReturn.add(Cours.fromJSON(json, year, week)));
-    }
+
     var tutors = Tutor.createListFromResponse(responseTutors);
     toReturn.forEach((cours) {
       tutors.forEach((tutor) {
@@ -215,8 +199,10 @@ class Cours {
                   ),
                   child: Column(children: [
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Icon(IconData(58330, fontFamily: 'MaterialIcons'),
-                      color: Colors.black,),
+                      Icon(
+                        IconData(58330, fontFamily: 'MaterialIcons'),
+                        color: Colors.black,
+                      ),
                       Text(
                         'Salle',
                         style: TextStyle(
@@ -229,7 +215,7 @@ class Cours {
                       this.type,
                       style: TextStyle(
                         fontSize: 16,
-                        color:Colors.black,
+                        color: Colors.black,
                       ),
                     ),
                     Center(
@@ -238,7 +224,7 @@ class Cours {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
-                          color:Colors.black,
+                          color: Colors.black,
                         ),
                       ),
                     ),
@@ -266,8 +252,10 @@ class Cours {
                 ),
                 child: Column(children: [
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Icon(IconData(62753, fontFamily: 'MaterialIcons'),
-                    color: Colors.black,),
+                    Icon(
+                      IconData(62753, fontFamily: 'MaterialIcons'),
+                      color: Colors.black,
+                    ),
                     Text(
                       'Enseignant',
                       style: TextStyle(
@@ -307,7 +295,7 @@ class Cours {
     );
   }
 
-Widget _contactButton(BuildContext context, String recipient) => Container(
+  Widget _contactButton(BuildContext context, String recipient) => Container(
         padding: EdgeInsets.all(5),
         width: MediaQuery.of(context).size.width,
         child: ElevatedButton.icon(
@@ -319,10 +307,11 @@ Widget _contactButton(BuildContext context, String recipient) => Container(
           ),
           onPressed: () {
             send(recipient, context);
-            
           },
-          icon: Icon(IconData(63081, fontFamily: 'MaterialIcons'),
-          color: this.textColor,),
+          icon: Icon(
+            IconData(63081, fontFamily: 'MaterialIcons'),
+            color: this.textColor,
+          ),
           label: Text(
             'Contacter l\'enseignant',
             style: TextStyle(color: this.textColor, fontSize: 16),
@@ -330,7 +319,7 @@ Widget _contactButton(BuildContext context, String recipient) => Container(
         ),
       );
 
-      Future<void> send(String recipient, BuildContext context) async {
+  Future<void> send(String recipient, BuildContext context) async {
     final Email email = Email(
       recipients: [recipient],
     );
@@ -352,5 +341,4 @@ Widget _contactButton(BuildContext context, String recipient) => Container(
       ),
     );
   }
-
 }
