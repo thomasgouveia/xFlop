@@ -154,7 +154,7 @@ class Cours {
       this.type == 'CTRL' ||
       this.type == 'CTRLP';
 
-  void displayInformations(BuildContext context) {
+  void displayInformations(BuildContext context, bool isProf) {
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -250,43 +250,9 @@ class Cours {
                     ),
                   ],
                 ),
-                child: Column(children: [
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Icon(
-                      IconData(62753, fontFamily: 'MaterialIcons'),
-                      color: Colors.black,
-                    ),
-                    Text(
-                      'Enseignant',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ]),
-                  Text(
-                    this.enseignant.initiales,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Text(
-                    this.enseignant.displayName,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Text(
-                    this.enseignant.mail,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                    ),
-                  ),
-                  _contactButton(context, this.enseignant.mail),
-                ]),
+                child: isProf
+                    ? _containerProf(context)
+                    : _containerStudent(context),
               )
             ],
           ),
@@ -294,6 +260,75 @@ class Cours {
       },
     );
   }
+
+  Widget _containerProf(BuildContext context) => Column(
+        children: [
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Icon(
+              IconData(983342, fontFamily: 'MaterialIcons'),
+              color: Colors.black,
+            ),
+            Text(
+              ' Promo : ' + this.promo,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+              ),
+            ),
+          ]),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Icon(
+              IconData(63430, fontFamily: 'MaterialIcons'),
+              color: Colors.black,
+            ),
+            Text(
+              ' Groupe ' + this.groupe,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+              ),
+            ),
+          ])
+        ],
+      );
+
+  Widget _containerStudent(BuildContext context) => Column(children: [
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Icon(
+            IconData(62753, fontFamily: 'MaterialIcons'),
+            color: Colors.black,
+          ),
+          Text(
+            'Enseignant',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.black,
+            ),
+          ),
+        ]),
+        Text(
+          this.enseignant.initiales,
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.black,
+          ),
+        ),
+        Text(
+          this.enseignant.displayName,
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.black,
+          ),
+        ),
+        Text(
+          this.enseignant.mail,
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.black,
+          ),
+        ),
+        _contactButton(context, this.enseignant.mail),
+      ]);
 
   Widget _contactButton(BuildContext context, String recipient) => Container(
         padding: EdgeInsets.all(5),

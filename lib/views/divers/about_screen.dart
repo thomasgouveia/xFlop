@@ -93,13 +93,13 @@ class _AboutScreenState extends State<AboutScreen> {
   Widget _conceptButton(ThemeData theme) => Container(
         padding: EdgeInsets.all(5),
         width: MediaQuery.of(context).size.width,
-        child: ElevatedButton.icon(
+        child: ElevatedButton(
           style: theme.elevatedButtonTheme.style,
           onPressed: _launchURL,
-          icon: Icon(IconData(62834,
-              fontFamily: 'MaterialIcons', matchTextDirection: true)),
-          label: Text(
-            'Le concept',
+          // icon: Icon(IconData(62834,
+          //     fontFamily: 'MaterialIcons', matchTextDirection: false)),
+          child: Text(
+            'FlopEDT',
             style: theme.textTheme.button,
           ),
         ),
