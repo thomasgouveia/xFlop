@@ -77,25 +77,25 @@ class _StateWidgetState extends State<StateWidget> {
 
     //Chargement des données obligatoires
     var etablissements = await api.getEtablissements();
-    var departments = await api.getDepartments();
-    var map = <String, List<Promotion>>{};
-    var mapProfs = <String, List<Tutor>>{};
-    for (var dep in departments) {
-      //On exclue RESA des départements
-      if (dep != 'RESA') {
-        var promos = await api.getPromotions(department: dep);
-        var profs = await api.getTutorsOfDepartment(dep: dep);
-        map[dep] = promos;
-        mapProfs[dep] = profs;
-      }
-    }
+    // var departments = await api.getDepartments();
+    // var map = <String, List<Promotion>>{};
+    // var mapProfs = <String, List<Tutor>>{};
+    // for (var dep in departments) {
+    //   //On exclue RESA des départements
+    //   if (dep != 'RESA') {
+    //     var promos = await api.getPromotions(department: dep);
+    //     var profs = await api.getTutorsOfDepartment(dep: dep);
+    //     map[dep] = promos;
+    //     mapProfs[dep] = profs;
+    //   }
+    // }
     //On ajoute dans l'état
     setState(() {
       state.etablissements = etablissements;
-      state.departments = departments;
-      state.promos = map;
+      // state.departments = departments;
+      // state.promos = map;
       state.cache = cache;
-      state.profs = mapProfs;
+      // state.profs = mapProfs;
       state.settings = settings;
     });
 
@@ -158,6 +158,30 @@ class _StateWidgetState extends State<StateWidget> {
   //       .toList();
   //   return results.length != 0 ? results[0] : null;
   // }
+  void initData2() async {
+    APIProvider api = APIProvider();
+    Settings settings = await Settings.getConfiguration();
+
+    var departments = await api.getDepartments();
+    var map = <String, List<Promotion>>{};
+    var mapProfs = <String, List<Tutor>>{};
+    for (var dep in departments) {
+      //On exclue RESA des départements
+      if (dep != 'RESA') {
+        var promos = await api.getPromotions(department: dep);
+        var profs = await api.getTutorsOfDepartment(dep: dep);
+        map[dep] = promos;
+        mapProfs[dep] = profs;
+      }
+    }
+    //On ajoute dans l'état
+    setState(() {
+      state.departments = departments;
+      state.promos = map;
+      state.profs = mapProfs;
+      state.settings = settings;
+    });
+  }
 
   ///Met à jour le mode d'affichage. Soit en grille vue semaine, soit en colonne vu jour par jour.
   void switchDisplayMode() {

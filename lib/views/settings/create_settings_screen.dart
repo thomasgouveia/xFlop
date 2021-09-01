@@ -1,3 +1,4 @@
+import 'package:flop_edt_app/api/api_provider.dart';
 import 'package:flop_edt_app/models/state/app_state.dart';
 import 'package:flop_edt_app/models/state/settings.dart';
 import 'package:flop_edt_app/state_manager/state_widget.dart';
@@ -18,12 +19,14 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
   AppState state;
 
   bool isProfSelected;
+  bool etablissementSelected;
   Settings settings;
 
   @override
   void initState() {
     super.initState();
     isProfSelected = false;
+    etablissementSelected = false;
   }
 
   void handleSettingsReceived(dynamic value) {
@@ -36,6 +39,7 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
 
   void handleSelect() {
     var theme = Theme.of(context);
+    state = StateWidget.of(context).state;
     showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -48,8 +52,14 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
                     EtablissementSelector(
                       settings: state.settings,
                       onSelect: (value) {
-                        settings.etablissement = value.etablissement;
-                        StateWidget.of(context).setSettings(settings);
+                        setState(() {
+                          settings = value;
+                          etablissementSelected = true;
+
+                          //api.setEtablissements(value.etablissement.url);
+                        });
+                        StateWidget.of(context).initData2();
+                        // StateWidget.of(context).setSettings(settings);
                         Navigator.of(context).pop();
                       },
                     ),
@@ -95,13 +105,15 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
                   height: 10,
                 ),
                 _userButton(theme),
-                isProfSelected
-                    ? TutorSettingsSelector(
-                        onSelected: handleSettingsReceived,
-                      )
-                    : StudentSettingsSelector(
-                        onSelected: handleSettingsReceived,
-                      ),
+                etablissementSelected
+                    ? isProfSelected
+                        ? TutorSettingsSelector(
+                            onSelected: handleSettingsReceived,
+                          )
+                        : StudentSettingsSelector(
+                            onSelected: handleSettingsReceived,
+                          )
+                    : Container(),
                 SizedBox(
                   height: 10,
                 ),

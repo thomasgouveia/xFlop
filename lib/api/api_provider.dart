@@ -5,6 +5,7 @@ import 'package:flop_edt_app/models/resources/day.dart';
 import 'package:flop_edt_app/models/resources/etablissement.dart';
 import 'package:flop_edt_app/models/resources/promotion.dart';
 import 'package:flop_edt_app/models/resources/tutor.dart';
+import 'package:flop_edt_app/models/state/settings.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,12 +24,13 @@ class APIProvider {
   APIProvider() {
     /*
     this._key = DotEnv().env['API_KEY'];
-    this._apiBase = DotEnv().env['API_BASE'];
     */
-    _apiBase = "https://flopedt.iut-blagnac.fr/fr/api/";
+    this._apiBase = DotEnv().env['API_BASE'];
+
+    //_apiBase = "";
   }
 
-  void set _apiUrl(String etablissementUrl) => etablissementUrl + "fr/api/";
+  set _apiUrl(String etablissementUrl) => etablissementUrl + "fr/api/";
 
   //String get _apiUrl => this._apiBase + this._key;
   String get _apiUrl => this._apiBase;
@@ -128,6 +130,11 @@ class APIProvider {
       return Cours.createListFromResponses(
           responseTP, responseCM, responseTD, responseTutors, year, week);
     return <Cours>[];
+  }
+
+  Future<void> setEtablissements(String urlEtablissement) async {
+    // Settings settings = await Settings.getConfiguration();
+    _apiUrl = urlEtablissement;
   }
 
   Future<List<dynamic>> getEtablissements() async {

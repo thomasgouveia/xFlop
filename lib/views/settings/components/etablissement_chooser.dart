@@ -164,7 +164,11 @@ class _EtablissementSelectorState extends State<EtablissementSelector> {
             onTap: () {
               setState(() {
                 eta = etablissement;
-                widget.onSelect(Settings(etablissement: etablissement));
+                widget.onSelect(Settings(
+                    etablissement: etablissement,
+                    department: department,
+                    promo: promotion,
+                    groupe: groupe));
               });
             },
             title: Text(
