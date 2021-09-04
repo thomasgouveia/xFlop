@@ -55,11 +55,10 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
                         setState(() {
                           settings = value;
                           etablissementSelected = true;
-
-                          //api.setEtablissements(value.etablissement.url);
                         });
+                        //state.settings.saveConfiguration();
+                        StateWidget.of(context).saveConfig(settings);
                         StateWidget.of(context).initData2();
-                        // StateWidget.of(context).setSettings(settings);
                         Navigator.of(context).pop();
                       },
                     ),

@@ -200,6 +200,11 @@ class _StateWidgetState extends State<StateWidget> {
     });
   }
 
+  void saveConfig(Settings settings) {
+    state.settings = settings;
+    state.settings.saveConfiguration();
+  }
+
   ///Map les cours dans le jour ou ils se déroulent.
   void _mapCoursesToDays(Day day, List<Cours> courses) {
     courses.forEach((Cours cours) {

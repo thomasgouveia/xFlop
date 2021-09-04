@@ -52,7 +52,7 @@ class Settings {
       );
 
   Map<String, dynamic> get toMap => {
-        'etablissement': this.etablissement,
+        'etablissement': this.etablissement?.toMap,
         'promo': this.promo,
         'department': this.department,
         'groupe': this.groupe,

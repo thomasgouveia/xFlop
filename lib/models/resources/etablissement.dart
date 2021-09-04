@@ -9,8 +9,12 @@ class Etablissement {
   Etablissement({this.nom, this.url});
 
   factory Etablissement.fromJSON(Map<String, dynamic> json) => Etablissement(
-        nom: json['name'],
-        url: json['flop_url'],
+        nom: json['name'] == null
+            ? (json['nom'] == null ? null : json['nom'])
+            : json['name'],
+        url: json['flop_url'] == null
+            ? (json['url'] == null ? null : json['url'])
+            : json['name'],
       );
 
   ///Crée une [Map] à partir de l'objet.

@@ -25,15 +25,22 @@ class APIProvider {
     /*
     this._key = DotEnv().env['API_KEY'];
     */
-    this._apiBase = DotEnv().env['API_BASE'];
 
+    //this._apiBase = DotEnv().env['API_BASE'];
+    this._apiBase = getapiUrl();
     //_apiBase = "";
   }
 
-  set _apiUrl(String etablissementUrl) => etablissementUrl + "fr/api/";
-
-  //String get _apiUrl => this._apiBase + this._key;
-  String get _apiUrl => this._apiBase;
+  String get _apiUrl => getapiUrl();
+  String getapiUrl() {
+    String url;
+    getAPIBase().then((val) {
+      url = val + "fr/api/";
+      print("printage" + val);
+    });
+    print(url);
+    return url;
+  }
 
   ///Effectue une requête sur l'API afin de récupérer la liste des cours.
   ///[year] correspond à l'année
@@ -43,98 +50,33 @@ class APIProvider {
   ///[group] correspond au groupe choisi (3A, 1A...)
   Future<List<Cours>> getCourses(
       {int year, week, String promo, department, group}) async {
-    /*
-    final url = _apiUrl +
-        '&mode=courses&dep=$department&promo=$promo&year=$year&week=$week&group=$group';
-        */
-
-    //Récupération des cours de TD
-    var responseTD;
-    if (group.length > 1) {
-      var groupParent;
-      final url = _apiUrl + 'groups/groups/tree/?dept=$department';
-      final response = await http.get(url, headers: _headers);
-      if (response.statusCode == 200) {
-        var res = jsonDecode(response.body);
-        for (var val in res) {
-          if (val['promo'] == promo) {
-            if (val['children'] == null) {
-              // jsp
-            } else {
-              for (var child in val['children']) {
-                if (child['children'] != null) {
-                  for (var childSub in child['children']) {
-                    if (childSub['children'] != null) {
-                      for (var childSubSub in childSub['children']) {
-                        if (childSubSub['children'] == null) {
-                          if (childSubSub['name'] == group) {
-                            var parent = childSubSub['parent'];
-                            if (childSub['name'] == parent) {
-                              groupParent = childSub['name'];
-                            }
-                          }
-                        }
-                      }
-                    } else {
-                      if (childSub['name'] == group) {
-                        var parent = childSub['parent'];
-                        if (child['name'] == parent) {
-                          groupParent = child['name'];
-                        }
-                      }
-                    }
-                  }
-                } else {
-                  if (child['name'] == group) {
-                    var parent = child['parent'];
-                    if (val['name'] == parent) {
-                      groupParent = val['name'];
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-      final urlTD = _apiUrl +
-          'fetch/scheduledcourses/?dept=$department&week=$week&year=$year&train_prog=$promo&group=$groupParent';
-      print(urlTD);
-      responseTD = await http.get(urlTD, headers: _headers);
-    } else {
-      responseTD = null;
-    }
-
-    //retourne les cours TP du grp
-    final urlTP = _apiUrl +
-        'fetch/scheduledcourses/?dept=$department&week=$week&year=$year&train_prog=$promo&group=$group';
-
-    //retourne les cours d'Amphi
-    final urlCM = _apiUrl +
-        'fetch/scheduledcourses/?dept=$department&week=$week&year=$year&train_prog=$promo';
-
-    print(urlTP);
-    final responseTP = await http.get(urlTP, headers: _headers);
-
-    print(urlCM);
-    final responseCM = await http.get(urlCM, headers: _headers);
+    Settings settings = await Settings.getConfiguration();
+    final url = settings.etablissement.url +
+        "fr/api/" +
+        'fetch/scheduledcourses/?week=$week&year=$year&work_copy=0&dept=$department&train_prog=$promo&group=$group&lineage=true';
+    print(url);
+    final response = await http.get(url);
 
     //Récupération des prof du département
-    final url = _apiUrl + 'user/tutor/?dept=$department';
-    final responseTutors = await http.get(url, headers: _headers);
+    final urlTutor =
+        settings.etablissement.url + "fr/api/" + 'user/tutor/?dept=$department';
+    final responseTutors = await http.get(urlTutor, headers: _headers);
 
-    if (responseTP.statusCode == 200 &&
-        responseCM.statusCode == 200 &&
-        responseTutors.statusCode == 200 &&
-        (responseTD == null || responseTD.statusCode == 200))
+    if (response.statusCode == 200 && responseTutors.statusCode == 200)
       return Cours.createListFromResponses(
-          responseTP, responseCM, responseTD, responseTutors, year, week);
+          response, responseTutors, year, week);
     return <Cours>[];
   }
 
-  Future<void> setEtablissements(String urlEtablissement) async {
-    // Settings settings = await Settings.getConfiguration();
-    _apiUrl = urlEtablissement;
+  Future<void> setEtablissements(Etablissement etablissement) async {
+    Settings settings = await Settings.getConfiguration();
+    settings.etablissement = etablissement;
+  }
+
+  Future<String> getAPIBase() async {
+    Settings settings = await Settings.getConfiguration();
+    print(settings == null ? "YA RIEN" : settings.etablissement.url);
+    return settings == null ? "" : settings.etablissement.url + "fr/api/";
   }
 
   Future<List<dynamic>> getEtablissements() async {
@@ -149,7 +91,8 @@ class APIProvider {
     /*
     final url = _apiUrl + '&mode=departments';
     */
-    final url = _apiUrl + 'fetch/alldepts/';
+    Settings settings = await Settings.getConfiguration();
+    final url = settings.etablissement.url + "fr/api/" + 'fetch/alldepts/';
     final response = await http.get(url, headers: _headers);
     if (response.statusCode == 200)
       /*
@@ -167,8 +110,10 @@ class APIProvider {
     final url = _apiUrl +
         '&mode=courses&dep=$department&prof=$prof&year=$year&week=$week';
         */
-    final url = _apiUrl +
-        'fetch/tutorcourses/?tutor_name=$prof&year=$year&week=$week&dept=$department';
+    Settings settings = await Settings.getConfiguration();
+    final url = settings.etablissement.url +
+        "fr/api/" +
+        'fetch/scheduledcourses/?week=$week&year=$year&tutor_name=$prof&dept=$department&work_copy=0';
     print(url);
     final response = await http.get(url, headers: _headers);
     if (response.statusCode == 200)
@@ -190,7 +135,9 @@ class APIProvider {
     /*
     final url = _apiUrl + '&mode=profs&dep=$dep';
     */
-    final url = _apiUrl + 'user/tutor/?dept=$dep';
+    Settings settings = await Settings.getConfiguration();
+    final url =
+        settings.etablissement.url + "fr/api/" + 'user/tutor/?dept=$dep';
     final response = await http.get(url, headers: _headers);
     if (response.statusCode == 200)
       return Tutor.createListFromResponse(response);
@@ -202,7 +149,10 @@ class APIProvider {
     final url = _apiUrl +
         '&mode=promo&dep=department';
         */
-    final url = _apiUrl + 'base/trainingprogram/name/?dept=$department';
+    Settings settings = await Settings.getConfiguration();
+    final url = settings.etablissement.url +
+        "fr/api/" +
+        'base/trainingprogram/name/?dept=$department';
     final response = await http.get(url, headers: _headers);
     print(url);
     if (response.statusCode == 200) {
@@ -225,7 +175,10 @@ class APIProvider {
   }
 
   Future<List<String>> getGroups({String department, promo}) async {
-    final url = _apiUrl + 'groups/groups/tree/?dept=$department';
+    Settings settings = await Settings.getConfiguration();
+    final url = settings.etablissement.url +
+        "fr/api/" +
+        'groups/groups/tree/?dept=$department';
     final response = await http.get(url, headers: _headers);
     if (response.statusCode == 200) {
       var res = jsonDecode(response.body);

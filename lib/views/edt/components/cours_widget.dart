@@ -36,15 +36,17 @@ class CoursWidget extends StatelessWidget {
     bool isFinished = cours.dateEtHeureFin.isBefore(now);
     var theme = Theme.of(context);
     return GestureDetector(
-      onTap: () => cours.displayInformations(context),
+      onTap: () => cours.displayInformations(context, isProf),
       child: AnimatedOpacity(
         duration: Duration(milliseconds: 200),
         opacity: isFinished ? 0.3 : 1, //! TEST
         child: Row(
           children: <Widget>[
             isHour
-                ? coursHeure(MediaQuery.of(context).platformBrightness ==
-                    Brightness.dark, theme)
+                ? coursHeure(
+                    MediaQuery.of(context).platformBrightness ==
+                        Brightness.dark,
+                    theme)
                 : Container(),
             Expanded(
               child: Container(
