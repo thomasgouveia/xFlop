@@ -24,7 +24,7 @@ class _ContactScreenState extends State<ContactScreen> {
   bool isHTML = false;
 
   final _recipientController = TextEditingController(
-    text: '',
+    text: 'contact@flopedt.org',
   );
 
   final _subjectController = TextEditingController();
@@ -224,20 +224,24 @@ class _ContactScreenState extends State<ContactScreen> {
         child: TextField(
           controller: _subjectController,
           decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.transparent),
-                  borderRadius: BorderRadius.all(Radius.circular(30))),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.transparent),
-                  borderRadius: BorderRadius.all(Radius.circular(30))),
-              // labelText: 'Sujet',
-              // labelStyle: theme.textTheme.bodyText1,
-              hintText: 'Entrez un sujet',
-              hintStyle: TextStyle(color: (theme.iconTheme.color == Colors.white)
-                ? Colors.grey.shade500 : theme.accentColor),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent),
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent),
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            // labelText: 'Sujet',
+            // labelStyle: theme.textTheme.bodyText1,
+            hintText: 'Entrez un sujet',
+            hintStyle: TextStyle(
+                color: (theme.iconTheme.color == Colors.white)
+                    ? Colors.grey.shade500
+                    : theme.accentColor),
             filled: true,
             fillColor: (theme.iconTheme.color == Colors.white)
-                ? theme.accentColor : Colors.white,),
+                ? theme.accentColor
+                : Colors.white,
+          ),
           style: theme.textTheme.bodyText1,
           // onChanged: (value) {
           //   if (userController.text != "") {
@@ -280,11 +284,14 @@ class _ContactScreenState extends State<ContactScreen> {
                 borderSide: BorderSide(color: Colors.transparent),
                 borderRadius: BorderRadius.all(Radius.circular(30))),
             hintText: 'Entrez un message',
-            hintStyle: TextStyle(color: (theme.iconTheme.color == Colors.white)
-                ? Colors.grey.shade500 : theme.accentColor),
+            hintStyle: TextStyle(
+                color: (theme.iconTheme.color == Colors.white)
+                    ? Colors.grey.shade500
+                    : theme.accentColor),
             filled: true,
             fillColor: (theme.iconTheme.color == Colors.white)
-                ? theme.accentColor : Colors.white,
+                ? theme.accentColor
+                : Colors.white,
           ),
           style: theme.textTheme.bodyText1,
           // onChanged: (value) {
