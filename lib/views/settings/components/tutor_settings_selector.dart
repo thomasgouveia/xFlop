@@ -34,7 +34,8 @@ class _TutorSettingsSelectorState extends State<TutorSettingsSelector> {
   @override
   Widget build(BuildContext context) {
     state = StateWidget.of(context).state;
-    isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    var theme = Theme.of(context);
+    isDark = theme.iconTheme.color == Colors.white;
     return Column(
       children: <Widget>[
         Container(
@@ -107,29 +108,22 @@ class _TutorSettingsSelectorState extends State<TutorSettingsSelector> {
               padding: EdgeInsets.symmetric(horizontal: 30),
               margin: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                border: Border.all(
-                    color: isFilter
-                        ? isDark
-                            ? Colors.white
-                            : Theme.of(context).accentColor
-                        : isDark
-                            ? Colors.white24
-                            : Colors.black26,
-                    width: 1),
-              ),
+                  color: isFilter ? Color(0xFFFF6C00) : Colors.transparent,
+                  borderRadius: BorderRadius.circular(50),
+                  border: isFilter
+                      ? null
+                      : Border.all(
+                          width: 1,
+                          color: isDark ? Colors.white24 : Colors.black26)),
               child: Center(
                 child: Text(
                   label,
                   style: TextStyle(
-                    color: isFilter
-                        ? isDark
-                            ? Colors.white
-                            : Theme.of(context).accentColor
-                        : isDark
-                            ? Colors.white24
-                            : Colors.black26,
-                  ),
+                      color: isFilter
+                          ? Colors.white
+                          : isDark
+                              ? Colors.white24
+                              : Colors.black26),
                 ),
               ),
             ),

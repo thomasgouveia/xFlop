@@ -131,7 +131,9 @@ class _ScheduleCompleteWeekState extends State<ScheduleCompleteWeek> {
                     fontSize: fontSize),
               ),
               Text(
-                elem.enseignant.initiales,
+                state.settings.isTutor
+                    ? elem.groupe + ' - ' + elem.promo
+                    : elem.enseignant.initiales,
                 style: TextStyle(color: textColor, fontSize: profFontSize),
               ),
               Text(

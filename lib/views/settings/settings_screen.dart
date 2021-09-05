@@ -164,6 +164,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ChangeThemeButtonWidget(),
                       ],
                     ),
+                    
+                    /* === Animation Switch === */
+                    
                     // Row(
                     //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     //   children: <Widget>[

@@ -60,6 +60,7 @@ class APIProvider {
     //Récupération des prof du département
     final urlTutor =
         settings.etablissement.url + "fr/api/" + 'user/tutor/?dept=$department';
+
     final responseTutors = await http.get(urlTutor, headers: _headers);
 
     if (response.statusCode == 200 && responseTutors.statusCode == 200)
@@ -86,6 +87,7 @@ class APIProvider {
     return <dynamic>[];
   }
 
+  ///Effectue une requête sur l'API afin de récupérer la liste des départements.
   Future<List<dynamic>> getDepartments() async {
     /*
     final url = _apiUrl + '&mode=departments';
@@ -103,12 +105,14 @@ class APIProvider {
     return <dynamic>[];
   }
 
+  ///Effectue une requête sur l'API afin de récupérer la liste des cours d'un prof selon un département.
   Future<List<Cours>> getCoursesOfProf(
       {int year, week, String department, prof}) async {
     /*
     final url = _apiUrl +
         '&mode=courses&dep=$department&prof=$prof&year=$year&week=$week';
         */
+
     Settings settings = await Settings.getConfiguration();
     final url = settings.etablissement.url +
         "fr/api/" +
