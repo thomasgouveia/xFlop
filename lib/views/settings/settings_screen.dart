@@ -4,10 +4,13 @@ import 'package:flop_edt_app/state_manager/state_widget.dart';
 import 'package:flop_edt_app/theme/changeThemeButtonWidget.dart';
 import 'package:flop_edt_app/views/divers/about_screen.dart';
 import 'package:flop_edt_app/views/divers/contact_screen.dart';
+import 'package:flop_edt_app/views/loader/loading_screen.dart';
 import 'package:flop_edt_app/views/login/login_screen.dart';
 import 'package:flop_edt_app/views/settings/components/student_selector.dart';
 import 'package:flop_edt_app/views/settings/components/tutor_settings_selector.dart';
 import 'package:flutter/material.dart';
+
+import 'components/etablissement_chooser.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -18,6 +21,40 @@ class _SettingsScreenState extends State<SettingsScreen> {
   AppState state;
 
   Settings settings;
+
+  void handleSelectEtablissement() {
+    var theme = Theme.of(context);
+    state = StateWidget.of(context).state;
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+              color: theme.scaffoldBackgroundColor,
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(5),
+                child: Column(
+                  children: <Widget>[
+                    EtablissementSelector(
+                      settings: state.settings,
+                      onSelect: (value) {
+                        setState(() {
+                          settings = value;
+                          //etablissementSelected = true;
+                        });
+                        //state.settings.saveConfiguration();
+                        StateWidget.of(context).saveConfig(settings);
+                        StateWidget.of(context).initData2();
+                        setState(() {
+                          state.isLoading = true;
+                        });
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
+              ));
+        });
+  }
 
   void handleSelect() {
     var theme = Theme.of(context);
@@ -127,25 +164,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ChangeThemeButtonWidget(),
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          children: [
-                            Icon(IconData(57478, fontFamily: 'MaterialIcons'),
-                                color: theme.iconTheme.color),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'Animation d\'apparition',
-                              style: theme.textTheme.bodyText1,
-                            ),
-                          ],
-                        ),
-                        Switch.adaptive()
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: <Widget>[
+                    //     Row(
+                    //       children: [
+                    //         Icon(IconData(57478, fontFamily: 'MaterialIcons'),
+                    //             color: theme.iconTheme.color),
+                    //         SizedBox(
+                    //           width: 10,
+                    //         ),
+                    //         Text(
+                    //           'Animation d\'apparition',
+                    //           style: theme.textTheme.bodyText1,
+                    //         ),
+                    //       ],
+                    //     ),
+                    //     Switch.adaptive()
+                    //   ],
+                    // ),
                     SizedBox(
                       height: 20,
                     ),
@@ -158,6 +195,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           'Emploi du temps',
                           style: theme.textTheme.headline3,
                         ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Row(
+                          children: [
+                            Icon(IconData(983697, fontFamily: 'MaterialIcons'),
+                                color: theme.iconTheme.color),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Établissement',
+                              style: theme.textTheme.bodyText1,
+                            )
+                          ],
+                        ),
+                        _etablissementButton(theme),
                       ],
                     ),
                     Row(
@@ -242,10 +298,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _userButton(ThemeData theme) => ElevatedButton(
         style: ElevatedButton.styleFrom(
           shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-            padding: EdgeInsets.all(10),
-            shadowColor: Color(0xFFFF6C00),
-            elevation: 5,
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          padding: EdgeInsets.all(10),
+          shadowColor: Color(0xFFFF6C00),
+          elevation: 5,
           primary: Color(0xFFFF6C00),
         ),
         onPressed: handleSelect,
@@ -332,5 +388,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
             style: theme.textTheme.button,
           ),
         ),
+      );
+
+  Widget _etablissementButton(ThemeData theme) => ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          padding: EdgeInsets.all(10),
+          shadowColor: Color(0xFFFF6C00),
+          elevation: 5,
+          primary: Color(0xFFFF6C00),
+        ),
+        onPressed: handleSelectEtablissement,
+        child: Text(' ${settings.etablissement.nom}',
+            style: theme.textTheme.bodyText1.copyWith(color: Colors.white)),
       );
 }

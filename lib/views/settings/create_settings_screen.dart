@@ -103,7 +103,7 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                _userButton(theme),
+                _etablissementButton(theme),
                 etablissementSelected
                     ? isProfSelected
                         ? TutorSettingsSelector(
@@ -126,7 +126,7 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
     );
   }
 
-  Widget _userButton(ThemeData theme) => ElevatedButton(
+  Widget _etablissementButton(ThemeData theme) => ElevatedButton(
         style: ElevatedButton.styleFrom(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),

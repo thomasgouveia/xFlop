@@ -2,6 +2,7 @@ import 'package:flop_edt_app/models/state/app_state.dart';
 import 'package:flop_edt_app/state_manager/state_widget.dart';
 import 'package:flop_edt_app/views/edt/components/edt_chooser.dart';
 import 'package:flop_edt_app/views/edt/components/week_selector.dart';
+import 'package:flop_edt_app/views/loader/loading_screen.dart';
 import 'package:flop_edt_app/views/settings/create_settings_screen.dart';
 import 'package:flop_edt_app/views/settings/settings_screen.dart';
 import 'package:flop_edt_app/views/login/login_screen.dart';
@@ -37,10 +38,12 @@ class _RouterState extends State<Router> {
     if (isQuerySettings) {
       return CreateSettingsScreen();
     } else {
-      return Scaffold(
-        body: _buildContent,
-        bottomNavigationBar: _buildNavigationBar,
-      );
+      return state.isLoading
+          ? LoadingScreen()
+          : Scaffold(
+              body: _buildContent,
+              bottomNavigationBar: _buildNavigationBar,
+            );
     }
   }
 
@@ -67,10 +70,9 @@ class _RouterState extends State<Router> {
         currentIndex: _selected,
         backgroundColor: theme.scaffoldBackgroundColor,
         selectedItemColor: theme.primaryColorLight,
-        unselectedItemColor:
-            !(theme.iconTheme.color == Colors.white)
-                ? Colors.black38
-                : theme.accentColor,
+        unselectedItemColor: !(theme.iconTheme.color == Colors.white)
+            ? Colors.black38
+            : theme.accentColor,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.event), label: 'EDT'),
           BottomNavigationBarItem(

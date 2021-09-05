@@ -162,6 +162,10 @@ class _StateWidgetState extends State<StateWidget> {
     APIProvider api = APIProvider();
     Settings settings = await Settings.getConfiguration();
 
+    setState(() {
+      state.isLoading = true;
+    });
+
     var departments = await api.getDepartments();
     var map = <String, List<Promotion>>{};
     var mapProfs = <String, List<Tutor>>{};
@@ -180,6 +184,7 @@ class _StateWidgetState extends State<StateWidget> {
       state.promos = map;
       state.profs = mapProfs;
       state.settings = settings;
+      state.isLoading = false;
     });
   }
 
