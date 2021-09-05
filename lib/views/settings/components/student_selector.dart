@@ -1,7 +1,6 @@
 import 'package:flop_edt_app/models/state/app_state.dart';
 import 'package:flop_edt_app/models/state/settings.dart';
 import 'package:flop_edt_app/state_manager/state_widget.dart';
-import 'package:flop_edt_app/views/loader/loading_screen.dart';
 import 'package:flop_edt_app/views/settings/components/department_chooser.dart';
 import 'package:flop_edt_app/views/settings/components/group_selector.dart';
 import 'package:flop_edt_app/views/settings/components/promo_selector.dart';
@@ -49,6 +48,7 @@ class _StudentSettingsSelectorState extends State<StudentSettingsSelector> {
       setState(() {
         widget.onSelected(
           Settings(
+            etablissement: state.settings.etablissement,
             department: department,
             groupe: groupe,
             promo: promotion,

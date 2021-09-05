@@ -1,4 +1,3 @@
-import 'package:flop_edt_app/api/api_provider.dart';
 import 'package:flop_edt_app/models/state/app_state.dart';
 import 'package:flop_edt_app/models/state/settings.dart';
 import 'package:flop_edt_app/state_manager/state_widget.dart';
@@ -104,7 +103,7 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
                   height: 10,
                 ),
                 _etablissementButton(theme),
-                etablissementSelected
+                etablissementSelected || state.departments.isNotEmpty
                     ? isProfSelected
                         ? TutorSettingsSelector(
                             onSelected: handleSettingsReceived,
@@ -136,7 +135,11 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
           primary: Color(0xFFFF6C00),
         ),
         onPressed: handleSelect,
-        child: Text('Etablissement'),
+        child: Text(settings == null
+            ? 'Etablissement'
+            : settings.etablissement == null
+                ? 'Etablissement'
+                : settings.etablissement.nom),
       );
 
   Widget _loginButton(ThemeData theme) => Container(

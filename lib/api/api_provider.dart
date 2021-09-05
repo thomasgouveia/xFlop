@@ -75,7 +75,6 @@ class APIProvider {
 
   Future<String> getAPIBase() async {
     Settings settings = await Settings.getConfiguration();
-    print(settings == null ? "YA RIEN" : settings.etablissement.url);
     return settings == null ? "" : settings.etablissement.url + "fr/api/";
   }
 

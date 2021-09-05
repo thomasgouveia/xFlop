@@ -5,7 +5,6 @@ import 'package:flop_edt_app/views/edt/components/week_selector.dart';
 import 'package:flop_edt_app/views/loader/loading_screen.dart';
 import 'package:flop_edt_app/views/settings/create_settings_screen.dart';
 import 'package:flop_edt_app/views/settings/settings_screen.dart';
-import 'package:flop_edt_app/views/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
 ///Widget [Router] permettant de réaliser la navigation de l'application.
@@ -34,7 +33,9 @@ class _RouterState extends State<Router> {
     state = StateWidget.of(context).state;
     theme = Theme.of(context);
     //Booléen permettant de savoir s'il existe des paramètres ou s'il faut les créés.
-    bool isQuerySettings = state.settings == null && !state.isLoading;
+    bool isQuerySettings =
+        (state.settings == null || state.settings.groupe == null) &&
+            !state.isLoading;
     if (isQuerySettings) {
       return CreateSettingsScreen();
     } else {
