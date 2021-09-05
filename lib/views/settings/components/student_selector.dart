@@ -48,6 +48,7 @@ class _StudentSettingsSelectorState extends State<StudentSettingsSelector> {
       setState(() {
         widget.onSelected(
           Settings(
+            etablissement: state.settings.etablissement,
             department: department,
             groupe: groupe,
             promo: promotion,
@@ -84,16 +85,17 @@ class _StudentSettingsSelectorState extends State<StudentSettingsSelector> {
                 value: promotion,
                 currentDep: department,
               ),
-              groups.length == 0
-                  ? Container()
-                  : GroupSelector(
-                      onSelect: (value) => setState(() {
-                        groupe = value;
-                        sendSettings();
-                      }),
-                      value: groupe,
-                      groups: groups,
-                    ),
+              // groups.length == 0
+              //     ? Container()
+              //     :
+              GroupSelector(
+                onSelect: (value) => setState(() {
+                  groupe = value;
+                  sendSettings();
+                }),
+                value: groupe,
+                groups: groups,
+              ),
             ],
           ),
         ),

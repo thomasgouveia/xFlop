@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:flop_edt_app/models/cache/cache_provider.dart';
+import 'package:flop_edt_app/models/resources/etablissement.dart';
 import 'package:flop_edt_app/models/resources/tutor.dart';
 
 class Settings {
+  Etablissement etablissement;
   String promo;
   String department;
   String groupe;
@@ -26,6 +28,7 @@ class Settings {
   }
 
   Settings({
+    this.etablissement,
     this.promo,
     this.department,
     this.groupe,
@@ -36,6 +39,9 @@ class Settings {
   });
 
   factory Settings.fromJSON(Map<String, dynamic> json) => Settings(
+        etablissement: json['etablissement'] == null
+            ? null
+            : Etablissement.fromJSON(json['etablissement']),
         department: json['department'],
         promo: json['promo'],
         groupe: json['groupe'],
@@ -46,6 +52,7 @@ class Settings {
       );
 
   Map<String, dynamic> get toMap => {
+        'etablissement': this.etablissement?.toMap,
         'promo': this.promo,
         'department': this.department,
         'groupe': this.groupe,

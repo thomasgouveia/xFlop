@@ -1,6 +1,7 @@
 import 'package:flop_edt_app/models/cache/cache_provider.dart';
 import 'package:flop_edt_app/models/resources/course.dart';
 import 'package:flop_edt_app/models/resources/day.dart';
+import 'package:flop_edt_app/models/resources/etablissement.dart';
 import 'package:flop_edt_app/models/resources/promotion.dart';
 import 'package:flop_edt_app/models/resources/tutor.dart';
 import 'package:flop_edt_app/models/state/settings.dart';
@@ -15,6 +16,7 @@ class AppState {
   int week;
   int currentWeek;
   final int year;
+  List<Etablissement> etablissements;
   List<dynamic> departments;
   List<int> weeks;
 
@@ -41,6 +43,7 @@ class AppState {
     this.year,
     this.settings,
     this.cache,
+    this.etablissements = const [],
     this.promos = const {},
     this.departments = const [],
     this.cours = const [],

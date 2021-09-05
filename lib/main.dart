@@ -7,7 +7,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 
 Future main() async {
-  await DotEnv().load('.env');
+  //await DotEnv().load('.env');
   await initializeDateFormatting("fr_FR", null);
   runApp(StateWidget(child: XFlopApp()));
 }
@@ -19,10 +19,9 @@ class XFlopApp extends StatefulWidget {
 
 class _XFlopAppState extends State<XFlopApp> {
   @override
-  Widget build(BuildContext context) =>
-      ChangeNotifierProvider(
-        create: (context) => ThemeProvider(),
-        builder: (context, _) {
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      builder: (context, _) {
         final themeProvider = Provider.of<ThemeProvider>(context);
         return MaterialApp(
           debugShowCheckedModeBanner: false,

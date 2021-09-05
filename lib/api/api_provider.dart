@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:flop_edt_app/models/resources/course.dart';
 import 'package:flop_edt_app/models/resources/day.dart';
+import 'package:flop_edt_app/models/resources/etablissement.dart';
 import 'package:flop_edt_app/models/resources/promotion.dart';
 import 'package:flop_edt_app/models/resources/tutor.dart';
+import 'package:flop_edt_app/models/state/settings.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,13 +24,23 @@ class APIProvider {
   APIProvider() {
     /*
     this._key = DotEnv().env['API_KEY'];
-    this._apiBase = DotEnv().env['API_BASE'];
     */
-    _apiBase = "https://flopedt.iut-blagnac.fr/fr/api/";
+
+    //this._apiBase = DotEnv().env['API_BASE'];
+    this._apiBase = getapiUrl();
+    //_apiBase = "";
   }
 
-  //String get _apiUrl => this._apiBase + this._key;
-  String get _apiUrl => this._apiBase;
+  String get _apiUrl => getapiUrl();
+  String getapiUrl() {
+    String url;
+    getAPIBase().then((val) {
+      url = val + "fr/api/";
+      print("printage" + val);
+    });
+    print(url);
+    return url;
+  }
 
   ///Effectue une requête sur l'API afin de récupérer la liste des cours.
   ///[year] correspond à l'année
@@ -38,13 +50,17 @@ class APIProvider {
   ///[group] correspond au groupe choisi (3A, 1A...)
   Future<List<Cours>> getCourses(
       {int year, week, String promo, department, group}) async {
-    final url = _apiUrl +
+    Settings settings = await Settings.getConfiguration();
+    final url = settings.etablissement.url +
+        "fr/api/" +
         'fetch/scheduledcourses/?week=$week&year=$year&work_copy=0&dept=$department&train_prog=$promo&group=$group&lineage=true';
     print(url);
     final response = await http.get(url);
 
     //Récupération des prof du département
-    final urlTutor = _apiUrl + 'user/tutor/?dept=$department';
+    final urlTutor =
+        settings.etablissement.url + "fr/api/" + 'user/tutor/?dept=$department';
+
     final responseTutors = await http.get(urlTutor, headers: _headers);
 
     if (response.statusCode == 200 && responseTutors.statusCode == 200)
@@ -53,12 +69,31 @@ class APIProvider {
     return <Cours>[];
   }
 
+  Future<void> setEtablissements(Etablissement etablissement) async {
+    Settings settings = await Settings.getConfiguration();
+    settings.etablissement = etablissement;
+  }
+
+  Future<String> getAPIBase() async {
+    Settings settings = await Settings.getConfiguration();
+    return settings == null ? "" : settings.etablissement.url + "fr/api/";
+  }
+
+  Future<List<dynamic>> getEtablissements() async {
+    final url = 'https://api.flopedt.org/clients/';
+    final response = await http.get(url, headers: _headers);
+    if (response.statusCode == 200)
+      return Etablissement.createListFromResponse(response);
+    return <dynamic>[];
+  }
+
   ///Effectue une requête sur l'API afin de récupérer la liste des départements.
   Future<List<dynamic>> getDepartments() async {
     /*
     final url = _apiUrl + '&mode=departments';
     */
-    final url = _apiUrl + 'fetch/alldepts/';
+    Settings settings = await Settings.getConfiguration();
+    final url = settings.etablissement.url + "fr/api/" + 'fetch/alldepts/';
     final response = await http.get(url, headers: _headers);
     if (response.statusCode == 200)
       /*
@@ -77,7 +112,10 @@ class APIProvider {
     final url = _apiUrl +
         '&mode=courses&dep=$department&prof=$prof&year=$year&week=$week';
         */
-    final url = _apiUrl +
+
+    Settings settings = await Settings.getConfiguration();
+    final url = settings.etablissement.url +
+        "fr/api/" +
         'fetch/scheduledcourses/?week=$week&year=$year&tutor_name=$prof&dept=$department&work_copy=0';
     print(url);
     final response = await http.get(url, headers: _headers);
@@ -100,7 +138,9 @@ class APIProvider {
     /*
     final url = _apiUrl + '&mode=profs&dep=$dep';
     */
-    final url = _apiUrl + 'user/tutor/?dept=$dep';
+    Settings settings = await Settings.getConfiguration();
+    final url =
+        settings.etablissement.url + "fr/api/" + 'user/tutor/?dept=$dep';
     final response = await http.get(url, headers: _headers);
     if (response.statusCode == 200)
       return Tutor.createListFromResponse(response);
@@ -112,7 +152,10 @@ class APIProvider {
     final url = _apiUrl +
         '&mode=promo&dep=department';
         */
-    final url = _apiUrl + 'base/trainingprogram/name/?dept=$department';
+    Settings settings = await Settings.getConfiguration();
+    final url = settings.etablissement.url +
+        "fr/api/" +
+        'base/trainingprogram/name/?dept=$department';
     final response = await http.get(url, headers: _headers);
     print(url);
     if (response.statusCode == 200) {
@@ -135,7 +178,10 @@ class APIProvider {
   }
 
   Future<List<String>> getGroups({String department, promo}) async {
-    final url = _apiUrl + 'groups/groups/tree/?dept=$department';
+    Settings settings = await Settings.getConfiguration();
+    final url = settings.etablissement.url +
+        "fr/api/" +
+        'groups/groups/tree/?dept=$department';
     final response = await http.get(url, headers: _headers);
     if (response.statusCode == 200) {
       var res = jsonDecode(response.body);
