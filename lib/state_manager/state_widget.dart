@@ -36,6 +36,8 @@ class _StateWidgetState extends State<StateWidget> {
   ///On stocke le state global dans un objet de type AppState
   AppState state;
 
+  bool waitAgain;
+
   @override
   void initState() {
     super.initState();
@@ -77,6 +79,12 @@ class _StateWidgetState extends State<StateWidget> {
 
     //Chargement des données obligatoires
     var etablissements = await api.getEtablissements();
+    if (settings != null &&
+        ((settings.groupe.isNotEmpty && state.departments.isEmpty) ||
+            (settings.tutor == null && state.profs.isEmpty))) {
+      this.waitAgain = true;
+      initData2();
+    }
     // var departments = await api.getDepartments();
     // var map = <String, List<Promotion>>{};
     // var mapProfs = <String, List<Tutor>>{};
@@ -101,7 +109,7 @@ class _StateWidgetState extends State<StateWidget> {
 
     if (settings == null) {
       setState(() {
-        state.isLoading = false;
+        this.waitAgain ? state.isLoading = true : state.isLoading = false;
       });
       return;
     } else {
@@ -146,7 +154,7 @@ class _StateWidgetState extends State<StateWidget> {
     setState(() {
       state.cours = courses;
       state.days = days;
-      state.isLoading = false;
+      this.waitAgain ? state.isLoading = true : state.isLoading = false;
     });
   }
 
@@ -178,6 +186,7 @@ class _StateWidgetState extends State<StateWidget> {
         mapProfs[dep] = profs;
       }
     }
+    this.waitAgain = false;
     //On ajoute dans l'état
     setState(() {
       state.departments = departments;

@@ -38,9 +38,15 @@ class Tutor {
       );
       */
   factory Tutor.fromJSON(Map<String, dynamic> json) => Tutor(
-        initiales: json['username'],
-        prenom: json['first_name'],
-        nom: json['last_name'],
+        initiales: json['username'] == null
+            ? (json['initiales'] == null ? null : json['initiales'])
+            : json['username'],
+        prenom: json['first_name'] == null
+            ? (json['prenom'] == null ? null : json['prenom'])
+            : json['username'],
+        nom: json['last_name'] == null
+            ? (json['nom'] == null ? null : json['nom'])
+            : json['username'],
         mail: json['email'],
       );
 

@@ -39,9 +39,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       onSelect: (value) {
                         setState(() {
                           settings = value;
-                          //etablissementSelected = true;
                         });
-                        //state.settings.saveConfiguration();
                         StateWidget.of(context).saveConfig(settings);
                         StateWidget.of(context).initData2();
                         setState(() {
@@ -164,9 +162,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ChangeThemeButtonWidget(),
                       ],
                     ),
-                    
+
                     /* === Animation Switch === */
-                    
+
                     // Row(
                     //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     //   children: <Widget>[

@@ -141,6 +141,7 @@ class APIProvider {
     Settings settings = await Settings.getConfiguration();
     final url =
         settings.etablissement.url + "fr/api/" + 'user/tutor/?dept=$dep';
+    print(url);
     final response = await http.get(url, headers: _headers);
     if (response.statusCode == 200)
       return Tutor.createListFromResponse(response);

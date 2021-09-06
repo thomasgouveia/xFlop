@@ -99,7 +99,7 @@ class _AboutScreenState extends State<AboutScreen> {
           // icon: Icon(IconData(62834,
           //     fontFamily: 'MaterialIcons', matchTextDirection: false)),
           child: Text(
-            'FlopEDT',
+            'FlOpEDT',
             style: theme.textTheme.button,
           ),
         ),

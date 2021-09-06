@@ -55,7 +55,6 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
                           settings = value;
                           etablissementSelected = true;
                         });
-                        //state.settings.saveConfiguration();
                         StateWidget.of(context).saveConfig(settings);
                         StateWidget.of(context).initData2();
                         Navigator.of(context).pop();
