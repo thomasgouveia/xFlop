@@ -8,7 +8,9 @@ Pour l'instant destiné aux étudiants et aux professeurs de l'IUT de Blagnac.
 Propulsé grâce au SDK Flutter. 
 /!\ Le code est pour l'instant assez mal organisé. Il sera revu plus tard.
 
+Quelques aperçus de l'application :
 
+![alt text](assets/img_git/capture1.png) ![alt text](assets/img_git/capture2.png)
 
 ## Fonctionnalités
 
