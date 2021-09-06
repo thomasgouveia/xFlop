@@ -10,7 +10,7 @@ Propulsé grâce au SDK Flutter.
 
 Quelques aperçus de l'application :
 
-![alt text](assets/img_git/capture1.png) ![alt text](assets/img_git/capture2.png)
+![alt text](assets/img_git/capture3.png)
 
 ## Fonctionnalités
 
