@@ -1,3 +1,4 @@
+![alt text](assets/img_git/img_pres.png)
 # xFlop
 
 Un application mobile IOS & Android de visualisation d'emploi du temps généré par le logiciel [FlopEDT](http://www.flopedt.org/) 
@@ -9,7 +10,6 @@ Propulsé grâce au SDK Flutter.
 
 
 
-
 ## Fonctionnalités
 
 - [x] Affichage des cours en temps réel
@@ -18,13 +18,14 @@ Propulsé grâce au SDK Flutter.
 - [x] Gestion des week-ends
 - [x] Gestion des préférences utilisateurs (groupe, promo)
 - [x] Gestion des heures dynamiques
-- [ ] Les cours terminés de la journée s'affiche en moins clair afin de faciliter la lecture. 
+- [x] Les cours terminés de la journée s'affiche en moins clair afin de faciliter la lecture. 
 - [x] Si la journée est fini, affiche l'emploi du temps du jour suivant.
 - [x] Département CS
 - [x] Département GIM
 - [x] Département RT
 - [x] Département INFO
-- [ ] Filtre des professeurs
+- [x] Filtre des professeurs
 - [x] Mode professeur
 - [x] Affichage des examens particuliers
 - [x] Mode sombre
+- [x] Choix de l'établissement
