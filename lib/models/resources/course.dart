@@ -94,17 +94,19 @@ class Cours {
                 year: year,
                 week: week)[["m", "tu", "w", "th", "f"].indexOf(json['day'])]
             .date
-            .add(Duration(minutes: json['start_time'])),
+            .add(Duration(
+                minutes: json['start_time'] -
+                    60)), // DateTime initialisé à 1h du matin
         dateEtHeureFin: Day.getCompleteWeek(
                 year: year,
                 week: week)[["m", "tu", "w", "th", "f"].indexOf(json['day'])]
             .date
-            .add(Duration(minutes: json['start_time'] + 90)),
+            .add(Duration(minutes: json['start_time'] + 30)),
       );
 
   ///Crée une liste de [Cours] à partir de la réponse API.
   static List<Cours> createListFromResponse(Response response, year, week) {
-    var courses = jsonDecode(response.body);
+    var courses = jsonDecode(utf8.decode(response.bodyBytes));
     var toReturn = <Cours>[];
     courses.forEach(
         (dynamic json) => toReturn.add(Cours.fromJSON(json, year, week)));

@@ -4,7 +4,6 @@ import 'package:flop_edt_app/state_manager/state_widget.dart';
 import 'package:flop_edt_app/theme/changeThemeButtonWidget.dart';
 import 'package:flop_edt_app/views/divers/about_screen.dart';
 import 'package:flop_edt_app/views/divers/contact_screen.dart';
-import 'package:flop_edt_app/views/loader/loading_screen.dart';
 import 'package:flop_edt_app/views/login/login_screen.dart';
 import 'package:flop_edt_app/views/settings/components/student_selector.dart';
 import 'package:flop_edt_app/views/settings/components/tutor_settings_selector.dart';
@@ -268,7 +267,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         _userButton(theme),
                       ],
                     ),
-                    _loginButton(theme),
+                    //_loginButton(theme),
                     SizedBox(
                       height: 20,
                     ),
@@ -284,7 +283,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ],
                     ),
                     _contactButton(theme),
-                    _faqButton(theme),
+                    //_faqButton(theme),
                     _aboutButton(theme),
                   ],
                 ),

@@ -43,10 +43,10 @@ class Tutor {
             : json['username'],
         prenom: json['first_name'] == null
             ? (json['prenom'] == null ? null : json['prenom'])
-            : json['username'],
+            : json['first_name'],
         nom: json['last_name'] == null
             ? (json['nom'] == null ? null : json['nom'])
-            : json['username'],
+            : json['last_name'],
         mail: json['email'],
       );
 

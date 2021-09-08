@@ -47,12 +47,13 @@ class Day {
   }
 
   static List<Day> getCompleteWeek({int year, week}) {
-    int firstDayOfWeek =
-        week * 7 - (DateTime(year).add(Duration(days: week * 7)).weekday - 1);
+    int firstDayOfWeek = week * 7 -
+        (DateTime(year).add(Duration(days: week * 7, hours: 0)).weekday - 1);
     return [0, 1, 2, 3, 4]
         .map((int nb) => Day(
             cours: [],
-            date: DateTime(year).add(Duration(days: firstDayOfWeek + nb))))
+            date: DateTime(year, 1, 1, 0)
+                .add(Duration(days: firstDayOfWeek + nb, hours: 0))))
         .toList();
   }
 }

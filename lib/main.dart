@@ -2,7 +2,6 @@ import 'package:flop_edt_app/router/router.dart' as Custom;
 import 'package:flop_edt_app/state_manager/state_widget.dart';
 import 'package:flop_edt_app/theme/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 

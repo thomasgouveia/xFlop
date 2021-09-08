@@ -30,6 +30,7 @@ class _ScheduleCompleteWeekState extends State<ScheduleCompleteWeek> {
     bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
+        elevation: 5,
         leading: Image.asset(Constants.logoPath),
         centerTitle: false,
         title: Text(

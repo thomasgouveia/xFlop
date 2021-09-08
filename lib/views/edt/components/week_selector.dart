@@ -87,15 +87,14 @@ class _WeekSelectorState extends State<WeekSelector>
           boxShadow: [
             BoxShadow(
               color: (theme.iconTheme.color == Colors.white)
-                ? Colors.black38
-                : theme.accentColor,
+                  ? Colors.black38
+                  : theme.accentColor,
               spreadRadius: 2,
-              blurRadius: 10,
+              blurRadius: 5,
               offset: Offset(0, 3), // changes position of shadow
             ),
           ],
         ),
-        
         duration: Duration(milliseconds: 500),
         curve: Curves.easeInOut,
         height: isOpen ? maxHeight : minHeight,

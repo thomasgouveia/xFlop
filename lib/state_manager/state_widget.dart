@@ -36,7 +36,7 @@ class _StateWidgetState extends State<StateWidget> {
   ///On stocke le state global dans un objet de type AppState
   AppState state;
 
-  bool waitAgain;
+  bool waitAgain = false;
 
   @override
   void initState() {

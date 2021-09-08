@@ -50,6 +50,7 @@ class _ScheduleViewerState extends State<ScheduleViewer> {
     bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
+        elevation: 5,
         leading: Image.asset('assets/logo.png'),
         centerTitle: false,
         title: Text(

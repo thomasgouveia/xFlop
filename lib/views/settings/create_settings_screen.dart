@@ -115,7 +115,7 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
                   height: 10,
                 ),
                 _validateButton(theme),
-                _loginButton(theme),
+                //_loginButton(theme),
               ],
             ),
           ),
