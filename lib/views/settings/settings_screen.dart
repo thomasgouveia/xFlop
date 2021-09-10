@@ -310,7 +310,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ' ${settings.tutor?.initiales ?? 'Aucun enseignant.'}',
                 style: theme.textTheme.bodyText1.copyWith(color: Colors.white),
               )
-            : Text(' ${settings.promo}-${settings.groupe}',
+            : Text(
+                settings.groupe == null
+                    ? 'Aucun groupe.'
+                    : ' ${settings.promo}-${settings.groupe}',
                 style: theme.textTheme.bodyText1.copyWith(color: Colors.white)),
       );
 

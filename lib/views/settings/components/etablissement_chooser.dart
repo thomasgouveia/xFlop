@@ -52,7 +52,7 @@ class _EtablissementSelectorState extends State<EtablissementSelector> {
               SizedBox(
                 height: 10,
               ),
-              _buildSearch(theme),
+              //_buildSearch(theme),
               SizedBox(
                 height: 10,
               ),
@@ -166,9 +166,9 @@ class _EtablissementSelectorState extends State<EtablissementSelector> {
                 eta = etablissement;
                 widget.onSelect(Settings(
                     etablissement: etablissement,
-                    department: department,
-                    promo: promotion,
-                    groupe: groupe));
+                    department: 'INFO',
+                    promo: 'INFO1',
+                    groupe: null));
               });
             },
             title: Text(

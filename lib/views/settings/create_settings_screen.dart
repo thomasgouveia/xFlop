@@ -17,6 +17,7 @@ class CreateSettingsScreen extends StatefulWidget {
 class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
   AppState state;
 
+  ScrollController _scrollController = new ScrollController();
   bool isProfSelected;
   bool etablissementSelected;
   Settings settings;
@@ -72,6 +73,7 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
     state = StateWidget.of(context).state;
     return Scaffold(
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: SafeArea(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 15),
@@ -102,6 +104,37 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
                   height: 10,
                 ),
                 _etablissementButton(theme),
+                etablissementSelected || state.departments.isNotEmpty
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Row(
+                            children: [
+                              Icon(IconData(57583, fontFamily: 'MaterialIcons'),
+                                  color: theme.iconTheme.color),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Mode professeur',
+                                style: theme.textTheme.bodyText1,
+                              ),
+                            ],
+                          ),
+                          Switch.adaptive(
+                            value: isProfSelected,
+                            onChanged: (bool newValue) {
+                              setState(() {
+                                isProfSelected = newValue;
+                                _scrollController.animateTo(180.0,
+                                    duration: Duration(milliseconds: 500),
+                                    curve: Curves.ease);
+                              });
+                            },
+                          )
+                        ],
+                      )
+                    : Container(),
                 etablissementSelected || state.departments.isNotEmpty
                     ? isProfSelected
                         ? TutorSettingsSelector(

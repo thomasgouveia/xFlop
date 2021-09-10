@@ -60,12 +60,18 @@ class APIProvider {
     //Récupération des prof du département
     final urlTutor =
         settings.etablissement.url + "fr/api/" + 'user/tutor/?dept=$department';
-
     final responseTutors = await http.get(urlTutor, headers: _headers);
 
-    if (response.statusCode == 200 && responseTutors.statusCode == 200)
+    //Récupération de la durée des cours
+    final urlTypeCours =
+        settings.etablissement.url + "fr/api/courses/type/?dept=$department";
+    final responseTypeCours = await http.get(urlTypeCours, headers: _headers);
+
+    if (response.statusCode == 200 &&
+        responseTutors.statusCode == 200 &&
+        responseTypeCours.statusCode == 200)
       return Cours.createListFromResponses(
-          response, responseTutors, year, week);
+          response, responseTutors, responseTypeCours, year, week);
     return <Cours>[];
   }
 
@@ -119,8 +125,15 @@ class APIProvider {
         'fetch/scheduledcourses/?week=$week&year=$year&tutor_name=$prof&dept=$department&work_copy=0';
     print(url);
     final response = await http.get(url, headers: _headers);
-    if (response.statusCode == 200)
-      return Cours.createListFromResponse(response, year, week);
+
+    //Récupération de la durée des cours
+    final urlTypeCours =
+        settings.etablissement.url + "fr/api/courses/type/?dept=$department";
+    final responseTypeCours = await http.get(urlTypeCours, headers: _headers);
+
+    if (response.statusCode == 200 && responseTypeCours.statusCode == 200)
+      return Cours.createListFromResponse(
+          response, responseTypeCours, year, week);
     return <Cours>[];
   }
 
@@ -182,7 +195,7 @@ class APIProvider {
     Settings settings = await Settings.getConfiguration();
     final url = settings.etablissement.url +
         "fr/api/" +
-        'groups/groups/tree/?dept=$department';
+        'groups/structural/tree/?dept=$department';
     final response = await http.get(url, headers: _headers);
     if (response.statusCode == 200) {
       var res = jsonDecode(response.body);

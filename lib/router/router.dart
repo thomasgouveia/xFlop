@@ -33,9 +33,11 @@ class _RouterState extends State<Router> {
     state = StateWidget.of(context).state;
     theme = Theme.of(context);
     //Booléen permettant de savoir s'il existe des paramètres ou s'il faut les créés.
-    bool isQuerySettings =
-        (state.settings == null || state.settings.groupe == null) &&
-            !state.isLoading;
+    bool isQuerySettings = (state.settings == null ||
+            state.settings.etablissement == null ||
+            (state.settings.groupe == null && state.settings.tutor == null)) &&
+        !state.isLoading;
+
     if (isQuerySettings) {
       return CreateSettingsScreen();
     } else {

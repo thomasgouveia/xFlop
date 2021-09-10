@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:flop_edt_app/models/resources/tutor.dart';
+import 'package:flop_edt_app/models/resources/typeCours.dart';
 import 'package:flop_edt_app/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -72,7 +73,9 @@ class Cours {
             .add(Duration(minutes: json['duration'])),
       );
 */
-  factory Cours.fromJSON(Map<String, dynamic> json, year, week) => Cours(
+  factory Cours.fromJSON(
+          Map<String, dynamic> json, year, week, List<TypeCours> typesCours) =>
+      Cours(
         id: json['id'],
         enseignantInitial: json['tutor'] ?? "??",
         module: json['course']['module']['abbrev'] ?? "??",
@@ -101,25 +104,38 @@ class Cours {
                 year: year,
                 week: week)[["m", "tu", "w", "th", "f"].indexOf(json['day'])]
             .date
-            .add(Duration(minutes: json['start_time'] + 30)),
+            .add(Duration(
+                minutes: json['start_time'] +
+                    TypeCours.getDuration(typesCours, json['course']['type']) -
+                    60)),
       );
 
   ///Crée une liste de [Cours] à partir de la réponse API.
-  static List<Cours> createListFromResponse(Response response, year, week) {
+  static List<Cours> createListFromResponse(
+      Response response, responseTypeCours, year, week) {
+    var typeCours = jsonDecode(utf8.decode(responseTypeCours.bodyBytes));
+    var typesCours = <TypeCours>[];
+    typeCours
+        .forEach((dynamic json) => typesCours.add(TypeCours.fromJSON(json)));
     var courses = jsonDecode(utf8.decode(response.bodyBytes));
     var toReturn = <Cours>[];
-    courses.forEach(
-        (dynamic json) => toReturn.add(Cours.fromJSON(json, year, week)));
+    courses.forEach((dynamic json) =>
+        toReturn.add(Cours.fromJSON(json, year, week, typesCours)));
     return toReturn;
   }
 
   ///Crée une liste de [Cours] à partir de la réponse API.
-  static List<Cours> createListFromResponses(
-      Response response, Response responseTutors, year, week) {
+  static List<Cours> createListFromResponses(Response response,
+      Response responseTutors, Response responseTypeCours, year, week) {
+    var typeCours = jsonDecode(utf8.decode(responseTypeCours.bodyBytes));
+    var typesCours = <TypeCours>[];
+    typeCours
+        .forEach((dynamic json) => typesCours.add(TypeCours.fromJSON(json)));
+
     var courses = jsonDecode(utf8.decode(response.bodyBytes));
     var toReturn = <Cours>[];
-    courses.forEach(
-        (dynamic json) => toReturn.add(Cours.fromJSON(json, year, week)));
+    courses.forEach((dynamic json) =>
+        toReturn.add(Cours.fromJSON(json, year, week, typesCours)));
 
     var tutors = Tutor.createListFromResponse(responseTutors);
     toReturn.forEach((cours) {

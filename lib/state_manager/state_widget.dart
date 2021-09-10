@@ -80,7 +80,9 @@ class _StateWidgetState extends State<StateWidget> {
     //Chargement des données obligatoires
     var etablissements = await api.getEtablissements();
     if (settings != null &&
-        ((settings.groupe.isNotEmpty && state.departments.isEmpty) ||
+        ((settings.groupe != null &&
+                settings.groupe.isNotEmpty &&
+                state.departments.isEmpty) ||
             (settings.tutor == null && state.profs.isEmpty))) {
       this.waitAgain = true;
       initData2();

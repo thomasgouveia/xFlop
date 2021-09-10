@@ -144,8 +144,11 @@ class _TutorSettingsSelectorState extends State<TutorSettingsSelector> {
             onTap: () {
               setState(() {
                 prof = tutor;
-                widget.onSelected(
-                    Settings(tutor: tutor, isTutor: true, department: filter));
+                widget.onSelected(Settings(
+                    tutor: tutor,
+                    isTutor: true,
+                    department: filter,
+                    etablissement: state.settings.etablissement));
               });
             },
             leading: CircleAvatar(
