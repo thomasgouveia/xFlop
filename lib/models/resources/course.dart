@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:ffi';
+import 'dart:ui' as ui;
 
 import 'package:flop_edt_app/models/resources/tutor.dart';
 import 'package:flop_edt_app/models/resources/typeCours.dart';
@@ -175,106 +175,123 @@ class Cours {
   void displayInformations(BuildContext context, bool isProf) {
     showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.transparent,
       builder: (context) {
-        return Container(
-          color: this.backgroundColor,
-          child: Column(
-            children: <Widget>[
-              Padding(padding: EdgeInsets.all(2)),
-              Text(this.module,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 22,
-                    color: this.textColor,
-                  )),
-              Text(
-                this.name,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: this.textColor,
+        return ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(50.0)),
+            child: Stack(
+              children: [
+                BackdropFilter(
+                  filter: new ui.ImageFilter.blur(
+                    sigmaX: 7.0,
+                    sigmaY: 7.0,
+                  ),
+                  child: Container(),
                 ),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              Container(
-                  padding: EdgeInsets.all(15),
+                Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(5),
-                        topRight: Radius.circular(5),
-                        bottomLeft: Radius.circular(5),
-                        bottomRight: Radius.circular(5)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: Offset(0, 3),
+                    color: this.backgroundColor.withOpacity(0.4),
+                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      Padding(padding: EdgeInsets.all(2)),
+                      Text(this.module,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 22,
+                            color: Colors.white,
+                          )),
+                      Padding(
+                        padding: EdgeInsets.only(left: 20, right: 20),
+                        child: Text(
+                          this.name,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                          padding: EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            color: this.backgroundColor,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: this.backgroundColor.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: Column(children: [
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    IconData(58330,
+                                        fontFamily: 'MaterialIcons'),
+                                    color: this.textColor,
+                                  ),
+                                  Text(
+                                    'Salle',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: this.textColor,
+                                    ),
+                                  ),
+                                ]),
+                            Text(
+                              this.type,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: this.textColor,
+                              ),
+                            ),
+                            Center(
+                              child: Text(
+                                this.salle,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: this.textColor,
+                                ),
+                              ),
+                            ),
+                          ])),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: this.backgroundColor,
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: this.backgroundColor.withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: isProf
+                            ? _containerProf(context)
+                            : _containerStudent(context),
+                      )
                     ],
                   ),
-                  child: Column(children: [
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Icon(
-                        IconData(58330, fontFamily: 'MaterialIcons'),
-                        color: Colors.black,
-                      ),
-                      Text(
-                        'Salle',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ]),
-                    Text(
-                      this.type,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Center(
-                      child: Text(
-                        this.salle,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ])),
-              SizedBox(
-                height: 16,
-              ),
-              Container(
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(5),
-                      topRight: Radius.circular(5),
-                      bottomLeft: Radius.circular(5),
-                      bottomRight: Radius.circular(5)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: isProf
-                    ? _containerProf(context)
-                    : _containerStudent(context),
-              )
-            ],
-          ),
-        );
+                )
+              ],
+            ));
       },
     );
   }
@@ -284,26 +301,26 @@ class Cours {
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Icon(
               IconData(983342, fontFamily: 'MaterialIcons'),
-              color: Colors.black,
+              color: this.textColor,
             ),
             Text(
               ' Promo : ' + this.promo,
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.black,
+                color: this.textColor,
               ),
             ),
           ]),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Icon(
               IconData(63430, fontFamily: 'MaterialIcons'),
-              color: Colors.black,
+              color: this.textColor,
             ),
             Text(
               ' Groupe ' + this.groupe,
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.black,
+                color: this.textColor,
               ),
             ),
           ])
@@ -314,13 +331,13 @@ class Cours {
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Icon(
             IconData(62753, fontFamily: 'MaterialIcons'),
-            color: Colors.black,
+            color: this.textColor,
           ),
           Text(
             'Enseignant',
             style: TextStyle(
               fontSize: 16,
-              color: Colors.black,
+              color: this.textColor,
             ),
           ),
         ]),
@@ -328,21 +345,21 @@ class Cours {
           this.enseignant.initiales,
           style: TextStyle(
             fontSize: 16,
-            color: Colors.black,
+            color: this.textColor,
           ),
         ),
         Text(
           this.enseignant.displayName,
           style: TextStyle(
             fontSize: 16,
-            color: Colors.black,
+            color: this.textColor,
           ),
         ),
         Text(
           this.enseignant.mail,
           style: TextStyle(
             fontSize: 16,
-            color: Colors.black,
+            color: this.textColor,
           ),
         ),
         _contactButton(context, this.enseignant.mail),
@@ -353,7 +370,7 @@ class Cours {
         width: MediaQuery.of(context).size.width,
         child: ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
-            primary: this.backgroundColor,
+            primary: Colors.white,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
             padding: EdgeInsets.all(10),
@@ -363,11 +380,11 @@ class Cours {
           },
           icon: Icon(
             IconData(63081, fontFamily: 'MaterialIcons'),
-            color: this.textColor,
+            color: Colors.black,
           ),
           label: Text(
             'Contacter l\'enseignant',
-            style: TextStyle(color: this.textColor, fontSize: 16),
+            style: TextStyle(color: Colors.black, fontSize: 16),
           ),
         ),
       );

@@ -13,6 +13,7 @@ class Settings {
   bool isGridDisplay;
   bool isTutor;
   bool isAnimation;
+  bool darkMode;
 
   static Future<Settings> getConfiguration() async {
     var cache = await CacheProvider.instance;
@@ -36,6 +37,7 @@ class Settings {
     this.tutor,
     this.isGridDisplay: false,
     this.isAnimation: true,
+    this.darkMode: false,
   });
 
   factory Settings.fromJSON(Map<String, dynamic> json) => Settings(
@@ -48,6 +50,7 @@ class Settings {
         isTutor: json['isTutor'],
         isGridDisplay: json['isGridDisplay'],
         isAnimation: json['isAnimation'],
+        darkMode: json['darkMode'],
         tutor: json['tutor'] == null ? null : Tutor.fromJSON(json['tutor']),
       );
 
@@ -60,6 +63,7 @@ class Settings {
         'tutor': this.tutor?.toMap,
         'isGridDisplay': this.isGridDisplay,
         'isAnimation': this.isAnimation,
+        'darkMode': this.darkMode,
       };
 
   String get toJSON => jsonEncode(this.toMap);
