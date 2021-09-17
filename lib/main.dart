@@ -1,3 +1,4 @@
+import 'package:flop_edt_app/models/state/app_state.dart';
 import 'package:flop_edt_app/router/router.dart' as Custom;
 import 'package:flop_edt_app/state_manager/state_widget.dart';
 import 'package:flop_edt_app/theme/themes.dart';
@@ -22,12 +23,17 @@ class _XFlopAppState extends State<XFlopApp> {
       create: (context) => ThemeProvider(),
       builder: (context, _) {
         final themeProvider = Provider.of<ThemeProvider>(context);
+        themeProvider.getMode().then((value) {
+          setState(() {
+            themeProvider.themeMode = value;
+          });
+        });
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'xFlop!',
           theme: AppTheme.lightTheme(),
           darkTheme: AppTheme.darkTheme(),
-          themeMode: themeProvider.getMode(),
+          themeMode: themeProvider.themeMode,
           routes: {
             '/': (context) => Custom.Router(),
           },

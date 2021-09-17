@@ -1,4 +1,5 @@
 import 'package:flop_edt_app/models/state/settings.dart';
+import 'package:flop_edt_app/state_manager/state_widget.dart';
 import 'package:flop_edt_app/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -70,11 +71,10 @@ class AppTheme {
 }
 
 class ThemeProvider extends ChangeNotifier {
-  ThemeMode themeMode = ThemeMode.system;
+  ThemeMode themeMode;
 
-  bool get isDarkMode {
-    Settings settings;
-    Settings.getConfiguration().then((value) => settings = value);
+  Future<bool> get isDarkMode async {
+    Settings settings = await Settings.getConfiguration();
     themeMode = settings == null
         ? ThemeMode.system
         : settings.darkMode
@@ -85,15 +85,25 @@ class ThemeProvider extends ChangeNotifier {
         : settings.darkMode;
   }
 
-  ThemeMode getMode() {
-    Settings settings;
-    Settings.getConfiguration().then((value) => settings = value);
+  Future<ThemeMode> getMode() async {
+    ThemeMode themeMode;
+    Settings settings = await Settings.getConfiguration();
     themeMode = settings == null
         ? ThemeMode.system
         : settings.darkMode
             ? ThemeMode.dark
             : ThemeMode.light;
+
     return themeMode;
+  }
+
+  static void setMode(BuildContext context, bool isOn) {
+    Settings settings;
+    Settings.getConfiguration().then((value) {
+      settings = value;
+      settings.darkMode = isOn;
+      StateWidget.of(context).saveConfig(settings);
+    });
   }
 
   void toggleTheme(bool isOn) {

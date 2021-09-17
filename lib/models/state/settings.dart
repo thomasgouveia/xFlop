@@ -50,7 +50,7 @@ class Settings {
         isTutor: json['isTutor'],
         isGridDisplay: json['isGridDisplay'],
         isAnimation: json['isAnimation'],
-        darkMode: json['darkMode'],
+        darkMode: json['darkMode'] ?? false,
         tutor: json['tutor'] == null ? null : Tutor.fromJSON(json['tutor']),
       );
 
