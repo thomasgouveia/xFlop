@@ -57,7 +57,9 @@ class _PasswordForgotScreenState extends State<PasswordForgotScreen> {
                 fontSize: 15,
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             _mailAdressTextfield(theme),
             _sendButton(theme)
           ],
@@ -67,8 +69,8 @@ class _PasswordForgotScreenState extends State<PasswordForgotScreen> {
   }
 
   Widget _mailAdressTextfield(ThemeData theme) => Container(
-        margin: EdgeInsets.all(15),
-        child: Container(
+      margin: EdgeInsets.all(15),
+      child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.0),
           boxShadow: [
@@ -79,22 +81,23 @@ class _PasswordForgotScreenState extends State<PasswordForgotScreen> {
             ),
           ],
         ),
-        child:TextField(
+        child: TextField(
           controller: emailController,
           decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
+            enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.transparent),
                 borderRadius: BorderRadius.all(Radius.circular(30))),
             focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.transparent),
                 borderRadius: BorderRadius.all(Radius.circular(30))),
-              hintText: 'Entrez un e-mail',hintStyle: TextStyle(
+            hintText: 'Entrez un e-mail',
+            hintStyle: TextStyle(
                 color: (theme.iconTheme.color == Colors.white)
                     ? Colors.grey.shade500
-                    : theme.accentColor),
+                    : theme.primaryColor),
             filled: true,
             fillColor: (theme.iconTheme.color == Colors.white)
-                ? theme.accentColor
+                ? theme.primaryColor
                 : Colors.white,
           ),
           style: theme.textTheme.bodyText1,
@@ -109,15 +112,15 @@ class _PasswordForgotScreenState extends State<PasswordForgotScreen> {
               });
             }
           },
-        ),)
-      );
+        ),
+      ));
 
   Widget _sendButton(ThemeData theme) => Container(
         padding: EdgeInsets.all(5),
         width: MediaQuery.of(context).size.width,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: theme.accentColor,
+            primary: theme.primaryColor,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
             padding: EdgeInsets.all(10),

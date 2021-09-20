@@ -83,12 +83,12 @@ class _WeekSelectorState extends State<WeekSelector>
       onTap: toggle,
       child: AnimatedContainer(
         decoration: BoxDecoration(
-          color: theme.accentColor,
+          color: theme.primaryColor,
           boxShadow: [
             BoxShadow(
               color: (theme.iconTheme.color == Colors.white)
                   ? Colors.black38
-                  : theme.accentColor,
+                  : theme.primaryColor,
               spreadRadius: 2,
               blurRadius: 5,
               offset: Offset(0, 3), // changes position of shadow

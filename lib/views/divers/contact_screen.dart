@@ -158,7 +158,8 @@ class _ContactScreenState extends State<ContactScreen> {
           controller: emailController,
           decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: theme.accentColor, width: 2.0)),
+                  borderSide:
+                      BorderSide(color: theme.primaryColor, width: 2.0)),
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.white, width: 2.0)),
               labelText: 'Adresse e-mail',
@@ -236,10 +237,10 @@ class _ContactScreenState extends State<ContactScreen> {
             hintStyle: TextStyle(
                 color: (theme.iconTheme.color == Colors.white)
                     ? Colors.grey.shade500
-                    : theme.accentColor),
+                    : theme.primaryColor),
             filled: true,
             fillColor: (theme.iconTheme.color == Colors.white)
-                ? theme.accentColor
+                ? theme.primaryColor
                 : Colors.white,
           ),
           style: theme.textTheme.bodyText1,
@@ -287,10 +288,10 @@ class _ContactScreenState extends State<ContactScreen> {
             hintStyle: TextStyle(
                 color: (theme.iconTheme.color == Colors.white)
                     ? Colors.grey.shade500
-                    : theme.accentColor),
+                    : theme.primaryColor),
             filled: true,
             fillColor: (theme.iconTheme.color == Colors.white)
-                ? theme.accentColor
+                ? theme.primaryColor
                 : Colors.white,
           ),
           style: theme.textTheme.bodyText1,
@@ -312,7 +313,7 @@ class _ContactScreenState extends State<ContactScreen> {
         width: MediaQuery.of(context).size.width,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: theme.accentColor,
+            primary: theme.primaryColor,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
             padding: EdgeInsets.all(10),

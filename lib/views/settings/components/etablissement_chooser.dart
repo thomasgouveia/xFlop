@@ -139,15 +139,15 @@ class _EtablissementSelectorState extends State<EtablissementSelector> {
           hintStyle: TextStyle(
               color: (theme.iconTheme.color == Colors.white)
                   ? Colors.grey.shade500
-                  : theme.accentColor),
+                  : theme.primaryColor),
           filled: true,
           fillColor: (theme.iconTheme.color == Colors.white)
-              ? theme.accentColor
+              ? theme.primaryColor
               : Colors.white,
         ),
         style: theme.textTheme.bodyText1,
         onChanged: (String searchVal) {},
-        cursorColor: Theme.of(context).accentColor,
+        cursorColor: Theme.of(context).primaryColor,
       ),
     );
   }

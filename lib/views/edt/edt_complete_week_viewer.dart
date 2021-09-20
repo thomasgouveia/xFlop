@@ -41,7 +41,7 @@ class _ScheduleCompleteWeekState extends State<ScheduleCompleteWeek> {
           IconButton(
             icon: Icon(
               Icons.view_column,
-              color: theme.accentIconTheme.color,
+              color: theme.primaryIconTheme.color,
             ),
             onPressed: () => StateWidget.of(context).switchDisplayMode(),
           ),

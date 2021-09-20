@@ -9,7 +9,6 @@ class AppTheme {
   static ThemeData lightTheme() => ThemeData(
         fontFamily: 'Poppins',
         scaffoldBackgroundColor: Colors.white,
-        accentColor: Color(0xFF07023B),
         primaryColor: Color(0xFF07023B),
         primaryColorLight: Color(0xFF07023B),
         elevatedButtonTheme: ElevatedButtonThemeData(
@@ -32,9 +31,10 @@ class AppTheme {
           color: Colors.white,
           elevation: 0,
         ),
-        accentIconTheme: IconThemeData(color: Colors.black54),
+        primaryIconTheme: IconThemeData(color: Colors.black54),
         iconTheme: IconThemeData(color: Colors.black),
         selectedRowColor: Colors.black12,
+        toggleableActiveColor: Color(0xFF07023B),
       );
 
   ///Retourne le thème sombre de l'application.
@@ -55,10 +55,10 @@ class AppTheme {
             elevation: 5,
           ),
         ),
-        accentColor: ColorUtils.fromHex('#383838'),
-        primaryColor: ColorUtils.fromHex('#121212'),
+        primaryColorDark: Color(0xFF383838),
+        primaryIconTheme: IconThemeData(color: Colors.white54),
+        primaryColor: Color(0xFF383838),
         scaffoldBackgroundColor: ColorUtils.fromHex('#121212'),
-        accentIconTheme: IconThemeData(color: Colors.white54),
         textTheme: TextTheme(
           headline4: TextStyle(color: Colors.white, fontSize: 24),
           headline3: TextStyle(color: Colors.grey.shade600, fontSize: 16),
@@ -67,6 +67,7 @@ class AppTheme {
         ),
         iconTheme: IconThemeData(color: Colors.white),
         selectedRowColor: Colors.white12,
+        toggleableActiveColor: Color(0xFFFF6C00),
       );
 }
 

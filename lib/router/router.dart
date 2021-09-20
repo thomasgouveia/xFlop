@@ -75,7 +75,7 @@ class _RouterState extends State<Router> {
         selectedItemColor: theme.primaryColorLight,
         unselectedItemColor: !(theme.iconTheme.color == Colors.white)
             ? Colors.black38
-            : theme.accentColor,
+            : theme.primaryColor,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.event), label: 'EDT'),
           BottomNavigationBarItem(

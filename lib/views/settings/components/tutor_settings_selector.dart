@@ -82,7 +82,7 @@ class _TutorSettingsSelectorState extends State<TutorSettingsSelector> {
   //       onChanged: (String searchVal) {
 
   //       },
-  //       cursorColor: Theme.of(context).accentColor,
+  //       cursorColor: Theme.of(context).primaryColor,
   //       decoration: InputDecoration(
   //           border: InputBorder.none,
   //           prefixIcon: Icon(Icons.search, color: Colors.black26,),
@@ -153,7 +153,7 @@ class _TutorSettingsSelectorState extends State<TutorSettingsSelector> {
             },
             leading: CircleAvatar(
               backgroundColor: isSelected
-                  ? Theme.of(context).accentColor
+                  ? Theme.of(context).primaryColor
                   : Color(0xFFFF6C00),
               child: Text(
                 '${tutor.initiales}',

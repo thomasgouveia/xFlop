@@ -28,10 +28,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
     var theme = Theme.of(context);
     state = StateWidget.of(context).state;
     showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25.0), topRight: Radius.circular(25.0)),
+        ),
         context: context,
         builder: (context) {
           return Container(
-              color: theme.scaffoldBackgroundColor,
+              decoration: BoxDecoration(
+                color: theme.scaffoldBackgroundColor,
+                borderRadius: BorderRadius.all(Radius.circular(25.0)),
+              ),
               child: SingleChildScrollView(
                 padding: EdgeInsets.all(5),
                 child: Column(
@@ -60,10 +67,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
     var theme = Theme.of(context);
     if (state.settings.isTutor) {
       showModalBottomSheet(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(25.0),
+                topRight: Radius.circular(25.0)),
+          ),
           context: context,
           builder: (context) {
             return Container(
-                color: theme.scaffoldBackgroundColor,
+                decoration: BoxDecoration(
+                  color: theme.scaffoldBackgroundColor,
+                  borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                ),
                 child: SingleChildScrollView(
                   padding: EdgeInsets.all(5),
                   child: Column(
@@ -82,11 +97,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
           });
     } else {
       showModalBottomSheet(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(25.0),
+                topRight: Radius.circular(25.0)),
+          ),
           context: context,
           builder: (context) {
             return Container(
+              decoration: BoxDecoration(
+                color: theme.scaffoldBackgroundColor,
+                borderRadius: BorderRadius.all(Radius.circular(25.0)),
+              ),
               padding: EdgeInsets.all(10),
-              color: theme.scaffoldBackgroundColor,
               child: Column(
                 children: <Widget>[
                   StudentSettingsSelector(
@@ -161,7 +184,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                           ],
                         ),
-                        switchMode(context),
+                        switchMode(context, theme),
                       ],
                     ),
 
@@ -236,6 +259,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ],
                         ),
                         Switch.adaptive(
+                          activeColor: theme.toggleableActiveColor,
                           value: state.settings.isTutor,
                           onChanged: (bool newValue) {
                             setState(() {
@@ -410,7 +434,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             style: theme.textTheme.bodyText1.copyWith(color: Colors.white)),
       );
 
-  Widget switchMode(BuildContext context) {
+  Widget switchMode(BuildContext context, ThemeData theme) {
     final provider = Provider.of<ThemeProvider>(context, listen: false);
     provider.isDarkMode.then((value) {
       setState(() {
@@ -419,6 +443,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
     return Switch.adaptive(
         value: mode,
+        activeColor: theme.toggleableActiveColor,
         onChanged: (value) {
           final provider = Provider.of<ThemeProvider>(context, listen: false);
           ThemeProvider.setMode(context, value);

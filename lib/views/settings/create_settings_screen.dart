@@ -41,10 +41,17 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
     var theme = Theme.of(context);
     state = StateWidget.of(context).state;
     showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25.0), topRight: Radius.circular(25.0)),
+        ),
         context: context,
         builder: (context) {
           return Container(
-              color: theme.scaffoldBackgroundColor,
+              decoration: BoxDecoration(
+                color: theme.scaffoldBackgroundColor,
+                borderRadius: BorderRadius.all(Radius.circular(25.0)),
+              ),
               child: SingleChildScrollView(
                 padding: EdgeInsets.all(5),
                 child: Column(

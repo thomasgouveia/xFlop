@@ -70,7 +70,7 @@ class _ScheduleViewerState extends State<ScheduleViewer> {
           IconButton(
             icon: Icon(
               Icons.apps,
-              color: theme.accentIconTheme.color,
+              color: theme.primaryIconTheme.color,
             ),
             onPressed: () => StateWidget.of(context).switchDisplayMode(),
           ),

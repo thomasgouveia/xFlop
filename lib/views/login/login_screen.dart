@@ -94,15 +94,14 @@ class _LoginScreenState extends State<LoginScreen> {
             focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.transparent),
                 borderRadius: BorderRadius.all(Radius.circular(30))),
-            
             hintText: 'Entrez un nom d\'utilisateur',
             hintStyle: TextStyle(
                 color: (theme.iconTheme.color == Colors.white)
                     ? Colors.grey.shade500
-                    : theme.accentColor),
+                    : theme.primaryColor),
             filled: true,
             fillColor: (theme.iconTheme.color == Colors.white)
-                ? theme.accentColor
+                ? theme.primaryColor
                 : Colors.white,
           ),
           style: theme.textTheme.bodyText1,
@@ -144,15 +143,14 @@ class _LoginScreenState extends State<LoginScreen> {
             focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.transparent),
                 borderRadius: BorderRadius.all(Radius.circular(30))),
-            
             hintText: 'Enter mot de passe',
             hintStyle: TextStyle(
                 color: (theme.iconTheme.color == Colors.white)
                     ? Colors.grey.shade500
-                    : theme.accentColor),
+                    : theme.primaryColor),
             filled: true,
             fillColor: (theme.iconTheme.color == Colors.white)
-                ? theme.accentColor
+                ? theme.primaryColor
                 : Colors.white,
           ),
           style: theme.textTheme.bodyText1,
