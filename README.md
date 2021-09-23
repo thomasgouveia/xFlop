@@ -3,7 +3,7 @@
 
 Un application mobile IOS & Android de visualisation d'emploi du temps généré par le logiciel [FlopEDT](http://www.flopedt.org/) 
 
-Pour l'instant destiné aux étudiants et aux professeurs de l'IUT de Blagnac. 
+Pour l'instant destiné aux étudiants et aux professeurs de l'IUT de Blagnac, mais commence à s'étendre à d'autres établissments.
 
 Propulsé grâce au SDK Flutter. 
 /!\ Le code est pour l'instant assez mal organisé. Il sera revu plus tard.
@@ -22,12 +22,11 @@ Quelques aperçus de l'application :
 - [x] Gestion des heures dynamiques
 - [x] Les cours terminés de la journée s'affiche en moins clair afin de faciliter la lecture. 
 - [x] Si la journée est fini, affiche l'emploi du temps du jour suivant.
-- [x] Département CS
-- [x] Département GIM
-- [x] Département RT
-- [x] Département INFO
-- [x] Filtre des professeurs
 - [x] Mode professeur
 - [x] Affichage des examens particuliers
 - [x] Mode sombre
 - [x] Choix de l'établissement
+
+Réalisé par des étudiants de l'IUT de Blagnac : 
+ - GOUVEIA Thomas
+ - BOGACKI Charles
