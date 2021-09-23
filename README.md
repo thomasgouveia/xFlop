@@ -1,4 +1,4 @@
-![alt text](assets/img_git/img_pres.png)
+![alt text](assets/img_git/banner.png)
 # xFlop
 
 Un application mobile IOS & Android de visualisation d'emploi du temps généré par le logiciel [FlopEDT](http://www.flopedt.org/) 
@@ -27,6 +27,6 @@ Quelques aperçus de l'application :
 - [x] Mode sombre
 - [x] Choix de l'établissement
 
-Réalisé par des étudiants de l'IUT de Blagnac : 
+## Réalisé par des étudiants de l'IUT de Blagnac : 
  - GOUVEIA Thomas
  - BOGACKI Charles
