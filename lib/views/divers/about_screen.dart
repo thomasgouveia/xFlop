@@ -96,7 +96,7 @@ class _AboutScreenState extends State<AboutScreen> {
         child: ElevatedButton(
           style: theme.elevatedButtonTheme.style,
           onPressed: _launchURL,
-          // icon: Icon(IconData(62834,
+          // icon: Icon(const IconData(62834,
           //     fontFamily: 'MaterialIcons', matchTextDirection: false)),
           child: Text(
             'FlOpEDT',

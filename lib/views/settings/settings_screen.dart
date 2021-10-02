@@ -1,7 +1,6 @@
 import 'package:flop_edt_app/models/state/app_state.dart';
 import 'package:flop_edt_app/models/state/settings.dart';
 import 'package:flop_edt_app/state_manager/state_widget.dart';
-import 'package:flop_edt_app/theme/changeThemeButtonWidget.dart';
 import 'package:flop_edt_app/theme/themes.dart';
 import 'package:flop_edt_app/views/divers/about_screen.dart';
 import 'package:flop_edt_app/views/divers/contact_screen.dart';
@@ -22,7 +21,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   AppState state;
 
   Settings settings;
-  bool mode;
+  bool mode = false;
 
   void handleSelectEtablissement() {
     var theme = Theme.of(context);
@@ -172,7 +171,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         Row(
                           children: [
                             Icon(
-                              IconData(63116, fontFamily: 'MaterialIcons'),
+                              const IconData(63116, fontFamily: 'MaterialIcons'),
                               color: theme.iconTheme.color,
                             ),
                             SizedBox(
@@ -195,7 +194,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     //   children: <Widget>[
                     //     Row(
                     //       children: [
-                    //         Icon(IconData(57478, fontFamily: 'MaterialIcons'),
+                    //         Icon(const IconData(57478, fontFamily: 'MaterialIcons'),
                     //             color: theme.iconTheme.color),
                     //         SizedBox(
                     //           width: 10,
@@ -228,7 +227,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       children: <Widget>[
                         Row(
                           children: [
-                            Icon(IconData(983697, fontFamily: 'MaterialIcons'),
+                            Icon(const IconData(983697, fontFamily: 'MaterialIcons'),
                                 color: theme.iconTheme.color),
                             SizedBox(
                               width: 10,
@@ -247,7 +246,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       children: <Widget>[
                         Row(
                           children: [
-                            Icon(IconData(57583, fontFamily: 'MaterialIcons'),
+                            Icon(const IconData(57583, fontFamily: 'MaterialIcons'),
                                 color: theme.iconTheme.color),
                             SizedBox(
                               width: 10,
@@ -277,9 +276,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           children: [
                             Icon(
                                 settings.isTutor
-                                    ? IconData(62753,
+                                    ? const IconData(62753,
                                         fontFamily: 'MaterialIcons')
-                                    : IconData(58091,
+                                    : const IconData(58091,
                                         fontFamily: 'MaterialIcons'),
                                 color: theme.iconTheme.color),
                             SizedBox(
@@ -355,7 +354,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               MaterialPageRoute(builder: (context) => LoginScreen()),
             );
           },
-          icon: Icon(IconData(63626, fontFamily: 'MaterialIcons')),
+          icon: Icon(const IconData(63626, fontFamily: 'MaterialIcons')),
           label: Text(
             'Se connecter',
             style: theme.textTheme.button,
@@ -374,7 +373,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               MaterialPageRoute(builder: (context) => ContactScreen()),
             );
           },
-          icon: Icon(IconData(63083, fontFamily: 'MaterialIcons')),
+          icon: Icon(const IconData(63083, fontFamily: 'MaterialIcons')),
           label: Text(
             'Contact',
             style: theme.textTheme.button,
@@ -393,7 +392,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               MaterialPageRoute(builder: (context) => LoginScreen()),
             );
           },
-          icon: Icon(IconData(63081, fontFamily: 'MaterialIcons')),
+          icon: Icon(const IconData(63081, fontFamily: 'MaterialIcons')),
           label: Text(
             'FAQ',
             style: theme.textTheme.button,
@@ -412,7 +411,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               MaterialPageRoute(builder: (context) => AboutScreen()),
             );
           },
-          icon: Icon(IconData(0xf816, fontFamily: 'MaterialIcons')),
+          icon: Icon(const IconData(0xf816, fontFamily: 'MaterialIcons')),
           label: Text(
             'À propos',
             style: theme.textTheme.button,

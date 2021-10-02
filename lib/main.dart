@@ -1,8 +1,8 @@
-import 'package:flop_edt_app/models/state/app_state.dart';
 import 'package:flop_edt_app/router/router.dart' as Custom;
 import 'package:flop_edt_app/state_manager/state_widget.dart';
 import 'package:flop_edt_app/theme/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +28,13 @@ class _XFlopAppState extends State<XFlopApp> {
             themeProvider.themeMode = value;
           });
         });
+        themeProvider.isDarkMode.then((value) {
+          setState(() {
+            value ? SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light) : SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+          });
+        });
         return MaterialApp(
+          color: Color(0xFF07023B),
           debugShowCheckedModeBanner: false,
           title: 'xFlop!',
           theme: AppTheme.lightTheme(),

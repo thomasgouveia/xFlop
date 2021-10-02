@@ -2,6 +2,7 @@ import 'package:flop_edt_app/models/state/settings.dart';
 import 'package:flop_edt_app/state_manager/state_widget.dart';
 import 'package:flop_edt_app/utils/color_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 ///Classe représentant les deux thèmes (Clair et Sombre) de l'application.
 class AppTheme {
@@ -21,6 +22,7 @@ class AppTheme {
             elevation: 7.5,
           ),
         ),
+        
         textTheme: TextTheme(
           headline4: TextStyle(color: Colors.black, fontSize: 24),
           headline3: TextStyle(color: Colors.grey.shade600, fontSize: 16),
@@ -35,6 +37,7 @@ class AppTheme {
         iconTheme: IconThemeData(color: Colors.black),
         selectedRowColor: Colors.black12,
         toggleableActiveColor: Color(0xFF07023B),
+        
       );
 
   ///Retourne le thème sombre de l'application.
@@ -109,6 +112,7 @@ class ThemeProvider extends ChangeNotifier {
 
   void toggleTheme(bool isOn) {
     themeMode = isOn ? ThemeMode.dark : ThemeMode.light;
+    isOn ? SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light) : SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     notifyListeners();
   }
 }

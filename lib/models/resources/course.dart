@@ -236,7 +236,7 @@ class Cours {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
-                                    IconData(58330,
+                                     const IconData(58330,
                                         fontFamily: 'MaterialIcons'),
                                     color: this.textColor,
                                   ),
@@ -300,7 +300,7 @@ class Cours {
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Icon(
-              IconData(983342, fontFamily: 'MaterialIcons'),
+              const IconData(983342, fontFamily: 'MaterialIcons'),
               color: this.textColor,
             ),
             Text(
@@ -313,7 +313,7 @@ class Cours {
           ]),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Icon(
-              IconData(63430, fontFamily: 'MaterialIcons'),
+              const IconData(63430, fontFamily: 'MaterialIcons'),
               color: this.textColor,
             ),
             Text(
@@ -330,7 +330,7 @@ class Cours {
   Widget _containerStudent(BuildContext context) => Column(children: [
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Icon(
-            IconData(62753, fontFamily: 'MaterialIcons'),
+            const IconData(62753, fontFamily: 'MaterialIcons'),
             color: this.textColor,
           ),
           Text(
@@ -379,7 +379,7 @@ class Cours {
             send(recipient, context);
           },
           icon: Icon(
-            IconData(63081, fontFamily: 'MaterialIcons'),
+            const IconData(63081, fontFamily: 'MaterialIcons'),
             color: Colors.black,
           ),
           label: Text(

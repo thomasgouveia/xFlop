@@ -117,7 +117,7 @@ class _CreateSettingsScreenState extends State<CreateSettingsScreen> {
                         children: <Widget>[
                           Row(
                             children: [
-                              Icon(IconData(57583, fontFamily: 'MaterialIcons'),
+                              Icon(const IconData(57583, fontFamily: 'MaterialIcons'),
                                   color: theme.iconTheme.color),
                               SizedBox(
                                 width: 10,
