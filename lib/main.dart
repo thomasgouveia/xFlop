@@ -1,21 +1,15 @@
-import 'package:flop_edt_app/screens/home_screen.dart';
+import 'package:flop_edt_app/router/router.dart' as Custom;
+import 'package:flop_edt_app/state_manager/state_widget.dart';
+import 'package:flop_edt_app/theme/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import 'package:http/http.dart' as http;
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-  ));
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  //SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
-  runApp(
-    RestartWidget(
-      child: XFlopApp(),
-    ),
-  );
+Future main() async {
+  //await DotEnv().load('.env');
+  await initializeDateFormatting("fr_FR", null);
+  runApp(StateWidget(child: XFlopApp()));
 }
 
 class XFlopApp extends StatefulWidget {
@@ -24,50 +18,31 @@ class XFlopApp extends StatefulWidget {
 }
 
 class _XFlopAppState extends State<XFlopApp> {
-
   @override
-  Widget build(BuildContext context) {
-    //testAPIPerformance();
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'xFlop!',
-      theme: ThemeData(
-        fontFamily: 'Poppins',
-      ),
-      home: AppStateProvider(),
-    );
-  }
-}
-
-class RestartWidget extends StatefulWidget {
-  final Widget child;
-
-  RestartWidget({this.child});
-
-  static restartApp(BuildContext context) {
-    final _RestartWidgetState state =
-        context.ancestorStateOfType(const TypeMatcher<_RestartWidgetState>());
-    state.restartApp();
-  }
-
-  @override
-  _RestartWidgetState createState() => new _RestartWidgetState();
-}
-
-class _RestartWidgetState extends State<RestartWidget> {
-  Key key = new UniqueKey();
-
-  void restartApp() {
-    this.setState(() {
-      key = new UniqueKey();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new Container(
-      key: key,
-      child: widget.child,
-    );
-  }
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      builder: (context, _) {
+        final themeProvider = Provider.of<ThemeProvider>(context);
+        themeProvider.getMode().then((value) {
+          setState(() {
+            themeProvider.themeMode = value;
+          });
+        });
+        themeProvider.isDarkMode.then((value) {
+          setState(() {
+            value ? SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light) : SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+          });
+        });
+        return MaterialApp(
+          color: Color(0xFF07023B),
+          debugShowCheckedModeBanner: false,
+          title: 'xFlop!',
+          theme: AppTheme.lightTheme(),
+          darkTheme: AppTheme.darkTheme(),
+          themeMode: themeProvider.themeMode,
+          routes: {
+            '/': (context) => Custom.Router(),
+          },
+        );
+      });
 }
